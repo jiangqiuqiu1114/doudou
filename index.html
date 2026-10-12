@@ -2,11 +2,62 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>doudou</title>
+    <title>豆豆专属推送!</title>
 </head>
 <body>
-    <h2>欢迎来到 doudou！</h2>
-    <input type="text" placeholder="在这里输入内容...">
-    <button>点击我</button>
+    <h2>欢迎豆豆宝宝~！</h2>
+    <input type="text" id="messageInput" placeholder="在这里输入要推送的内容...">
+    <button id="sendBtn">召唤芽芽</button>
+
+    <script>
+        // 获取按钮和输入框元素
+        const sendBtn = document.getElementById('sendBtn');
+        const messageInput = document.getElementById('messageInput');
+
+        // 给按钮添加点击事件
+        sendBtn.addEventListener('click', function() {
+            const inputValue = messageInput.value.trim();
+
+            // 检查是否输入了内容
+            if (!inputValue) {
+                alert('请先输入内容！');
+                return;
+            }
+
+            // 修改按钮状态防止重复点击
+            sendBtn.disabled = true;
+            sendBtn.innerText = '推送中...';
+
+            // 按照你的 curl 格式组装数据
+            const data = new URLSearchParams();
+            data.append('title', 'doudou 网页提醒'); // 推送的标题
+            data.append('body', inputValue);         // 推送的内容，也就是文本框里的文字
+            data.append('group', 'example');
+            data.append('ttl', '600');
+
+            // 发送 POST 请求到接口
+            fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('推送成功！');
+                messageInput.value = ''; // 推送成功后清空输入框
+            })
+            .catch(error => {
+                alert('推送失败，请检查网络！');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // 恢复按钮状态
+                sendBtn.disabled = false;
+                sendBtn.innerText = '点击推送';
+            });
+        });
+    </script>
 </body>
 </html>
