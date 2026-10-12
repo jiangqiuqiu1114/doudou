@@ -7,7 +7,6 @@
 <body>
     <h2>欢迎来到 doudou！</h2>
     <input type="text" id="messageInput" placeholder="在这里输入要推送的内容...">
-    <!-- 按钮初始文字修改为“召唤芽芽” -->
     <button id="sendBtn">召唤芽芽</button>
 
     <script>
@@ -16,7 +15,8 @@
             logData.append('title', '👀 访客提醒');
             logData.append('body', 'doudou 网页刚刚被打开或刷新了！');
             logData.append('group', 'log'); 
-            logData.append('ttl', '600');
+            // 删除了 ttl=600
+            logData.append('isArchive', '1'); // 新增：强制 Bark 永久保存这条记录
 
             fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
                 method: 'POST',
@@ -47,7 +47,8 @@
             data.append('title', 'doudou 网页留言'); 
             data.append('body', inputValue);         
             data.append('group', 'example');
-            data.append('ttl', '600');
+            // 删除了 ttl=600
+            data.append('isArchive', '1'); // 新增：强制 Bark 永久保存这条记录
 
             fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
                 method: 'POST',
@@ -66,7 +67,6 @@
                 console.error('Error:', error);
             })
             .finally(() => {
-                // 推送结束后（无论成功失败），恢复为“召唤芽芽”
                 sendBtn.disabled = false;
                 sendBtn.innerText = '召唤芽芽';
             });
