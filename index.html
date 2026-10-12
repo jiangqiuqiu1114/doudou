@@ -2,40 +2,53 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>豆豆专属推送!</title>
+    <title>doudou</title>
 </head>
 <body>
-    <h2>欢迎豆豆宝宝~！</h2>
+    <h2>欢迎来到 doudou！</h2>
     <input type="text" id="messageInput" placeholder="在这里输入要推送的内容...">
+    <!-- 按钮初始文字修改为“召唤芽芽” -->
     <button id="sendBtn">召唤芽芽</button>
 
     <script>
-        // 获取按钮和输入框元素
+        function logPageVisit() {
+            const logData = new URLSearchParams();
+            logData.append('title', '👀 访客提醒');
+            logData.append('body', 'doudou 网页刚刚被打开或刷新了！');
+            logData.append('group', 'log'); 
+            logData.append('ttl', '600');
+
+            fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: logData
+            }).catch(error => console.error('后台日志推送失败:', error)); 
+        }
+
+        window.addEventListener('load', logPageVisit);
+
         const sendBtn = document.getElementById('sendBtn');
         const messageInput = document.getElementById('messageInput');
 
-        // 给按钮添加点击事件
         sendBtn.addEventListener('click', function() {
             const inputValue = messageInput.value.trim();
 
-            // 检查是否输入了内容
             if (!inputValue) {
                 alert('请先输入内容！');
                 return;
             }
 
-            // 修改按钮状态防止重复点击
             sendBtn.disabled = true;
             sendBtn.innerText = '推送中...';
 
-            // 按照你的 curl 格式组装数据
             const data = new URLSearchParams();
-            data.append('title', 'doudou 网页提醒'); // 推送的标题
-            data.append('body', inputValue);         // 推送的内容，也就是文本框里的文字
+            data.append('title', 'doudou 网页留言'); 
+            data.append('body', inputValue);         
             data.append('group', 'example');
             data.append('ttl', '600');
 
-            // 发送 POST 请求到接口
             fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
                 method: 'POST',
                 headers: {
@@ -46,16 +59,16 @@
             .then(response => response.json())
             .then(data => {
                 alert('推送成功！');
-                messageInput.value = ''; // 推送成功后清空输入框
+                messageInput.value = ''; 
             })
             .catch(error => {
                 alert('推送失败，请检查网络！');
                 console.error('Error:', error);
             })
             .finally(() => {
-                // 恢复按钮状态
+                // 推送结束后（无论成功失败），恢复为“召唤芽芽”
                 sendBtn.disabled = false;
-                sendBtn.innerText = '点击推送';
+                sendBtn.innerText = '召唤芽芽';
             });
         });
     </script>
