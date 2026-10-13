@@ -54,6 +54,36 @@
             100% { transform: translateY(-30px) scale(1.05); }
         }
 
+        /* 🎵 悬浮音乐按钮样式 */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s;
+            opacity: 0.6; /* 没播放时半透明 */
+        }
+
+        /* 音乐播放时的旋转动画 */
+        .playing {
+            opacity: 1;
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
         /* 4. 磨砂玻璃质感卡片 */
         .container {
             position: relative;
@@ -195,6 +225,12 @@
 </head>
 <body>
 
+    <!-- 音频标签，引入你的 爱你.mp3，设置 loop 为循环播放 -->
+    <audio id="bgMusic" src="爱你.mp3" loop preload="auto"></audio>
+
+    <!-- 悬浮音乐按钮 -->
+    <div id="musicToggle" class="music-btn" title="播放/暂停音乐">🎵</div>
+
     <!-- 漂浮气泡装饰 -->
     <div class="bubble"></div>
     <div class="bubble"></div>
@@ -217,6 +253,37 @@
     </div>
 
     <script>
+        // ==========================================
+        // 🎵 音乐播放控制逻辑
+        // ==========================================
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let isMusicPlaying = false;
+
+        function togglePlay() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicToggle.classList.remove('playing');
+            } else {
+                bgMusic.play().catch(e => console.log("等待用户交互以播放音乐"));
+                musicToggle.classList.add('playing');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        // 点击右上角图标切换播放/暂停
+        musicToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // 防止触发 body 的点击事件
+            togglePlay();
+        });
+
+        // 首次点击页面的任意位置（如点输入框）自动播放音乐
+        document.body.addEventListener('click', function() {
+            if (!isMusicPlaying) {
+                togglePlay();
+            }
+        }, { once: true });
+
         // ==========================================
         // 功能 1：无感推送网页访问日志
         // ==========================================
