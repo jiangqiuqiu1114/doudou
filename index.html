@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <!-- 让网页在手机端也能完美按比例显示 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>doudou</title>
+    <!-- 引入 PeerJS 实现 GitHub Pages 免配置公网跨网联机 -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
     <style>
         /* 1. 清除浏览器默认边距 */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* 2. 梦幻渐变动态背景 */
@@ -23,9 +26,12 @@
             background: linear-gradient(135deg, #ffd3b6 0%, #ffaaa5 40%, #d4a5b8 80%, #a8e6cf 100%);
             background-size: 300% 300%;
             animation: gradientBG 15s ease infinite; /* 缓慢的背景流动动画 */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
+            padding: 20px 0;
+            user-select: none;
         }
 
         /* 背景流动的动画 keyframe */
@@ -37,17 +43,18 @@
 
         /* 3. 装饰性漂浮泡泡 */
         .bubble {
-            position: absolute;
+            position: fixed;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(2px);
             animation: floatUpDown 8s ease-in-out infinite alternate;
             pointer-events: none;
+            z-index: 1;
         }
-        .bubble:nth-child(1) { width: 120px; height: 120px; top: 10%; left: 8%; animation-delay: 0s; }
-        .bubble:nth-child(2) { width: 80px; height: 80px; bottom: 15%; right: 10%; animation-delay: 2s; }
-        .bubble:nth-child(3) { width: 50px; height: 50px; bottom: 20%; left: 15%; animation-delay: 4s; }
-        .bubble:nth-child(4) { width: 70px; height: 70px; top: 15%; right: 20%; animation-delay: 1s; }
+        .bubble:nth-of-type(1) { width: 120px; height: 120px; top: 10%; left: 8%; animation-delay: 0s; }
+        .bubble:nth-of-type(2) { width: 80px; height: 80px; bottom: 15%; right: 10%; animation-delay: 2s; }
+        .bubble:nth-of-type(3) { width: 50px; height: 50px; bottom: 20%; left: 15%; animation-delay: 4s; }
+        .bubble:nth-of-type(4) { width: 70px; height: 70px; top: 15%; right: 20%; animation-delay: 1s; }
 
         @keyframes floatUpDown {
             0% { transform: translateY(0) scale(1); }
@@ -73,7 +80,7 @@
             cursor: pointer;
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s;
+            transition: opacity 0.3s, transform 0.2s;
             opacity: 0.6; /* 没播放时半透明 */
         }
 
@@ -84,7 +91,7 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 4. 磨砂玻璃质感卡片 */
+        /* 4. 磨砂玻璃质感卡片 (原留言主卡片) */
         .container {
             position: relative;
             z-index: 10;
@@ -92,16 +99,16 @@
             backdrop-filter: blur(16px); /* 磨砂玻璃模糊 */
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.6); /* 彩色微光边框 */
-            padding: 45px 30px;
+            padding: 45px 30px 36px;
             border-radius: 28px; /* 大圆角更亲切 */
             box-shadow: 
                 0 20px 40px rgba(255, 154, 159, 0.15), 
                 0 1px 3px rgba(0, 0, 0, 0.05),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8); /* 柔和内外多重阴影 */
             text-align: center;
-            width: 90%;
+            width: 92%;
             max-width: 390px;
-            transition: transform 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* 5. 豆豆专属 Badge 小标 */
@@ -159,6 +166,7 @@
             background-color: rgba(255, 255, 255, 0.6);
             transition: all 0.3s ease;
             color: #4a3e3d;
+            user-select: text;
         }
 
         /* 输入框选中发光效果 */
@@ -221,6 +229,487 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        /* =====================================================
+           8. 新增：「♟️ 来一局五子棋」入口按钮与专属对弈屋样式
+           ===================================================== */
+        .divider-line {
+            display: flex;
+            align-items: center;
+            margin: 20px 0 16px;
+            color: #b5a6a4;
+            font-size: 12px;
+        }
+        .divider-line::before,
+        .divider-line::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(181, 166, 164, 0.35), transparent);
+        }
+        .divider-line span {
+            padding: 0 10px;
+        }
+
+        button#gomokuBtn {
+            width: 100%;
+            padding: 15px 16px;
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            font-size: 15.5px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(161, 140, 209, 0.35);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button#gomokuBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(161, 140, 209, 0.5);
+            filter: brightness(1.04);
+        }
+        button#gomokuBtn:active {
+            transform: translateY(1px);
+        }
+
+        /* 五子棋对战屋大面板 */
+        .gomoku-wrapper {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            border-radius: 28px;
+            box-shadow: 
+                0 24px 48px rgba(180, 120, 140, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            width: 95%;
+            max-width: 920px;
+            padding: 20px;
+            color: #4a3e3d;
+            display: none; /* 默认隐藏，点击「来一局五子棋」后展开 */
+            animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .gomoku-topbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(234, 225, 223, 0.8);
+            margin-bottom: 14px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #eadad8;
+            color: #6b5a58;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: #fff0f1;
+            border-color: #ff9a9f;
+            color: #d96b70;
+        }
+
+        .mode-tabs {
+            display: flex;
+            background: rgba(242, 234, 233, 0.85);
+            padding: 4px;
+            border-radius: 14px;
+            gap: 4px;
+        }
+        .mode-tab {
+            border: none;
+            background: transparent;
+            color: #8b7c7a;
+            font-size: 12.5px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-tab.active {
+            background: linear-gradient(135deg, #ff9a9f 0%, #f68084 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(255, 154, 159, 0.35);
+        }
+
+        .gomoku-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+        @media (min-width: 780px) {
+            .gomoku-grid {
+                grid-template-columns: 1.25fr 0.95fr;
+            }
+        }
+
+        /* 玩家对战卡片栏 */
+        .players-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .player-card {
+            background: rgba(255, 255, 255, 0.75);
+            border: 2px solid #efe6e5;
+            border-radius: 18px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            transition: all 0.25s;
+        }
+        .player-card.active-turn {
+            border-color: #ff8b94;
+            background: #fff9fa;
+            box-shadow: 0 6px 16px rgba(255, 139, 148, 0.2);
+        }
+        .stone-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        .stone-avatar.black {
+            background: radial-gradient(circle at 30% 30%, #666, #1a1a1a 70%, #050505);
+            border: 2px solid #444;
+        }
+        .stone-avatar.white {
+            background: radial-gradient(circle at 30% 30%, #fff, #f0ece9 70%, #ccc5be);
+            border: 2px solid #fff;
+        }
+        .player-meta {
+            text-align: left;
+            min-width: 0;
+            flex: 1;
+        }
+        .player-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #4a3e3d;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-sub {
+            font-size: 11px;
+            color: #968583;
+            margin-top: 2px;
+        }
+
+        /* 情侣互动气泡 */
+        .chat-bubble {
+            position: absolute;
+            bottom: -34px;
+            left: 10px;
+            z-index: 30;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 14px;
+            border-top-left-radius: 2px;
+            box-shadow: 0 6px 15px rgba(255, 117, 140, 0.35);
+            white-space: nowrap;
+            pointer-events: none;
+            display: none;
+        }
+        .chat-bubble.right-side {
+            left: auto;
+            right: 10px;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 2px;
+        }
+        @keyframes bubblePop {
+            0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+            12% { opacity: 1; transform: translateY(0) scale(1.03); }
+            22% { transform: scale(1); }
+            85% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-5px); }
+        }
+        .chat-bubble.show {
+            display: block;
+            animation: bubblePop 4s ease forwards;
+        }
+
+        /* 状态横幅 */
+        .status-strip {
+            background: rgba(255, 245, 246, 0.9);
+            border: 1px solid #f7d9dc;
+            border-radius: 14px;
+            padding: 8px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12.5px;
+            color: #6e5856;
+        }
+
+        /* 唯美暖木色棋盘容器 */
+        .board-box {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(145deg, #ecc58c 0%, #dcab68 55%, #ce9952 100%);
+            border: 4px solid #8c5828;
+            border-radius: 20px;
+            box-shadow: 
+                0 16px 35px rgba(107, 66, 27, 0.28),
+                inset 0 2px 4px rgba(255, 255, 255, 0.5),
+                inset 0 -3px 6px rgba(90, 50, 15, 0.4);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+        }
+        canvas#gomokuCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        /* 手机端防误触确认落子悬浮钮 */
+        .confirm-move-btn {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.5);
+            cursor: pointer;
+            display: none;
+        }
+
+        /* 胜负结算浮层 */
+        .victory-banner {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            z-index: 25;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid #ff9a9f;
+            border-radius: 18px;
+            padding: 12px 16px;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* 棋盘下方按钮栏 */
+        .board-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .action-pill {
+            border: 1px solid #eadad8;
+            background: rgba(255, 255, 255, 0.85);
+            color: #5e4c4a;
+            padding: 8px 13px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-pill:hover {
+            background: #fff0f2;
+            border-color: #ff9a9f;
+        }
+        .action-pill.primary {
+            background: linear-gradient(135deg, #ff9a9f 0%, #fecfef 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(255, 154, 159, 0.35);
+        }
+
+        /* 右侧房间与互动侧栏 */
+        .side-card {
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(234, 220, 218, 0.9);
+            border-radius: 20px;
+            padding: 14px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .side-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4a3e3d;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .role-switch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .role-btn {
+            padding: 8px;
+            border-radius: 12px;
+            border: 1.5px solid #eadad8;
+            background: #fff;
+            color: #6e5d5b;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .role-btn.active {
+            border-color: #ff8b94;
+            background: #fff0f2;
+            color: #d65c66;
+        }
+
+        .quick-room-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .couple-room-btn {
+            padding: 9px 10px;
+            border-radius: 12px;
+            border: 1px solid #f5c6cb;
+            background: linear-gradient(135deg, #fff5f6 0%, #ffe3e8 100%);
+            color: #c95560;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .couple-room-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(255, 154, 159, 0.25);
+        }
+
+        /* 一键Bark呼叫芽芽进房按钮 */
+        .bark-call-btn {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        .bark-call-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            filter: brightness(1.04);
+        }
+        .bark-call-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .quick-phrases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .phrase-chip {
+            border: 1px solid #eadad8;
+            background: #fff;
+            color: #6b5a58;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .phrase-chip:hover {
+            background: #fff0f2;
+            border-color: #ff9a9f;
+            color: #d96b70;
+        }
+
+        /* 唯美轻提示 Toast (替代原本生硬的浏览器 alert) */
+        .toast-box {
+            position: fixed;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast-item {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid #ff9a9f;
+            color: #4a3e3d;
+            padding: 11px 20px;
+            border-radius: 999px;
+            font-size: 13.5px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(255, 154, 159, 0.35);
+            animation: fadeInScale 0.25s ease;
+        }
     </style>
 </head>
 <body>
@@ -231,14 +720,19 @@
     <!-- 悬浮音乐按钮 -->
     <div id="musicToggle" class="music-btn" title="播放/暂停音乐">🎵</div>
 
+    <!-- 唯美悬浮通知容器 -->
+    <div id="toastContainer" class="toast-box"></div>
+
     <!-- 漂浮气泡装饰 -->
     <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
     
-    <!-- 主卡片 -->
-    <div class="container">
+    <!-- ====================================================
+         视图 1：原有的豆豆专属留言主卡片 (100%保留 + 新增五子棋入口)
+         ==================================================== -->
+    <div class="container" id="messageCardView">
         <!-- 豆字 Badge -->
         <div class="badge">豆</div>
         <h2>欢迎豆豆宝宝!</h2>
@@ -250,11 +744,204 @@
         </div>
         
         <button id="sendBtn">召唤芽芽</button>
+
+        <!-- 新增：五子棋入口分割线与按钮 -->
+        <div class="divider-line"><span>✨ 或者和芽芽一起玩 ✨</span></div>
+        <button id="gomokuBtn" type="button">
+            <span>♟️</span>
+            <span>来一局五子棋</span>
+        </button>
     </div>
 
-    <script>
+    <!-- ====================================================
+         视图 2：豆豆 ❤️ 芽芽 专属云端五子棋对战屋
+         ==================================================== -->
+    <div class="gomoku-wrapper" id="gomokuView">
+        <!-- 顶部返回与模式切换栏 -->
+        <div class="gomoku-topbar">
+            <button class="back-btn" id="backToCardBtn" type="button">
+                <span>←</span>
+                <span>返回留言卡片</span>
+            </button>
+
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" id="tabOnline" onclick="switchMode('online')">🌐 双人联机</button>
+                    <button class="mode-tab" id="tabAi" onclick="switchMode('ai')">🤖 芽芽AI陪练</button>
+                    <button class="mode-tab" id="tabLocal" onclick="switchMode('local')">👥 同屏双人</button>
+                </div>
+                <button class="action-pill" id="soundBtn" onclick="toggleSoundEffect()" title="落子音效开关">🔊 音效</button>
+            </div>
+        </div>
+
+        <div class="gomoku-grid">
+            <!-- 左侧：棋手卡片 + 15x15 棋盘 + 操作栏 -->
+            <div>
+                <div class="players-bar">
+                    <!-- 黑棋卡片 -->
+                    <div class="player-card active-turn" id="blackCard">
+                        <div class="stone-avatar black"></div>
+                        <div class="player-meta">
+                            <div class="player-name" id="blackNameLabel">豆豆宝宝 (黑棋)</div>
+                            <div class="player-sub" id="blackStatusLabel">先手执黑</div>
+                        </div>
+                        <div class="chat-bubble" id="blackBubble"></div>
+                    </div>
+
+                    <!-- 白棋卡片 -->
+                    <div class="player-card" id="whiteCard">
+                        <div class="stone-avatar white"></div>
+                        <div class="player-meta">
+                            <div class="player-name" id="whiteNameLabel">等待芽芽加入...</div>
+                            <div class="player-sub" id="whiteStatusLabel">后手执白</div>
+                        </div>
+                        <div class="chat-bubble right-side" id="whiteBubble"></div>
+                    </div>
+                </div>
+
+                <!-- 局势状态条 -->
+                <div class="status-strip">
+                    <span id="statusBannerText" style="font-weight:600;">🌸 请选择右侧房间号或点击呼叫芽芽一起下棋</span>
+                    <div style="display:flex; align-items:center; gap:8px; font-size:11.5px;">
+                        <span>手数: <strong id="moveCountText">0</strong></span>
+                        <button class="action-pill" style="padding:3px 8px; font-size:11px;" onclick="toggleAimMode()" id="aimModeBtn">🎯 防误触: 自动</button>
+                    </div>
+                </div>
+
+                <!-- 15x15 唯美木纹棋盘 -->
+                <div class="board-box">
+                    <canvas id="gomokuCanvas"></canvas>
+
+                    <!-- 手机端防误触二次确认按钮 -->
+                    <button class="confirm-move-btn" id="confirmMoveBtn" onclick="confirmPendingStone()">
+                        ✅ 确认落子 (<span id="confirmCoordText">H8</span>)
+                    </button>
+
+                    <!-- 胜负结果浮层 -->
+                    <div class="victory-banner" id="victoryBanner">
+                        <div style="text-align:left;">
+                            <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#d9536f;">🎉 豆豆获胜啦！五子连珠</div>
+                            <div id="victorySub" style="font-size:11.5px; color:#8b7c7a; margin-top:2px;">点击「再来一局」将自动交换黑白先后手</div>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-shrink:0;">
+                            <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局</button>
+                            <button class="action-pill" onclick="hideVictoryBanner()">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 棋盘底部功能按钮 -->
+                <div class="board-actions">
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局 (换先)</button>
+                        <button class="action-pill" onclick="handleUndo()">↩️ 悔棋一步</button>
+                        <button class="action-pill" onclick="handleResign()">🏳️ 认输</button>
+                    </div>
+                    <span id="connStatusTag" style="font-size:11.5px; color:#968583; align-self:center;">🌐 联机引擎就绪</span>
+                </div>
+            </div>
+
+            <!-- 右侧：身份选择 + 情侣专属房间联机 + 一键Bark召唤芽芽 + 甜蜜互动 -->
+            <div>
+                <!-- 1. 我是谁切换 -->
+                <div class="side-card">
+                    <div class="side-title">
+                        <span>💑 选择我的身份</span>
+                        <span style="font-size:11px; color:#968583; font-weight:normal;">点击即可切换</span>
+                    </div>
+                    <div class="role-switch">
+                        <button class="role-btn active" id="roleDoudouBtn" onclick="selectIdentity('豆豆宝宝')">👧 我是豆豆宝宝</button>
+                        <button class="role-btn" id="roleYayaBtn" onclick="selectIdentity('芽芽')">👦 我是芽芽</button>
+                    </div>
+                </div>
+
+                <!-- 2. 在线联机房间控制 (在双人联机模式下显示) -->
+                <div class="side-card" id="onlineRoomCard">
+                    <div class="side-title">
+                        <span>🏠 豆豆 & 芽芽 专属联机房</span>
+                        <span id="roomCodeBadge" style="font-family:monospace; font-size:13px; color:#d9536f; background:#fff0f2; padding:2px 8px; border-radius:8px; border:1px solid #ffccd2;">未进房</span>
+                    </div>
+                    <p style="font-size:11.5px; color:#8b7c7a; margin-bottom:10px; line-height:1.4;">
+                        双方点击下方同一个专属房间号，即可在 GitHub Pages 上直接跨网实时下棋：
+                    </p>
+
+                    <div class="quick-room-btns">
+                        <button class="couple-room-btn" onclick="joinCoupleRoom('5200')">💖 进入 5200 房间</button>
+                        <button class="couple-room-btn" onclick="joinCoupleRoom('1314')">✨ 进入 1314 房间</button>
+                    </div>
+
+                    <div style="display:flex; gap:6px; margin-bottom:8px;">
+                        <input type="text" id="customRoomInput" maxlength="8" placeholder="自定义房间号 (如 8888)" style="padding:9px 12px; font-size:13px; border-radius:12px;">
+                        <button class="action-pill" style="flex-shrink:0;" onclick="joinCustomRoomInput()">进入房间</button>
+                    </div>
+
+                    <!-- 一键通过 Bark 推送喊芽芽来下棋 -->
+                    <button class="bark-call-btn" id="notifyYayaBtn" onclick="notifyYayaToPlay()">
+                        <span>🔔</span>
+                        <span>一键发通知喊芽芽进房下棋</span>
+                    </button>
+                </div>
+
+                <!-- 3. AI 陪练设置 (在芽芽AI陪练模式下显示) -->
+                <div class="side-card" id="aiSettingCard" style="display:none;">
+                    <div class="side-title">
+                        <span>🤖 芽芽分身 AI 陪练</span>
+                        <span style="font-size:11px; color:#968583; font-weight:normal;">芽芽忙时陪豆豆解闷</span>
+                    </div>
+                    <div style="font-size:12px; color:#7a6a68; margin-bottom:6px;">选择芽芽 AI 的棋力水平：</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:10px;">
+                        <button class="role-btn" id="aiEasyBtn" onclick="setAiLevel('easy')">🌱 温柔放水</button>
+                        <button class="role-btn active" id="aiMedBtn" onclick="setAiLevel('medium')">🌸 认真切磋</button>
+                        <button class="role-btn" id="aiHardBtn" onclick="setAiLevel('hard')">🔥 棋圣芽芽</button>
+                    </div>
+                    <button class="bark-call-btn" onclick="handleRestartMatch()">✨ 重新开始一局 AI 对战</button>
+                </div>
+
+                <!-- 4. 情侣快捷互动气泡 & 聊天 -->
+                <div class="side-card">
+                    <div class="side-title">
+                        <span>💬 甜蜜互动传音</span>
+                        <span style="font-size:11px; color:#968583; font-weight:normal;">点击直接弹出气泡</span>
+                    </div>
+                    <div class="quick-phrases">
+                        <button class="phrase-chip" onclick="sendCoupleChat('🌸 芽芽快点下呀～')">🌸 芽芽快点下～</button>
+                        <button class="phrase-chip" onclick="sendCoupleChat('🥺 让豆豆一步嘛！')">🥺 让豆豆一步嘛</button>
+                        <button class="phrase-chip" onclick="sendCoupleChat('✨ 哇！这步棋绝杀！')">✨ 这步绝杀！</button>
+                        <button class="phrase-chip" onclick="sendCoupleChat('❤️ 耍赖不算，悔一步嘛～')">❤️ 悔一步嘛～</button>
+                        <button class="phrase-chip" onclick="sendCoupleChat('😘 赢啦！奖励一朵小红花')">😘 奖励小红花</button>
+                    </div>
+                    <div style="display:flex; gap:6px; margin-top:10px;">
+                        <input type="text" id="chatTextInput" maxlength="36" placeholder="在棋盘上发一句悄悄话..." style="padding:9px 12px; font-size:12.5px; border-radius:12px;" onkeydown="if(event.key==='Enter') sendCustomChatInput()">
+                        <button class="action-pill primary" style="flex-shrink:0;" onclick="sendCustomChatInput()">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
         // ==========================================
-        // 🎵 音乐播放控制逻辑
+        // 0. 唯美轻提示函数 (替代原生生硬弹窗)
+        // ==========================================
+        function showRomanticToast(msg) {
+            const container = document.getElementById('toastContainer');
+            const div = document.createElement('div');
+            div.className = 'toast-item';
+            div.innerText = msg;
+            container.appendChild(div);
+            setTimeout(() => {
+                div.style.opacity = '0';
+                div.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => div.remove(), 300);
+            }, 2600);
+        }
+
+        // ==========================================
+        // 🎵 音乐播放控制逻辑 (100% 保留原有逻辑)
         // ==========================================
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
@@ -285,8 +972,10 @@
         }, { once: true });
 
         // ==========================================
-        // 功能 1：无感推送网页访问日志
+        // 功能 1：无感推送网页访问日志 (100% 保留原有逻辑)
         // ==========================================
+        const BARK_ENDPOINT = 'https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7';
+
         function logPageVisit() {
             const logData = new URLSearchParams();
             logData.append('title', '👀 豆豆宝宝来啦');
@@ -294,7 +983,7 @@
             logData.append('group', 'log'); 
             logData.append('isArchive', '1'); 
 
-            fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
+            fetch(BARK_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -306,7 +995,7 @@
         window.addEventListener('load', logPageVisit);
 
         // ==========================================
-        // UI 辅助：输入框非空判断与清空按钮交互
+        // UI 辅助：输入框非空判断与清空按钮交互 (100% 保留原有逻辑)
         // ==========================================
         const messageInput = document.getElementById('messageInput');
         const clearBtn = document.getElementById('clearBtn');
@@ -327,7 +1016,7 @@
         });
 
         // ==========================================
-        // 功能 2：手动点击按钮推送
+        // 功能 2：手动点击「召唤芽芽」按钮推送 (100% 保留原有逻辑)
         // ==========================================
         const sendBtn = document.getElementById('sendBtn');
 
@@ -335,7 +1024,8 @@
             const inputValue = messageInput.value.trim();
 
             if (!inputValue) {
-                alert('请先输入内容呀！');
+                showRomanticToast('💌 请先输入想对芽芽说的话呀！');
+                messageInput.focus();
                 return;
             }
 
@@ -348,7 +1038,7 @@
             data.append('group', 'example');
             data.append('isArchive', '1'); 
 
-            fetch('https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7', {
+            fetch(BARK_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -357,18 +1047,1031 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert('发送成功啦！🌸');
+                showRomanticToast('发送成功啦！芽芽收到留言咯 🌸');
                 messageInput.value = ''; 
                 clearBtn.style.display = 'none'; // 成功后隐藏清除按钮
             })
             .catch(error => {
-                alert('发送失败，请检查网络！');
+                showRomanticToast('发送失败，请检查网络！');
                 console.error('Error:', error);
             })
             .finally(() => {
                 sendBtn.disabled = false;
                 sendBtn.innerText = '召唤芽芽';
             });
+        });
+
+        // ==========================================
+        // 功能 3：卡片视图与五子棋对战屋丝滑切换
+        // ==========================================
+        const messageCardView = document.getElementById('messageCardView');
+        const gomokuView = document.getElementById('gomokuView');
+        const gomokuBtn = document.getElementById('gomokuBtn');
+        const backToCardBtn = document.getElementById('backToCardBtn');
+
+        function openGomokuRoom(defaultRoom = '5200') {
+            messageCardView.style.display = 'none';
+            gomokuView.style.display = 'block';
+            setTimeout(() => {
+                resizeBoardCanvas();
+                if (!currentRoomCode && gameMode === 'online') {
+                    joinCoupleRoom(defaultRoom);
+                }
+            }, 30);
+        }
+
+        gomokuBtn.addEventListener('click', function() {
+            openGomokuRoom('5200');
+        });
+
+        backToCardBtn.addEventListener('click', function() {
+            gomokuView.style.display = 'none';
+            messageCardView.style.display = 'block';
+        });
+
+        // ==========================================
+        // 功能 4：一键通过 Bark 呼叫芽芽进房下棋
+        // ==========================================
+        window.notifyYayaToPlay = function() {
+            const btn = document.getElementById('notifyYayaBtn');
+            const roomCode = currentRoomCode || '5200';
+            const pageUrl = window.location.origin + window.location.pathname + '?room=' + roomCode;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span><span>正在呼叫芽芽...</span>';
+
+            const payload = new URLSearchParams();
+            payload.append('title', '♟️ 豆豆喊你下五子棋啦！');
+            payload.append('body', `${myName}已经在五子棋【${roomCode} 房间】摆好棋盘等你啦，点击通知直接进房对战吧 ❤️`);
+            payload.append('group', 'gomoku');
+            payload.append('isArchive', '1');
+            payload.append('url', pageUrl);
+
+            fetch(BARK_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: payload
+            })
+            .then(() => {
+                showRomanticToast(`🔔 已向芽芽手机发送【${roomCode}房】对战召唤！`);
+            })
+            .catch(() => {
+                showRomanticToast('呼叫发送失败，请检查网络');
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>🔔</span><span>一键发通知喊芽芽进房下棋</span>';
+                }, 2000);
+            });
+        };
+
+        // ==========================================
+        // 功能 5：Web Audio 拟真落子与获胜音效
+        // ==========================================
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function playStoneTap(isBlack = true) {
+            if (!soundEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!audioCtx && AudioContextClass) audioCtx = new AudioContextClass();
+                if (!audioCtx) return;
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(isBlack ? 700 : 850, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.06);
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.065);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.07);
+            } catch (e) {}
+        }
+
+        function playVictoryMelody() {
+            if (!soundEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!audioCtx && AudioContextClass) audioCtx = new AudioContextClass();
+                if (!audioCtx) return;
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((f, idx) => {
+                    const t = audioCtx.currentTime + idx * 0.09;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(f, t);
+                    gain.gain.setValueAtTime(0.22, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.36);
+                });
+            } catch (e) {}
+        }
+
+        window.toggleSoundEffect = function() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundBtn').innerText = soundEnabled ? '🔊 音效' : '🔇 静音';
+            showRomanticToast(soundEnabled ? '🔊 已开启棋子音效' : '🔇 已静音棋子音效');
+        };
+
+        // ==========================================
+        // 功能 6：五子棋核心状态与双通道联机引擎
+        // (同时支持 GitHub Pages 免配置 PeerJS 直连 + Firebase 云端同步)
+        // ==========================================
+        const BOARD_SIZE = 15;
+        const COL_LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
+        const STAR_COORDS = [[3,3],[3,11],[7,7],[11,3],[11,11]];
+
+        let gameMode = 'online'; // 'online' | 'ai' | 'local'
+        let myName = '豆豆宝宝';
+        let myClientId = 'u_' + Math.random().toString(36).slice(2, 10);
+
+        let board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
+        let moves = []; // { r, c, p }
+        let currentTurn = 1; // 1 = Black, 2 = White
+        let winner = 0; // 0 = playing, 1 = Black, 2 = White, 3 = Draw
+        let winLine = [];
+        let winReason = '';
+
+        // 在线房间状态
+        let currentRoomCode = '';
+        let myOnlineColor = 1; // 1 = Black, 2 = White
+        let blackPlayerInfo = { id: myClientId, name: '豆豆宝宝' };
+        let whitePlayerInfo = null;
+
+        // PeerJS WebRTC 状态 (用于 GitHub Pages 免配置跨网联机)
+        let peerInstance = null;
+        let peerConn = null;
+        let isPeerHost = false;
+
+        // Firebase 状态 (如果环境提供配置则同时启用)
+        let db = null;
+        let auth = null;
+        let fbUser = null;
+        let fbUnsubscribe = null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'doudou-yaya-gomoku';
+
+        // AI 状态
+        let aiLevel = 'medium';
+        let aiThinking = false;
+
+        // 触屏防误触状态
+        let hoverIntersection = null;
+        let pendingIntersection = null;
+        let aimSetting = 'auto'; // 'auto' | 'on' | 'off'
+        let isTouchUsed = false;
+
+        // 初始化 Firebase (若可用)
+        async function initFirebaseOptional() {
+            try {
+                if (typeof __firebase_config === 'undefined' || !__firebase_config) return;
+                const cfg = JSON.parse(__firebase_config);
+                const app = initializeApp(cfg, 'doudou-gomoku-' + Date.now());
+                auth = getAuth(app);
+                db = getFirestore(app);
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                onAuthStateChanged(auth, (u) => {
+                    fbUser = u;
+                    if (u && currentRoomCode && gameMode === 'online') {
+                        connectFirebaseRoom(currentRoomCode);
+                    }
+                });
+            } catch (e) {}
+        }
+        initFirebaseOptional();
+
+        window.selectIdentity = function(name) {
+            myName = name;
+            document.getElementById('roleDoudouBtn').classList.toggle('active', name === '豆豆宝宝');
+            document.getElementById('roleYayaBtn').classList.toggle('active', name === '芽芽');
+
+            if (myOnlineColor === 1) {
+                blackPlayerInfo = { id: myClientId, name: myName };
+            } else if (myOnlineColor === 2) {
+                whitePlayerInfo = { id: myClientId, name: myName };
+            }
+            broadcastRoomState();
+            refreshGomokuUI();
+            showRomanticToast(`✨ 已切换身份为：${myName}`);
+        };
+
+        window.joinCoupleRoom = function(roomCode) {
+            if (gameMode !== 'online') {
+                switchMode('online');
+            }
+            const cleanCode = String(roomCode).trim().toUpperCase();
+            if (!cleanCode) return;
+
+            currentRoomCode = cleanCode;
+            document.getElementById('roomCodeBadge').innerText = `房间 #${cleanCode}`;
+            document.getElementById('customRoomInput').value = cleanCode;
+
+            resetBoardData();
+            startPeerJsRoom(cleanCode);
+            if (fbUser && db) {
+                connectFirebaseRoom(cleanCode);
+            }
+            showRomanticToast(`💖 已进入【${cleanCode}】专属房间！`);
+        };
+
+        window.joinCustomRoomInput = function() {
+            const val = document.getElementById('customRoomInput').value.trim();
+            if (!val) {
+                showRomanticToast('请输入4位房间号（如 5200）');
+                return;
+            }
+            joinCoupleRoom(val);
+        };
+
+        // PeerJS 免配置公网直连逻辑（让豆豆和芽芽在 GitHub Pages 上无需任何服务器即可联机）
+        function startPeerJsRoom(roomCode) {
+            if (typeof Peer === 'undefined') return;
+            if (peerInstance) {
+                try { peerInstance.destroy(); } catch (e) {}
+                peerInstance = null;
+                peerConn = null;
+            }
+
+            const hostPeerId = `doudou-yaya-gomoku-v1-${roomCode}-host`;
+            const connTag = document.getElementById('connStatusTag');
+            connTag.innerText = `⏳ 正在连接 #${roomCode} 房间...`;
+
+            // 尝试作为房主 (执黑先行) 创建固定房间 ID
+            const candidatePeer = new Peer(hostPeerId);
+
+            candidatePeer.on('open', () => {
+                // 成功注册为房主 (黑棋)
+                peerInstance = candidatePeer;
+                isPeerHost = true;
+                myOnlineColor = 1;
+                blackPlayerInfo = { id: myClientId, name: myName };
+                whitePlayerInfo = null;
+                connTag.innerText = `🟢 #${roomCode}房已创建 (等待对方进入)`;
+                refreshGomokuUI();
+
+                candidatePeer.on('connection', (conn) => {
+                    peerConn = conn;
+                    setupPeerConnectionHandlers(conn);
+                });
+            });
+
+            candidatePeer.on('error', (err) => {
+                if (err.type === 'unavailable-id') {
+                    // 房主已存在！当前用户自动作为挑战者 (执白) 连入房主
+                    isPeerHost = false;
+                    myOnlineColor = 2;
+                    const guestPeer = new Peer();
+                    peerInstance = guestPeer;
+
+                    guestPeer.on('open', () => {
+                        const conn = guestPeer.connect(hostPeerId, { reliable: true });
+                        peerConn = conn;
+                        setupPeerConnectionHandlers(conn);
+                    });
+                } else {
+                    connTag.innerText = `🌐 房间 #${roomCode} 就绪`;
+                }
+            });
+        }
+
+        function setupPeerConnectionHandlers(conn) {
+            const connTag = document.getElementById('connStatusTag');
+            conn.on('open', () => {
+                connTag.innerText = `💖 已与对方实时连线 (#${currentRoomCode})`;
+                if (!isPeerHost) {
+                    // 客方主动发送自己的身份信息
+                    whitePlayerInfo = { id: myClientId, name: myName === '豆豆宝宝' ? '芽芽' : myName };
+                    conn.send({
+                        type: 'GUEST_JOIN',
+                        guestInfo: { id: myClientId, name: myName }
+                    });
+                }
+                refreshGomokuUI();
+            });
+
+            conn.on('data', (msg) => {
+                if (!msg || typeof msg !== 'object') return;
+                if (msg.type === 'GUEST_JOIN' && isPeerHost) {
+                    // 如果双方都默认叫“豆豆宝宝”，自动帮对方显示为“芽芽”以示区分
+                    let guestName = msg.guestInfo?.name || '芽芽';
+                    if (guestName === blackPlayerInfo.name) {
+                        guestName = blackPlayerInfo.name === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
+                    }
+                    whitePlayerInfo = { id: msg.guestInfo?.id || 'guest', name: guestName };
+                    showRomanticToast(`🎉 ${guestName} 加入房间啦！开始下棋吧`);
+                    broadcastRoomState();
+                    refreshGomokuUI();
+                } else if (msg.type === 'SYNC_STATE') {
+                    applyIncomingState(msg.payload);
+                } else if (msg.type === 'CHAT_MSG') {
+                    showChatBubbleOnCard(msg.color, msg.text);
+                }
+            });
+
+            conn.on('close', () => {
+                connTag.innerText = `⏳ 对方暂时离开 (#${currentRoomCode})`;
+            });
+        }
+
+        // Firebase 同步辅助 (在支持云数据库的环境下双重保障)
+        async function connectFirebaseRoom(roomCode) {
+            if (!fbUser || !db) return;
+            if (fbUnsubscribe) fbUnsubscribe();
+
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'gomoku_rooms', roomCode);
+            try {
+                const snap = await getDoc(roomRef);
+                if (!snap.exists()) {
+                    await setDoc(roomRef, {
+                        roomCode,
+                        blackPlayer: { id: myClientId, name: myName },
+                        whitePlayer: null,
+                        movesJson: JSON.stringify([]),
+                        turn: 1,
+                        winner: 0,
+                        winReason: '',
+                        winLineJson: JSON.stringify([]),
+                        updatedAt: Date.now()
+                    });
+                } else {
+                    const data = snap.data();
+                    if (data.blackPlayer && data.blackPlayer.id !== myClientId && !data.whitePlayer) {
+                        const autoName = data.blackPlayer.name === myName ? (myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝') : myName;
+                        myOnlineColor = 2;
+                        await updateDoc(roomRef, {
+                            whitePlayer: { id: myClientId, name: autoName },
+                            updatedAt: Date.now()
+                        });
+                    }
+                }
+
+                fbUnsubscribe = onSnapshot(roomRef, (docSnap) => {
+                    if (!docSnap.exists() || gameMode !== 'online') return;
+                    const d = docSnap.data();
+                    applyIncomingState({
+                        blackPlayer: d.blackPlayer,
+                        whitePlayer: d.whitePlayer,
+                        moves: JSON.parse(d.movesJson || '[]'),
+                        turn: d.turn || 1,
+                        winner: d.winner || 0,
+                        winReason: d.winReason || '',
+                        winLine: JSON.parse(d.winLineJson || '[]')
+                    });
+                    if (d.lastChatJson) {
+                        try {
+                            const chat = JSON.parse(d.lastChatJson);
+                            if (chat.ts && Date.now() - chat.ts < 5000 && chat.senderId !== myClientId) {
+                                showChatBubbleOnCard(chat.color, chat.text);
+                            }
+                        } catch (e) {}
+                    }
+                }, (err) => console.error(err));
+            } catch (e) {}
+        }
+
+        function broadcastRoomState() {
+            if (gameMode !== 'online') return;
+            const payload = {
+                blackPlayer: blackPlayerInfo,
+                whitePlayer: whitePlayerInfo,
+                moves: moves,
+                turn: currentTurn,
+                winner: winner,
+                winReason: winReason,
+                winLine: winLine
+            };
+
+            if (peerConn && peerConn.open) {
+                peerConn.send({ type: 'SYNC_STATE', payload });
+            }
+
+            if (fbUser && db && currentRoomCode) {
+                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'gomoku_rooms', currentRoomCode);
+                updateDoc(roomRef, {
+                    blackPlayer: blackPlayerInfo,
+                    whitePlayer: whitePlayerInfo,
+                    movesJson: JSON.stringify(moves),
+                    turn: currentTurn,
+                    winner: winner,
+                    winReason: winReason,
+                    winLineJson: JSON.stringify(winLine),
+                    updatedAt: Date.now()
+                }).catch(() => {});
+            }
+        }
+
+        function applyIncomingState(state) {
+            if (!state) return;
+            const prevMoveLen = moves.length;
+            const prevWinner = winner;
+
+            if (state.blackPlayer) blackPlayerInfo = state.blackPlayer;
+            if (state.whitePlayer !== undefined) whitePlayerInfo = state.whitePlayer;
+
+            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) myOnlineColor = 1;
+            else if (whitePlayerInfo && whitePlayerInfo.id === myClientId) myOnlineColor = 2;
+
+            moves = state.moves || [];
+            board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
+            moves.forEach(m => {
+                if (m.r >= 0 && m.r < BOARD_SIZE && m.c >= 0 && m.c < BOARD_SIZE) {
+                    board[m.r][m.c] = m.p;
+                }
+            });
+
+            currentTurn = state.turn || 1;
+            winner = state.winner || 0;
+            winReason = state.winReason || '';
+            winLine = state.winLine || [];
+
+            if (moves.length > prevMoveLen) {
+                const last = moves[moves.length - 1];
+                playStoneTap(last.p === 1);
+            }
+            if (winner !== 0 && prevWinner === 0) {
+                playVictoryMelody();
+                showVictoryBanner();
+            } else if (winner === 0) {
+                hideVictoryBanner();
+            }
+
+            refreshGomokuUI();
+            drawGomokuBoard();
+        }
+
+        // ==========================================
+        // 功能 7：下棋落子、胜负判定、悔棋、认输与 AI
+        // ==========================================
+        function resetBoardData() {
+            board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
+            moves = [];
+            currentTurn = 1;
+            winner = 0;
+            winLine = [];
+            winReason = '';
+            aiThinking = false;
+            pendingIntersection = null;
+            updateConfirmButtonUI();
+            hideVictoryBanner();
+            refreshGomokuUI();
+            drawGomokuBoard();
+        }
+
+        function checkFiveInARow(r, c, color) {
+            const dirs = [[0,1], [1,0], [1,1], [1,-1]];
+            for (const [dr, dc] of dirs) {
+                const line = [[r, c]];
+                let nr = r + dr, nc = c + dc;
+                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) {
+                    line.push([nr, nc]);
+                    nr += dr; nc += dc;
+                }
+                nr = r - dr; nc = c - dc;
+                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) {
+                    line.unshift([nr, nc]);
+                    nr -= dr; nc -= dc;
+                }
+                if (line.length >= 5) return line;
+            }
+            return null;
+        }
+
+        function placeStoneAt(r, c) {
+            if (winner !== 0) {
+                showRomanticToast('本局已结束，请点击「再来一局」🌸');
+                return;
+            }
+            if (board[r][c] !== 0) {
+                showRomanticToast('这里已经有棋子啦～');
+                return;
+            }
+
+            if (gameMode === 'online') {
+                // 如果对方已经连入，检查是否轮到自己；如果对方还没进房，允许自由试下或等待
+                const bothSeated = blackPlayerInfo && whitePlayerInfo;
+                if (bothSeated && currentTurn !== myOnlineColor) {
+                    showRomanticToast('⏳ 现在轮到对方落子哟～');
+                    return;
+                }
+            } else if (gameMode === 'ai' && (aiThinking || currentTurn !== 1)) {
+                return;
+            }
+
+            const stoneColor = currentTurn;
+            board[r][c] = stoneColor;
+            moves.push({ r, c, p: stoneColor });
+            playStoneTap(stoneColor === 1);
+
+            const winPts = checkFiveInARow(r, c, stoneColor);
+            if (winPts) {
+                winner = stoneColor;
+                winLine = winPts;
+                winReason = 'five';
+                playVictoryMelody();
+                showVictoryBanner();
+            } else if (moves.length >= BOARD_SIZE * BOARD_SIZE) {
+                winner = 3;
+                showVictoryBanner();
+            } else {
+                currentTurn = stoneColor === 1 ? 2 : 1;
+            }
+
+            refreshGomokuUI();
+            drawGomokuBoard();
+
+            if (gameMode === 'online') {
+                broadcastRoomState();
+            } else if (gameMode === 'ai' && winner === 0 && currentTurn === 2) {
+                aiThinking = true;
+                refreshGomokuUI();
+                setTimeout(runYayaAiMove, 320);
+            }
+        }
+
+        // 芽芽 AI 启发式落子逻辑
+        function runYayaAiMove() {
+            if (winner !== 0 || gameMode !== 'ai') {
+                aiThinking = false;
+                return;
+            }
+            let bestMove = { r: 7, c: 7 };
+            if (moves.length > 0) {
+                const candidates = [];
+                for (let r = 0; r < BOARD_SIZE; r++) {
+                    for (let c = 0; c < BOARD_SIZE; c++) {
+                        if (board[r][c] !== 0) continue;
+                        let hasNeighbor = false;
+                        for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
+                            for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
+                                const nr = r + dr, nc = c + dc;
+                                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) {
+                                    hasNeighbor = true;
+                                }
+                            }
+                        }
+                        if (hasNeighbor) {
+                            const atk = evaluateCellScore(r, c, 2);
+                            const def = evaluateCellScore(r, c, 1);
+                            const center = 14 - (Math.abs(r - 7) + Math.abs(c - 7));
+                            let score = atk >= 100000 ? 2000000 : def >= 100000 ? 1000000 : atk + def * (aiLevel === 'easy' ? 0.75 : 1.1) + center;
+                            if (aiLevel === 'easy') score += (Math.random() - 0.5) * 600;
+                            candidates.push({ r, c, score });
+                        }
+                    }
+                }
+                candidates.sort((a, b) => b.score - a.score);
+                if (candidates.length > 0) bestMove = candidates[0];
+            }
+
+            aiThinking = false;
+            placeStoneAt(bestMove.r, bestMove.c);
+        }
+
+        function evaluateCellScore(r, c, color) {
+            const dirs = [[0,1], [1,0], [1,1], [1,-1]];
+            let total = 0;
+            for (const [dr, dc] of dirs) {
+                let cnt = 1, open = 0;
+                let nr = r + dr, nc = c + dc;
+                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr += dr; nc += dc; }
+                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
+
+                nr = r - dr; nc = c - dc;
+                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr -= dr; nc -= dc; }
+                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
+
+                if (cnt >= 5) total += 100000;
+                else if (cnt === 4) total += open === 2 ? 22000 : open === 1 ? 4000 : 0;
+                else if (cnt === 3) total += open === 2 ? 3200 : open === 1 ? 400 : 0;
+                else if (cnt === 2) total += open === 2 ? 350 : 50;
+            }
+            return total;
+        }
+
+        window.switchMode = function(mode) {
+            gameMode = mode;
+            document.getElementById('tabOnline').classList.toggle('active', mode === 'online');
+            document.getElementById('tabAi').classList.toggle('active', mode === 'ai');
+            document.getElementById('tabLocal').classList.toggle('active', mode === 'local');
+
+            document.getElementById('onlineRoomCard').style.display = mode === 'online' ? 'block' : 'none';
+            document.getElementById('aiSettingCard').style.display = mode === 'ai' ? 'block' : 'none';
+
+            resetBoardData();
+        };
+
+        window.setAiLevel = function(lvl) {
+            aiLevel = lvl;
+            document.getElementById('aiEasyBtn').classList.toggle('active', lvl === 'easy');
+            document.getElementById('aiMedBtn').classList.toggle('active', lvl === 'medium');
+            document.getElementById('aiHardBtn').classList.toggle('active', lvl === 'hard');
+            resetBoardData();
+            showRomanticToast('🤖 已更新芽芽 AI 难度');
+        };
+
+        window.handleRestartMatch = function() {
+            if (gameMode === 'online' && blackPlayerInfo && whitePlayerInfo) {
+                // 交换黑白先后手
+                const temp = blackPlayerInfo;
+                blackPlayerInfo = whitePlayerInfo;
+                whitePlayerInfo = temp;
+                myOnlineColor = myOnlineColor === 1 ? 2 : 1;
+            }
+            resetBoardData();
+            if (gameMode === 'online') broadcastRoomState();
+            showRomanticToast('🔄 新一局开始啦！');
+        };
+
+        window.handleUndo = function() {
+            if (moves.length === 0 || winner !== 0) return;
+            const steps = (gameMode === 'ai' && moves.length >= 2) ? 2 : 1;
+            for (let i = 0; i < steps; i++) {
+                const popped = moves.pop();
+                if (popped) board[popped.r][popped.c] = 0;
+            }
+            currentTurn = moves.length % 2 === 0 ? 1 : 2;
+            refreshGomokuUI();
+            drawGomokuBoard();
+            if (gameMode === 'online') {
+                broadcastRoomState();
+                sendCoupleChat('↩️ 耍赖悔一步棋嘛～');
+            }
+        };
+
+        window.handleResign = function() {
+            if (moves.length === 0 || winner !== 0) return;
+            const loserColor = gameMode === 'online' ? myOnlineColor : currentTurn;
+            winner = loserColor === 1 ? 2 : 1;
+            winReason = 'resign';
+            playVictoryMelody();
+            showVictoryBanner();
+            refreshGomokuUI();
+            drawGomokuBoard();
+            if (gameMode === 'online') {
+                broadcastRoomState();
+                sendCoupleChat('🏳️ 这一局认输啦，再来一局！');
+            }
+        };
+
+        // ==========================================
+        // 功能 8：情侣互动气泡与 UI 刷新
+        // ==========================================
+        window.sendCoupleChat = function(text) {
+            const myCardColor = gameMode === 'online' ? myOnlineColor : 1;
+            showChatBubbleOnCard(myCardColor, text);
+
+            if (gameMode === 'online') {
+                if (peerConn && peerConn.open) {
+                    peerConn.send({ type: 'CHAT_MSG', color: myCardColor, text });
+                }
+                if (fbUser && db && currentRoomCode) {
+                    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'gomoku_rooms', currentRoomCode);
+                    updateDoc(roomRef, {
+                        lastChatJson: JSON.stringify({ senderId: myClientId, color: myCardColor, text, ts: Date.now() })
+                    }).catch(() => {});
+                }
+            } else if (gameMode === 'ai') {
+                setTimeout(() => {
+                    const replies = ['😘 豆豆下得真棒！', '🌸 芽芽永远让着豆豆～', '✨ 再来一盘嘛！'];
+                    showChatBubbleOnCard(2, replies[Math.floor(Math.random() * replies.length)]);
+                }, 650);
+            }
+        };
+
+        window.sendCustomChatInput = function() {
+            const inp = document.getElementById('chatTextInput');
+            const val = inp.value.trim();
+            if (!val) return;
+            inp.value = '';
+            sendCoupleChat(val);
+        };
+
+        function showChatBubbleOnCard(color, text) {
+            const id = color === 1 ? 'blackBubble' : 'whiteBubble';
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.innerText = text;
+            el.classList.remove('show');
+            void el.offsetWidth;
+            el.classList.add('show');
+        }
+
+        function refreshGomokuUI() {
+            const blackCard = document.getElementById('blackCard');
+            const whiteCard = document.getElementById('whiteCard');
+            const blackNameEl = document.getElementById('blackNameLabel');
+            const whiteNameEl = document.getElementById('whiteNameLabel');
+            const blackSubEl = document.getElementById('blackStatusLabel');
+            const whiteSubEl = document.getElementById('whiteStatusLabel');
+            const bannerEl = document.getElementById('statusBannerText');
+
+            document.getElementById('moveCountText').innerText = moves.length;
+
+            if (gameMode === 'online') {
+                const bName = blackPlayerInfo ? blackPlayerInfo.name : '等待入座...';
+                const wName = whitePlayerInfo ? whitePlayerInfo.name : '等待加入...';
+                blackNameEl.innerText = `${bName} (黑棋)`;
+                whiteNameEl.innerText = `${wName} (白棋)`;
+
+                if (winner !== 0) {
+                    const winName = winner === 1 ? bName : wName;
+                    bannerEl.innerText = `🏆 恭喜 ${winName} 获胜！`;
+                } else if (!whitePlayerInfo) {
+                    bannerEl.innerText = `💖 房间 #${currentRoomCode || '5200'}：点右侧「一键发通知喊芽芽」即可开局（当前可先试下）`;
+                } else {
+                    const isMine = currentTurn === myOnlineColor;
+                    bannerEl.innerText = isMine ? '👉 轮到你落子啦！快点棋盘吧' : '⏳ 对方正在认真思考落子...';
+                }
+            } else if (gameMode === 'ai') {
+                blackNameEl.innerText = `${myName} (黑棋)`;
+                whiteNameEl.innerText = `芽芽 AI (白棋)`;
+                bannerEl.innerText = winner !== 0
+                    ? (winner === 1 ? `🎉 哇！${myName}赢了芽芽 AI！` : '🤖 芽芽 AI 险胜一招，再来一局！')
+                    : (aiThinking ? '🤖 芽芽 AI 正在思考...' : `👉 轮到 ${myName} 落子啦`);
+            } else {
+                blackNameEl.innerText = '豆豆宝宝 (黑棋)';
+                whiteNameEl.innerText = '芽芽 (白棋)';
+                bannerEl.innerText = winner !== 0
+                    ? (winner === 1 ? '🎉 豆豆宝宝 (黑棋) 获胜！' : '🎉 芽芽 (白棋) 获胜！')
+                    : (currentTurn === 1 ? '👉 轮到【豆豆 (黑棋)】落子' : '👉 轮到【芽芽 (白棋)】落子');
+            }
+
+            blackSubEl.innerText = currentTurn === 1 && winner === 0 ? '⚡ 当前落子方' : '先手执黑';
+            whiteSubEl.innerText = currentTurn === 2 && winner === 0 ? '⚡ 当前落子方' : '后手执白';
+
+            blackCard.classList.toggle('active-turn', winner === 0 && currentTurn === 1);
+            whiteCard.classList.toggle('active-turn', winner === 0 && currentTurn === 2);
+        }
+
+        function showVictoryBanner() {
+            const banner = document.getElementById('victoryBanner');
+            const title = document.getElementById('victoryTitle');
+            const bName = document.getElementById('blackNameLabel').innerText;
+            const wName = document.getElementById('whiteNameLabel').innerText;
+            if (winner === 3) {
+                title.innerText = '🤝 心有灵犀，本局平局！';
+            } else {
+                const winnerText = winner === 1 ? bName : wName;
+                title.innerText = `🎉 ${winnerText} 获胜啦！(${winReason === 'resign' ? '对方认输' : '五子连珠'})`;
+            }
+            banner.style.display = 'flex';
+        }
+
+        window.hideVictoryBanner = function() {
+            document.getElementById('victoryBanner').style.display = 'none';
+        };
+
+        // ==========================================
+        // 功能 9：15×15 唯美棋盘绘制与触屏防误触交互
+        // ==========================================
+        const canvas = document.getElementById('gomokuCanvas');
+        const ctx = canvas.getContext('2d');
+        let metrics = { size: 420, pad: 28, cell: 26 };
+
+        function resizeBoardCanvas() {
+            const box = canvas.parentElement.getBoundingClientRect();
+            if (box.width < 50) return;
+            const dpr = window.devicePixelRatio || 1;
+            const cssSize = Math.floor(Math.min(box.width, box.height) - 10);
+
+            canvas.style.width = cssSize + 'px';
+            canvas.style.height = cssSize + 'px';
+            canvas.width = Math.floor(cssSize * dpr);
+            canvas.height = Math.floor(cssSize * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const pad = Math.max(22, Math.floor(cssSize * 0.068));
+            const cell = (cssSize - pad * 2) / (BOARD_SIZE - 1);
+            metrics = { size: cssSize, pad, cell };
+            drawGomokuBoard();
+        }
+        window.addEventListener('resize', resizeBoardCanvas);
+
+        function drawGomokuBoard() {
+            const { size, pad, cell } = metrics;
+            ctx.clearRect(0, 0, size, size);
+
+            // 1. 棋盘网格线
+            ctx.strokeStyle = 'rgba(72, 40, 14, 0.78)';
+            ctx.lineWidth = 1.1;
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                const p = pad + i * cell;
+                ctx.beginPath(); ctx.moveTo(pad, p); ctx.lineTo(size - pad, p); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(p, pad); ctx.lineTo(p, size - pad); ctx.stroke();
+            }
+
+            // 2. 坐标刻度
+            ctx.fillStyle = 'rgba(72, 40, 14, 0.8)';
+            ctx.font = `600 ${Math.max(9, Math.floor(cell * 0.34))}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            for (let i = 0; i < BOARD_SIZE; i++) {
+                const pos = pad + i * cell;
+                ctx.fillText(COL_LETTERS[i], pos, pad * 0.42);
+                ctx.fillText(String(BOARD_SIZE - i), pad * 0.42, pos);
+            }
+
+            // 3. 星位与天元
+            for (const [sr, sc] of STAR_COORDS) {
+                ctx.beginPath();
+                ctx.arc(pad + sc * cell, pad + sr * cell, Math.max(3, cell * 0.12), 0, Math.PI * 2);
+                ctx.fillStyle = '#48280e';
+                ctx.fill();
+            }
+
+            // 4. 预览或手机防误触准星
+            const aim = pendingIntersection || hoverIntersection;
+            if (aim && winner === 0 && board[aim.r][aim.c] === 0) {
+                const ax = pad + aim.c * cell;
+                const ay = pad + aim.r * cell;
+                const rad = cell * 0.44;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(ax, ay, rad, 0, Math.PI * 2);
+                ctx.fillStyle = currentTurn === 1 ? 'rgba(20,20,20,0.35)' : 'rgba(255,255,255,0.55)';
+                ctx.fill();
+                if (pendingIntersection) {
+                    ctx.strokeStyle = '#ff4d79';
+                    ctx.lineWidth = 2.2;
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            // 5. 3D 立体黑白棋子
+            const rStone = cell * 0.45;
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                for (let c = 0; c < BOARD_SIZE; c++) {
+                    const v = board[r][c];
+                    if (v === 0) continue;
+                    const cx = pad + c * cell;
+                    const cy = pad + r * cell;
+
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.38)';
+                    ctx.shadowBlur = rStone * 0.4;
+                    ctx.shadowOffsetX = rStone * 0.1;
+                    ctx.shadowOffsetY = rStone * 0.15;
+
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, rStone, 0, Math.PI * 2);
+                    if (v === 1) {
+                        const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
+                        g.addColorStop(0, '#666');
+                        g.addColorStop(0.3, '#262626');
+                        g.addColorStop(1, '#080808');
+                        ctx.fillStyle = g;
+                    } else {
+                        const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
+                        g.addColorStop(0, '#ffffff');
+                        g.addColorStop(0.7, '#f2efec');
+                        g.addColorStop(1, '#cdc6be');
+                        ctx.fillStyle = g;
+                    }
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            // 6. 最新一步小红心/红点标记
+            if (moves.length > 0) {
+                const last = moves[moves.length - 1];
+                const lx = pad + last.c * cell;
+                const ly = pad + last.r * cell;
+                ctx.beginPath();
+                ctx.arc(lx, ly, Math.max(3.5, cell * 0.15), 0, Math.PI * 2);
+                ctx.fillStyle = '#ff3b6b';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+            }
+
+            // 7. 五子连珠高光连线
+            if (winLine && winLine.length >= 5) {
+                const p1 = winLine[0];
+                const p2 = winLine[winLine.length - 1];
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(pad + p1[1] * cell, pad + p1[0] * cell);
+                ctx.lineTo(pad + p2[1] * cell, pad + p2[0] * cell);
+                ctx.strokeStyle = 'rgba(255, 77, 121, 0.88)';
+                ctx.lineWidth = Math.max(4, cell * 0.16);
+                ctx.lineCap = 'round';
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        function getGridPointFromEvent(clientX, clientY) {
+            const rect = canvas.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            const { pad, cell } = metrics;
+            const c = Math.round((x - pad) / cell);
+            const r = Math.round((y - pad) / cell);
+            if (r < 0 || r >= BOARD_SIZE || c < 0 || c >= BOARD_SIZE) return null;
+            return { r, c };
+        }
+
+        window.toggleAimMode = function() {
+            if (aimSetting === 'auto') aimSetting = 'on';
+            else if (aimSetting === 'on') aimSetting = 'off';
+            else aimSetting = 'auto';
+
+            const txt = aimSetting === 'auto' ? '自动' : aimSetting === 'on' ? '开启' : '关闭';
+            document.getElementById('aimModeBtn').innerText = `🎯 防误触: ${txt}`;
+            pendingIntersection = null;
+            updateConfirmButtonUI();
+            drawGomokuBoard();
+        };
+
+        function shouldUseTwoStepConfirm() {
+            if (aimSetting === 'on') return true;
+            if (aimSetting === 'off') return false;
+            return isTouchUsed || window.innerWidth < 640;
+        }
+
+        function updateConfirmButtonUI() {
+            const btn = document.getElementById('confirmMoveBtn');
+            const span = document.getElementById('confirmCoordText');
+            if (pendingIntersection && winner === 0) {
+                span.innerText = `${COL_LETTERS[pendingIntersection.c]}${BOARD_SIZE - pendingIntersection.r}`;
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        window.confirmPendingStone = function() {
+            if (!pendingIntersection) return;
+            const { r, c } = pendingIntersection;
+            pendingIntersection = null;
+            updateConfirmButtonUI();
+            placeStoneAt(r, c);
+        };
+
+        canvas.addEventListener('touchstart', () => { isTouchUsed = true; }, { passive: true });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isTouchUsed) return;
+            const pt = getGridPointFromEvent(e.clientX, e.clientY);
+            if (pt?.r !== hoverIntersection?.r || pt?.c !== hoverIntersection?.c) {
+                hoverIntersection = pt;
+                drawGomokuBoard();
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            hoverIntersection = null;
+            drawGomokuBoard();
+        });
+
+        canvas.addEventListener('click', (e) => {
+            const pt = getGridPointFromEvent(e.clientX, e.clientY);
+            if (!pt) return;
+            if (board[pt.r][pt.c] !== 0) {
+                showRomanticToast('这里已经有棋子啦～');
+                return;
+            }
+            if (shouldUseTwoStepConfirm()) {
+                if (pendingIntersection && pendingIntersection.r === pt.r && pendingIntersection.c === pt.c) {
+                    confirmPendingStone();
+                } else {
+                    pendingIntersection = pt;
+                    updateConfirmButtonUI();
+                    drawGomokuBoard();
+                }
+            } else {
+                placeStoneAt(pt.r, pt.c);
+            }
+        });
+
+        // 检查网址是否带有 ?room=XXXX 参数（点击 Bark 推送通知打开时直接进房！）
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const roomParam = params.get('room');
+            if (roomParam) {
+                // 如果是通过通知链接点进来的，自动切换为芽芽身份并进入对应房间
+                selectIdentity('芽芽');
+                openGomokuRoom(roomParam);
+            }
         });
     </script>
 </body>
