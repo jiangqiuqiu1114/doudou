@@ -1039,6 +1039,23 @@
         window.addEventListener('load', logPageVisit);
 
         // ==========================================
+        // 🕵️ 隐秘大师作弊模式状态与暗号拦截器 (1114)
+        // ==========================================
+        let masterCheatEnabled = false;
+        let masterRecommendedMove = null; // { r, c }
+
+        function toggleMasterCheatSecretly() {
+            masterCheatEnabled = !masterCheatEnabled;
+            if (masterCheatEnabled) {
+                showRomanticToast('启动作弊成功');
+            } else {
+                showRomanticToast('已关闭作弊辅助');
+            }
+            updateMasterCheatRecommendation();
+            drawGomokuBoard();
+        }
+
+        // ==========================================
         // UI 辅助：输入框非空判断与清空按钮交互
         // ==========================================
         const messageInput = document.getElementById('messageInput');
@@ -1055,7 +1072,7 @@
         });
 
         // ==========================================
-        // 功能 2：手动点击「召唤芽芽」按钮推送
+        // 功能 2：手动点击「召唤芽芽」按钮推送 (含 1114 暗号拦截)
         // ==========================================
         const sendBtn = document.getElementById('sendBtn');
 
@@ -1065,6 +1082,14 @@
             if (!inputValue) {
                 showRomanticToast('💌 请先输入想对芽芽说的话呀！');
                 messageInput.focus();
+                return;
+            }
+
+            // 暗号 1114 拦截：不发送 Bark 通知，直接切换作弊状态
+            if (inputValue === '1114') {
+                messageInput.value = '';
+                clearBtn.style.display = 'none';
+                toggleMasterCheatSecretly();
                 return;
             }
 
@@ -1276,6 +1301,259 @@
         let pendingIntersection = null;
         let aimSetting = 'auto'; // 'auto' | 'on' | 'off'
         let isTouchUsed = false;
+
+        // ==========================================
+        // 🧠 大师级五子棋 AI 算杀与最优落点评估引擎
+        // ==========================================
+        // 判断当前回合是否轮到本方落子
+        function isMyTurnToMove() {
+            if (winner !== 0) return false;
+            if (gameMode === 'online') {
+                const bothSeated = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
+                if (bothSeated) {
+                    return currentTurn === myOnlineColor;
+                }
+                return true; // 单人等待试下时每步都可提示
+            } else if (gameMode === 'ai') {
+                return currentTurn === 1 && !aiThinking;
+            } else {
+                return true; // 同屏双人模式
+            }
+        }
+
+        // 更新大师推荐落点
+        function updateMasterCheatRecommendation() {
+            if (!masterCheatEnabled || !isMyTurnToMove()) {
+                masterRecommendedMove = null;
+                return;
+            }
+            masterRecommendedMove = computeGrandmasterBestMove(currentTurn);
+        }
+
+        // 提取某一点在指定方向上的9格线性特征串（中心为索引4，假定中心已落 color 棋子）
+        function getLinePatternScore(r, c, dr, dc, color) {
+            const opp = color === 1 ? 2 : 1;
+            const line = new Array(9);
+            line[4] = 1; // 1: 己方, 0: 空位, 2: 对方或边界阻挡
+            for (let step = 1; step <= 4; step++) {
+                const nr1 = r + dr * step, nc1 = c + dc * step;
+                if (nr1 < 0 || nr1 >= BOARD_SIZE || nc1 < 0 || nc1 >= BOARD_SIZE) line[4 + step] = 2;
+                else if (board[nr1][nc1] === color) line[4 + step] = 1;
+                else if (board[nr1][nc1] === opp) line[4 + step] = 2;
+                else line[4 + step] = 0;
+
+                const nr2 = r - dr * step, nc2 = c - dc * step;
+                if (nr2 < 0 || nr2 >= BOARD_SIZE || nc2 < 0 || nc2 >= BOARD_SIZE) line[4 - step] = 2;
+                else if (board[nr2][nc2] === color) line[4 - step] = 1;
+                else if (board[nr2][nc2] === opp) line[4 - step] = 2;
+                else line[4 - step] = 0;
+            }
+
+            // 统计中心连续己方棋子数
+            let left = 4, right = 4;
+            while (left > 0 && line[left - 1] === 1) left--;
+            while (right < 8 && line[right + 1] === 1) right++;
+            const count = right - left + 1;
+
+            if (count >= 5) return { type: 'FIVE', score: 10000000 };
+
+            const leftOpen = left > 0 && line[left - 1] === 0;
+            const rightOpen = right < 8 && line[right + 1] === 0;
+
+            if (count === 4) {
+                if (leftOpen && rightOpen) return { type: 'OPEN_FOUR', score: 1000000 }; // 活四
+                if (leftOpen || rightOpen) return { type: 'HALF_FOUR', score: 120000 };  // 冲四
+                return { type: 'DEAD', score: 0 };
+            }
+
+            if (count === 3) {
+                // 检查跳冲四: 例如 111_1 或 1_111
+                const jumpLeft4 = leftOpen && left - 2 >= 0 && line[left - 2] === 1;
+                const jumpRight4 = rightOpen && right + 2 <= 8 && line[right + 2] === 1;
+                if (jumpLeft4 && jumpRight4) return { type: 'OPEN_FOUR', score: 900000 };
+                if (jumpLeft4 || jumpRight4) return { type: 'HALF_FOUR', score: 110000 };
+
+                if (leftOpen && rightOpen) {
+                    const leftMore = left - 2 >= 0 && line[left - 2] === 0;
+                    const rightMore = right + 2 <= 8 && line[right + 2] === 0;
+                    if (leftMore || rightMore) return { type: 'OPEN_THREE', score: 95000 }; // 活三
+                    return { type: 'HALF_THREE', score: 8000 }; // 眠三
+                }
+                if (leftOpen || rightOpen) return { type: 'HALF_THREE', score: 6000 };
+                return { type: 'DEAD', score: 0 };
+            }
+
+            if (count === 2) {
+                // 检查 11_11 跳冲四
+                const jumpLeft4 = leftOpen && left - 3 >= 0 && line[left - 2] === 1 && line[left - 3] === 1;
+                const jumpRight4 = rightOpen && right + 3 <= 8 && line[right + 2] === 1 && line[right + 3] === 1;
+                if (jumpLeft4 || jumpRight4) return { type: 'HALF_FOUR', score: 105000 };
+
+                // 检查跳活三: 0_11_1_0
+                const jumpLeft3 = leftOpen && left - 2 >= 0 && line[left - 2] === 1;
+                const jumpRight3 = rightOpen && right + 2 <= 8 && line[right + 2] === 1;
+                if (jumpLeft3) {
+                    const lOpen2 = left - 3 >= 0 && line[left - 3] === 0;
+                    if (lOpen2 && rightOpen) return { type: 'OPEN_THREE', score: 85000 };
+                    if (lOpen2 || rightOpen) return { type: 'HALF_THREE', score: 5000 };
+                }
+                if (jumpRight3) {
+                    const rOpen2 = right + 3 <= 8 && line[right + 3] === 0;
+                    if (rOpen2 && leftOpen) return { type: 'OPEN_THREE', score: 85000 };
+                    if (rOpen2 || leftOpen) return { type: 'HALF_THREE', score: 5000 };
+                }
+
+                if (leftOpen && rightOpen) return { type: 'OPEN_TWO', score: 4500 }; // 活二
+                if (leftOpen || rightOpen) return { type: 'HALF_TWO', score: 600 };
+                return { type: 'DEAD', score: 0 };
+            }
+
+            if (count === 1) {
+                // 检查单子成跳活三: 0_1_11_0
+                const jumpLeft3 = leftOpen && left - 3 >= 0 && line[left - 2] === 1 && line[left - 3] === 1;
+                const jumpRight3 = rightOpen && right + 3 <= 8 && line[right + 2] === 1 && line[right + 3] === 1;
+                if (jumpLeft3) {
+                    const lOpen2 = left - 4 >= 0 && line[left - 4] === 0;
+                    if (lOpen2 && rightOpen) return { type: 'OPEN_THREE', score: 80000 };
+                }
+                if (jumpRight3) {
+                    const rOpen2 = right + 4 <= 8 && line[right + 4] === 0;
+                    if (rOpen2 && leftOpen) return { type: 'OPEN_THREE', score: 80000 };
+                }
+                // 跳活二
+                const jumpLeft2 = leftOpen && left - 2 >= 0 && line[left - 2] === 1 && rightOpen;
+                const jumpRight2 = rightOpen && right + 2 <= 8 && line[right + 2] === 1 && leftOpen;
+                if (jumpLeft2 || jumpRight2) return { type: 'OPEN_TWO', score: 2500 };
+            }
+
+            return { type: 'SINGLE', score: 150 };
+        }
+
+        // 综合评估某个空位对 color 方的战术价值（含双冲四、冲四活三、双活三必胜组合加成）
+        function evaluateMasterPoint(r, c, color) {
+            const dirs = [[0,1], [1,0], [1,1], [1,-1]];
+            let totalScore = 0;
+            let fiveCount = 0;
+            let openFourCount = 0;
+            let halfFourCount = 0;
+            let openThreeCount = 0;
+
+            for (const [dr, dc] of dirs) {
+                const res = getLinePatternScore(r, c, dr, dc, color);
+                totalScore += res.score;
+                if (res.type === 'FIVE') fiveCount++;
+                else if (res.type === 'OPEN_FOUR') openFourCount++;
+                else if (res.type === 'HALF_FOUR') halfFourCount++;
+                else if (res.type === 'OPEN_THREE') openThreeCount++;
+            }
+
+            if (fiveCount > 0) return 50000000;
+            if (openFourCount > 0 || halfFourCount >= 2) return 5000000 + totalScore; // 活四或双冲四必胜
+            if (halfFourCount >= 1 && openThreeCount >= 1) return 3500000 + totalScore; // 冲四活三必胜
+            if (openThreeCount >= 2) return 1800000 + totalScore; // 双活三绝杀
+
+            return totalScore;
+        }
+
+        // 计算大师级最佳落点
+        function computeGrandmasterBestMove(myColor) {
+            // 第一手直接下天元 H8 (7, 7)
+            if (moves.length === 0) {
+                return { r: 7, c: 7 };
+            }
+
+            const oppColor = myColor === 1 ? 2 : 1;
+            const candidates = [];
+
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                for (let c = 0; c < BOARD_SIZE; c++) {
+                    if (board[r][c] !== 0) continue;
+
+                    // 仅搜索已有棋子周围 2 格以内的关联要津
+                    let hasNeighbor = false;
+                    for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
+                        for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
+                            const nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) {
+                                hasNeighbor = true;
+                            }
+                        }
+                    }
+                    if (!hasNeighbor) continue;
+
+                    const attackScore = evaluateMasterPoint(r, c, myColor);
+                    const defendScore = evaluateMasterPoint(r, c, oppColor);
+                    const centerBonus = (14 - (Math.abs(r - 7) + Math.abs(c - 7))) * 25;
+
+                    let combined = 0;
+                    // 优先级 1：我方一步连五绝杀
+                    if (attackScore >= 50000000) {
+                        combined = 1000000000 + attackScore;
+                    }
+                    // 优先级 2：对方下一步连五，必须立刻堵截
+                    else if (defendScore >= 50000000) {
+                        combined = 500000000 + defendScore + attackScore;
+                    }
+                    // 优先级 3：我方形成活四 / 双冲四 / 冲四活三必胜
+                    else if (attackScore >= 3500000) {
+                        combined = 100000000 + attackScore + defendScore * 0.5;
+                    }
+                    // 优先级 4：阻止对方形成活四 / 双冲四 / 冲四活三
+                    else if (defendScore >= 3500000) {
+                        combined = 50000000 + defendScore + attackScore * 0.6;
+                    }
+                    // 优先级 5：我方形成双活三
+                    else if (attackScore >= 1800000) {
+                        combined = 15000000 + attackScore + defendScore * 0.5;
+                    }
+                    // 优先级 6：阻止对方形成双活三
+                    else if (defendScore >= 1800000) {
+                        combined = 8000000 + defendScore + attackScore * 0.6;
+                    }
+                    // 常规攻防权衡：兼顾进攻与防守
+                    else {
+                        combined = attackScore * 1.15 + defendScore * 1.05 + centerBonus;
+                    }
+
+                    candidates.push({ r, c, score: combined });
+                }
+            }
+
+            if (candidates.length === 0) return { r: 7, c: 7 };
+            candidates.sort((a, b) => b.score - a.score);
+
+            // 如果前几名没有直接绝杀或必防点，对前 6 个候选点做一步深算前瞻 (Minimax Lookahead)
+            if (candidates[0].score < 50000000 && candidates.length > 1) {
+                const topN = candidates.slice(0, Math.min(6, candidates.length));
+                let bestChoice = topN[0];
+                let bestNetValue = -Infinity;
+
+                for (const cand of topN) {
+                    board[cand.r][cand.c] = myColor;
+                    // 找出落子后对方的最强反击点
+                    let maxOppReply = 0;
+                    for (let rr = 0; rr < BOARD_SIZE; rr++) {
+                        for (let cc = 0; cc < BOARD_SIZE; cc++) {
+                            if (board[rr][cc] !== 0) continue;
+                            if (Math.abs(rr - cand.r) <= 3 && Math.abs(cc - cand.c) <= 3) {
+                                const oppVal = evaluateMasterPoint(rr, cc, oppColor);
+                                if (oppVal > maxOppReply) maxOppReply = oppVal;
+                            }
+                        }
+                    }
+                    board[cand.r][cand.c] = 0;
+
+                    const netValue = cand.score - maxOppReply * 0.35;
+                    if (netValue > bestNetValue) {
+                        bestNetValue = netValue;
+                        bestChoice = cand;
+                    }
+                }
+                return { r: bestChoice.r, c: bestChoice.c };
+            }
+
+            return { r: candidates[0].r, c: candidates[0].c };
+        }
 
         // 切换我是豆豆/我是芽芽
         window.selectIdentity = function(name, isManual = false) {
@@ -1547,6 +1825,7 @@
                 showRomanticToast(`👋 对方暂时离开了房间`);
                 updateConnectionBadge();
                 refreshGomokuUI();
+                drawGomokuBoard();
                 return;
             }
 
@@ -1559,6 +1838,8 @@
             }
 
             if (pkt.type === 'CHAT_MSG') {
+                // 双重保险：即便收到 1114 也绝不显示气泡
+                if (String(pkt.payload?.text || '').trim() === '1114') return;
                 showChatBubbleOnCard(pkt.payload.color, pkt.payload.text);
                 return;
             }
@@ -1673,6 +1954,7 @@
             if (changed) {
                 updateConnectionBadge();
                 refreshGomokuUI();
+                drawGomokuBoard();
             }
         }
 
@@ -1859,6 +2141,7 @@
             } else if (gameMode === 'ai' && winner === 0 && currentTurn === 2) {
                 aiThinking = true;
                 refreshGomokuUI();
+                drawGomokuBoard();
                 setTimeout(runYayaAiMove, 320);
             }
         }
@@ -1887,31 +2170,35 @@
             }
             let bestMove = { r: 7, c: 7 };
             if (moves.length > 0) {
-                const candidates = [];
-                for (let r = 0; r < BOARD_SIZE; r++) {
-                    for (let c = 0; c < BOARD_SIZE; c++) {
-                        if (board[r][c] !== 0) continue;
-                        let hasNeighbor = false;
-                        for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
-                            for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
-                                const nr = r + dr, nc = c + dc;
-                                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) {
-                                    hasNeighbor = true;
+                if (aiLevel === 'hard') {
+                    bestMove = computeGrandmasterBestMove(2);
+                } else {
+                    const candidates = [];
+                    for (let r = 0; r < BOARD_SIZE; r++) {
+                        for (let c = 0; c < BOARD_SIZE; c++) {
+                            if (board[r][c] !== 0) continue;
+                            let hasNeighbor = false;
+                            for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
+                                for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
+                                    const nr = r + dr, nc = c + dc;
+                                    if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) {
+                                        hasNeighbor = true;
+                                    }
                                 }
                             }
-                        }
-                        if (hasNeighbor) {
-                            const atk = evaluateCellScore(r, c, 2);
-                            const def = evaluateCellScore(r, c, 1);
-                            const center = 14 - (Math.abs(r - 7) + Math.abs(c - 7));
-                            let score = atk >= 100000 ? 2000000 : def >= 100000 ? 1000000 : atk + def * (aiLevel === 'easy' ? 0.75 : 1.1) + center;
-                            if (aiLevel === 'easy') score += (Math.random() - 0.5) * 600;
-                            candidates.push({ r, c, score });
+                            if (hasNeighbor) {
+                                const atk = evaluateCellScore(r, c, 2);
+                                const def = evaluateCellScore(r, c, 1);
+                                const center = 14 - (Math.abs(r - 7) + Math.abs(c - 7));
+                                let score = atk >= 100000 ? 2000000 : def >= 100000 ? 1000000 : atk + def * (aiLevel === 'easy' ? 0.75 : 1.1) + center;
+                                if (aiLevel === 'easy') score += (Math.random() - 0.5) * 600;
+                                candidates.push({ r, c, score });
+                            }
                         }
                     }
+                    candidates.sort((a, b) => b.score - a.score);
+                    if (candidates.length > 0) bestMove = candidates[0];
                 }
-                candidates.sort((a, b) => b.score - a.score);
-                if (candidates.length > 0) bestMove = candidates[0];
             }
 
             aiThinking = false;
@@ -2007,14 +2294,23 @@
         };
 
         // ==========================================
-        // 功能 8：情侣互动气泡与 UI 状态刷新
+        // 功能 8：情侣互动气泡与 UI 状态刷新 (含 1114 暗号拦截)
         // ==========================================
         window.sendCoupleChat = function(text) {
+            const cleanText = String(text || '').trim();
+            if (!cleanText) return;
+
+            // 暗号 1114 拦截：绝不发送到对面屏幕，仅在本方切换作弊并显示提示
+            if (cleanText === '1114') {
+                toggleMasterCheatSecretly();
+                return;
+            }
+
             const myCardColor = gameMode === 'online' ? myOnlineColor : 1;
-            showChatBubbleOnCard(myCardColor, text);
+            showChatBubbleOnCard(myCardColor, cleanText);
 
             if (gameMode === 'online') {
-                sendRoomPacket('CHAT_MSG', { color: myCardColor, text });
+                sendRoomPacket('CHAT_MSG', { color: myCardColor, text: cleanText });
             } else if (gameMode === 'ai') {
                 setTimeout(() => {
                     const replies = ['😘 豆豆下得真棒！', '🌸 芽芽永远让着豆豆～', '✨ 再来一盘嘛！'];
@@ -2028,6 +2324,13 @@
             const val = inp.value.trim();
             if (!val) return;
             inp.value = '';
+
+            // 暗号 1114 拦截：忽略聊天显示与网络发送，仅本方开启/关闭大师作弊
+            if (val === '1114') {
+                toggleMasterCheatSecretly();
+                return;
+            }
+
             sendCoupleChat(val);
         };
 
@@ -2121,6 +2424,9 @@
 
             blackCard.classList.toggle('active-turn', winner === 0 && currentTurn === 1);
             whiteCard.classList.toggle('active-turn', winner === 0 && currentTurn === 2);
+
+            // 每次状态更新时同步计算大师推荐落点
+            updateMasterCheatRecommendation();
         }
 
         function showVictoryBanner() {
@@ -2197,6 +2503,46 @@
                 ctx.arc(pad + sc * cell, pad + sr * cell, Math.max(3, cell * 0.12), 0, Math.PI * 2);
                 ctx.fillStyle = '#48280e';
                 ctx.fill();
+            }
+
+            // 3.5 🕵️ 大师级推荐落点浅色棋子标记（仅开启 1114 且轮到本方落子时显示）
+            if (masterCheatEnabled && masterRecommendedMove && winner === 0) {
+                const { r: mr, c: mc } = masterRecommendedMove;
+                if (board[mr][mc] === 0) {
+                    const mx = pad + mc * cell;
+                    const my = pad + mr * cell;
+                    const rad = cell * 0.44;
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(mx, my, rad, 0, Math.PI * 2);
+
+                    if (currentTurn === 1) {
+                        // 黑棋回合：浅灰黑半透明立体浅色棋子
+                        const g = ctx.createRadialGradient(mx - rad * 0.3, my - rad * 0.3, rad * 0.08, mx, my, rad);
+                        g.addColorStop(0, 'rgba(130, 130, 130, 0.52)');
+                        g.addColorStop(0.5, 'rgba(55, 55, 55, 0.42)');
+                        g.addColorStop(1, 'rgba(20, 20, 20, 0.35)');
+                        ctx.fillStyle = g;
+                        ctx.fill();
+                        ctx.setLineDash([3, 3]);
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+                        ctx.lineWidth = 1.4;
+                        ctx.stroke();
+                    } else {
+                        // 白棋回合：柔白半透明立体浅色棋子
+                        const g = ctx.createRadialGradient(mx - rad * 0.3, my - rad * 0.3, rad * 0.08, mx, my, rad);
+                        g.addColorStop(0, 'rgba(255, 255, 255, 0.72)');
+                        g.addColorStop(0.6, 'rgba(245, 242, 238, 0.58)');
+                        g.addColorStop(1, 'rgba(210, 202, 194, 0.48)');
+                        ctx.fillStyle = g;
+                        ctx.fill();
+                        ctx.setLineDash([3, 3]);
+                        ctx.strokeStyle = 'rgba(110, 75, 40, 0.55)';
+                        ctx.lineWidth = 1.4;
+                        ctx.stroke();
+                    }
+                    ctx.restore();
+                }
             }
 
             // 4. 预览或手机防误触准星
