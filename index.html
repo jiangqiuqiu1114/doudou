@@ -727,6 +727,105 @@
             color: #d96b70;
         }
 
+        /* =====================================================
+           9. 右侧新增：聊天内容上下平滑滚动框样式
+           ===================================================== */
+        .chat-history-box {
+            margin-top: 10px;
+            background: rgba(255, 250, 251, 0.85);
+            border: 1px solid #f3dce0;
+            border-radius: 14px;
+            height: 155px;
+            overflow-y: auto;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: inset 0 2px 6px rgba(255, 154, 159, 0.08);
+        }
+        .chat-history-box::-webkit-scrollbar {
+            width: 5px;
+        }
+        .chat-history-box::-webkit-scrollbar-track {
+            background: rgba(255, 235, 238, 0.4);
+            border-radius: 6px;
+        }
+        .chat-history-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 154, 159, 0.65);
+            border-radius: 6px;
+        }
+        .chat-empty-hint {
+            margin: auto;
+            font-size: 12px;
+            color: #b5a3a1;
+            text-align: center;
+            padding: 16px 0;
+        }
+        .chat-log-item {
+            display: flex;
+            flex-direction: column;
+            max-width: 86%;
+            animation: chatSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .chat-log-item.mine {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+        .chat-log-item.other {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+        @keyframes chatSlideIn {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .chat-log-meta {
+            font-size: 10.5px;
+            color: #9e8c8a;
+            margin-bottom: 2px;
+            padding: 0 3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .chat-log-bubble {
+            padding: 6px 11px;
+            border-radius: 13px;
+            font-size: 12.5px;
+            line-height: 1.4;
+            word-break: break-word;
+            user-select: text;
+        }
+        .chat-log-item.mine .chat-log-bubble {
+            background: linear-gradient(135deg, #ff8598 0%, #ff9eb5 100%);
+            color: #ffffff;
+            border-bottom-right-radius: 3px;
+            box-shadow: 0 3px 8px rgba(255, 133, 152, 0.25);
+        }
+        .chat-log-item.other .chat-log-bubble {
+            background: #ffffff;
+            color: #4a3e3d;
+            border: 1px solid #f2dcdf;
+            border-bottom-left-radius: 3px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+        .clear-chat-btn {
+            border: none;
+            background: transparent;
+            color: #b09d9b;
+            font-size: 11px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .clear-chat-btn:hover {
+            color: #d9536f;
+            background: rgba(255, 224, 228, 0.6);
+        }
+
         /* 唯美轻提示 Toast */
         .toast-box {
             position: fixed;
@@ -890,7 +989,7 @@
                 </div>
             </div>
 
-            <!-- 右侧：身份选择 + 情侣专属房间联机 + 一键Bark召唤芽芽 + 甜蜜互动 -->
+            <!-- 右侧：身份选择 + 情侣专属房间联机 + 一键Bark召唤芽芽 + 甜蜜互动与聊天记录滚动框 -->
             <div>
                 <!-- 1. 我是谁切换 -->
                 <div class="side-card">
@@ -949,12 +1048,18 @@
                     <button class="bark-call-btn" onclick="handleRestartMatch()">✨ 重新开始一局 AI 对战</button>
                 </div>
 
-                <!-- 4. 情侣快捷互动气泡 & 聊天 -->
+                <!-- 4. 情侣快捷互动气泡 & 聊天内容平滑滚动框 -->
                 <div class="side-card">
                     <div class="side-title">
                         <span>💬 甜蜜互动传音</span>
-                        <span style="font-size:11px; color:#968583; font-weight:normal;">点击直接弹出气泡</span>
+                        <button class="clear-chat-btn" type="button" onclick="clearChatHistoryBox()" title="清空聊天记录">🧹 清空记录</button>
                     </div>
+
+                    <!-- 新增：显示过的聊天内容上下平滑滚动框 -->
+                    <div class="chat-history-box" id="chatHistoryBox">
+                        <div class="chat-empty-hint" id="chatEmptyHint">💌 互动气泡与悄悄话会在这里上下平滑滚动显示～</div>
+                    </div>
+
                     <div class="quick-phrases">
                         <button class="phrase-chip" onclick="sendCoupleChat('🌸 芽芽快点下呀～')">🌸 芽芽快点下～</button>
                         <button class="phrase-chip" onclick="sendCoupleChat('🥺 让豆豆一步嘛！')">🥺 让豆豆一步嘛</button>
@@ -1305,7 +1410,6 @@
         // ==========================================
         // 🧠 大师级五子棋 AI 算杀与最优落点评估引擎
         // ==========================================
-        // 判断当前回合是否轮到本方落子
         function isMyTurnToMove() {
             if (winner !== 0) return false;
             if (gameMode === 'online') {
@@ -1313,15 +1417,14 @@
                 if (bothSeated) {
                     return currentTurn === myOnlineColor;
                 }
-                return true; // 单人等待试下时每步都可提示
+                return true;
             } else if (gameMode === 'ai') {
                 return currentTurn === 1 && !aiThinking;
             } else {
-                return true; // 同屏双人模式
+                return true;
             }
         }
 
-        // 更新大师推荐落点
         function updateMasterCheatRecommendation() {
             if (!masterCheatEnabled || !isMyTurnToMove()) {
                 masterRecommendedMove = null;
@@ -1330,11 +1433,10 @@
             masterRecommendedMove = computeGrandmasterBestMove(currentTurn);
         }
 
-        // 提取某一点在指定方向上的9格线性特征串（中心为索引4，假定中心已落 color 棋子）
         function getLinePatternScore(r, c, dr, dc, color) {
             const opp = color === 1 ? 2 : 1;
             const line = new Array(9);
-            line[4] = 1; // 1: 己方, 0: 空位, 2: 对方或边界阻挡
+            line[4] = 1;
             for (let step = 1; step <= 4; step++) {
                 const nr1 = r + dr * step, nc1 = c + dc * step;
                 if (nr1 < 0 || nr1 >= BOARD_SIZE || nc1 < 0 || nc1 >= BOARD_SIZE) line[4 + step] = 2;
@@ -1349,7 +1451,6 @@
                 else line[4 - step] = 0;
             }
 
-            // 统计中心连续己方棋子数
             let left = 4, right = 4;
             while (left > 0 && line[left - 1] === 1) left--;
             while (right < 8 && line[right + 1] === 1) right++;
@@ -1361,13 +1462,12 @@
             const rightOpen = right < 8 && line[right + 1] === 0;
 
             if (count === 4) {
-                if (leftOpen && rightOpen) return { type: 'OPEN_FOUR', score: 1000000 }; // 活四
-                if (leftOpen || rightOpen) return { type: 'HALF_FOUR', score: 120000 };  // 冲四
+                if (leftOpen && rightOpen) return { type: 'OPEN_FOUR', score: 1000000 };
+                if (leftOpen || rightOpen) return { type: 'HALF_FOUR', score: 120000 };
                 return { type: 'DEAD', score: 0 };
             }
 
             if (count === 3) {
-                // 检查跳冲四: 例如 111_1 或 1_111
                 const jumpLeft4 = leftOpen && left - 2 >= 0 && line[left - 2] === 1;
                 const jumpRight4 = rightOpen && right + 2 <= 8 && line[right + 2] === 1;
                 if (jumpLeft4 && jumpRight4) return { type: 'OPEN_FOUR', score: 900000 };
@@ -1376,20 +1476,18 @@
                 if (leftOpen && rightOpen) {
                     const leftMore = left - 2 >= 0 && line[left - 2] === 0;
                     const rightMore = right + 2 <= 8 && line[right + 2] === 0;
-                    if (leftMore || rightMore) return { type: 'OPEN_THREE', score: 95000 }; // 活三
-                    return { type: 'HALF_THREE', score: 8000 }; // 眠三
+                    if (leftMore || rightMore) return { type: 'OPEN_THREE', score: 95000 };
+                    return { type: 'HALF_THREE', score: 8000 };
                 }
                 if (leftOpen || rightOpen) return { type: 'HALF_THREE', score: 6000 };
                 return { type: 'DEAD', score: 0 };
             }
 
             if (count === 2) {
-                // 检查 11_11 跳冲四
                 const jumpLeft4 = leftOpen && left - 3 >= 0 && line[left - 2] === 1 && line[left - 3] === 1;
                 const jumpRight4 = rightOpen && right + 3 <= 8 && line[right + 2] === 1 && line[right + 3] === 1;
                 if (jumpLeft4 || jumpRight4) return { type: 'HALF_FOUR', score: 105000 };
 
-                // 检查跳活三: 0_11_1_0
                 const jumpLeft3 = leftOpen && left - 2 >= 0 && line[left - 2] === 1;
                 const jumpRight3 = rightOpen && right + 2 <= 8 && line[right + 2] === 1;
                 if (jumpLeft3) {
@@ -1403,13 +1501,12 @@
                     if (rOpen2 || leftOpen) return { type: 'HALF_THREE', score: 5000 };
                 }
 
-                if (leftOpen && rightOpen) return { type: 'OPEN_TWO', score: 4500 }; // 活二
+                if (leftOpen && rightOpen) return { type: 'OPEN_TWO', score: 4500 };
                 if (leftOpen || rightOpen) return { type: 'HALF_TWO', score: 600 };
                 return { type: 'DEAD', score: 0 };
             }
 
             if (count === 1) {
-                // 检查单子成跳活三: 0_1_11_0
                 const jumpLeft3 = leftOpen && left - 3 >= 0 && line[left - 2] === 1 && line[left - 3] === 1;
                 const jumpRight3 = rightOpen && right + 3 <= 8 && line[right + 2] === 1 && line[right + 3] === 1;
                 if (jumpLeft3) {
@@ -1420,7 +1517,6 @@
                     const rOpen2 = right + 4 <= 8 && line[right + 4] === 0;
                     if (rOpen2 && leftOpen) return { type: 'OPEN_THREE', score: 80000 };
                 }
-                // 跳活二
                 const jumpLeft2 = leftOpen && left - 2 >= 0 && line[left - 2] === 1 && rightOpen;
                 const jumpRight2 = rightOpen && right + 2 <= 8 && line[right + 2] === 1 && leftOpen;
                 if (jumpLeft2 || jumpRight2) return { type: 'OPEN_TWO', score: 2500 };
@@ -1429,7 +1525,6 @@
             return { type: 'SINGLE', score: 150 };
         }
 
-        // 综合评估某个空位对 color 方的战术价值（含双冲四、冲四活三、双活三必胜组合加成）
         function evaluateMasterPoint(r, c, color) {
             const dirs = [[0,1], [1,0], [1,1], [1,-1]];
             let totalScore = 0;
@@ -1448,16 +1543,14 @@
             }
 
             if (fiveCount > 0) return 50000000;
-            if (openFourCount > 0 || halfFourCount >= 2) return 5000000 + totalScore; // 活四或双冲四必胜
-            if (halfFourCount >= 1 && openThreeCount >= 1) return 3500000 + totalScore; // 冲四活三必胜
-            if (openThreeCount >= 2) return 1800000 + totalScore; // 双活三绝杀
+            if (openFourCount > 0 || halfFourCount >= 2) return 5000000 + totalScore;
+            if (halfFourCount >= 1 && openThreeCount >= 1) return 3500000 + totalScore;
+            if (openThreeCount >= 2) return 1800000 + totalScore;
 
             return totalScore;
         }
 
-        // 计算大师级最佳落点
         function computeGrandmasterBestMove(myColor) {
-            // 第一手直接下天元 H8 (7, 7)
             if (moves.length === 0) {
                 return { r: 7, c: 7 };
             }
@@ -1469,7 +1562,6 @@
                 for (let c = 0; c < BOARD_SIZE; c++) {
                     if (board[r][c] !== 0) continue;
 
-                    // 仅搜索已有棋子周围 2 格以内的关联要津
                     let hasNeighbor = false;
                     for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
                         for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
@@ -1486,32 +1578,19 @@
                     const centerBonus = (14 - (Math.abs(r - 7) + Math.abs(c - 7))) * 25;
 
                     let combined = 0;
-                    // 优先级 1：我方一步连五绝杀
                     if (attackScore >= 50000000) {
                         combined = 1000000000 + attackScore;
-                    }
-                    // 优先级 2：对方下一步连五，必须立刻堵截
-                    else if (defendScore >= 50000000) {
+                    } else if (defendScore >= 50000000) {
                         combined = 500000000 + defendScore + attackScore;
-                    }
-                    // 优先级 3：我方形成活四 / 双冲四 / 冲四活三必胜
-                    else if (attackScore >= 3500000) {
+                    } else if (attackScore >= 3500000) {
                         combined = 100000000 + attackScore + defendScore * 0.5;
-                    }
-                    // 优先级 4：阻止对方形成活四 / 双冲四 / 冲四活三
-                    else if (defendScore >= 3500000) {
+                    } else if (defendScore >= 3500000) {
                         combined = 50000000 + defendScore + attackScore * 0.6;
-                    }
-                    // 优先级 5：我方形成双活三
-                    else if (attackScore >= 1800000) {
+                    } else if (attackScore >= 1800000) {
                         combined = 15000000 + attackScore + defendScore * 0.5;
-                    }
-                    // 优先级 6：阻止对方形成双活三
-                    else if (defendScore >= 1800000) {
+                    } else if (defendScore >= 1800000) {
                         combined = 8000000 + defendScore + attackScore * 0.6;
-                    }
-                    // 常规攻防权衡：兼顾进攻与防守
-                    else {
+                    } else {
                         combined = attackScore * 1.15 + defendScore * 1.05 + centerBonus;
                     }
 
@@ -1522,7 +1601,6 @@
             if (candidates.length === 0) return { r: 7, c: 7 };
             candidates.sort((a, b) => b.score - a.score);
 
-            // 如果前几名没有直接绝杀或必防点，对前 6 个候选点做一步深算前瞻 (Minimax Lookahead)
             if (candidates[0].score < 50000000 && candidates.length > 1) {
                 const topN = candidates.slice(0, Math.min(6, candidates.length));
                 let bestChoice = topN[0];
@@ -1530,7 +1608,6 @@
 
                 for (const cand of topN) {
                     board[cand.r][cand.c] = myColor;
-                    // 找出落子后对方的最强反击点
                     let maxOppReply = 0;
                     for (let rr = 0; rr < BOARD_SIZE; rr++) {
                         for (let cc = 0; cc < BOARD_SIZE; cc++) {
@@ -1585,7 +1662,6 @@
             const cleanCode = String(roomCode).trim().toUpperCase();
             if (!cleanCode) return;
 
-            // 通知旧房间离开
             if (currentRoomCode && currentRoomCode !== cleanCode) {
                 sendRoomPacket('LEAVE', {});
             }
@@ -1621,7 +1697,6 @@
             const connTag = document.getElementById('connStatusTag');
             connTag.innerText = `⏳ 正在连接 #${roomCode} 房间...`;
 
-            // 1. 同设备跨标签页极速通道 (BroadcastChannel)
             if (localBroadcast) {
                 try { localBroadcast.close(); } catch (e) {}
             }
@@ -1630,13 +1705,9 @@
                 localBroadcast.onmessage = (ev) => handleIncomingPacket(ev.data);
             }
 
-            // 2. 跨网云端实时信令通道 (MQTT over WSS，穿透一切手机 5G / Wi-Fi NAT)
             setupMqttChannel(roomCode);
-
-            // 3. PeerJS WebRTC P2P 辅助直连通道
             setupPeerJsChannel(roomCode);
 
-            // 4. 启动房间握手与定时在线心跳
             if (heartbeatTimer) clearInterval(heartbeatTimer);
             announceHello();
             setTimeout(announceHello, 400);
@@ -1770,15 +1841,12 @@
             };
             seenPacketIds.add(pkt.msgId);
 
-            // 1. BroadcastChannel 发送
             if (localBroadcast) {
                 try { localBroadcast.postMessage(pkt); } catch (e) {}
             }
-            // 2. MQTT 云端发送
             if (mqttClient && mqttClient.connected && mqttTopic) {
                 try { mqttClient.publish(mqttTopic, JSON.stringify(pkt), { qos: 0 }); } catch (e) {}
             }
-            // 3. PeerJS 发送
             peerConns.forEach(c => {
                 if (c && c.open) {
                     try { c.send(pkt); } catch (e) {}
@@ -1838,13 +1906,18 @@
             }
 
             if (pkt.type === 'CHAT_MSG') {
-                // 双重保险：即便收到 1114 也绝不显示气泡
-                if (String(pkt.payload?.text || '').trim() === '1114') return;
-                showChatBubbleOnCard(pkt.payload.color, pkt.payload.text);
+                // 双重保险：即便收到 1114 也绝不显示气泡或写入滚动框
+                const msgText = String(pkt.payload?.text || '').trim();
+                if (!msgText || msgText === '1114') return;
+                const msgColor = pkt.payload.color || 2;
+                const senderLabel = pkt.senderName || (msgColor === 1 ? '黑棋' : '白棋');
+                showChatBubbleOnCard(msgColor, msgText, {
+                    senderName: senderLabel,
+                    isMine: false
+                });
                 return;
             }
 
-            // 如果是新进房的伙伴或者收到 HELLO 握手，协调双方黑白座位
             if (isNewPeer || pkt.type === 'HELLO') {
                 onPeerJoinedOrHello(pkt, isNewPeer);
             }
@@ -1852,7 +1925,6 @@
             if (pkt.type === 'WELCOME_SYNC' || pkt.type === 'SYNC_STATE') {
                 applyIncomingState(pkt.payload);
             } else if (pkt.type === 'HEARTBEAT') {
-                // 心跳时如果对方还没有入座，自动补齐座位
                 if (!whitePlayerInfo || !blackPlayerInfo) {
                     onPeerJoinedOrHello(pkt, false);
                 } else {
@@ -1864,13 +1936,11 @@
             }
         }
 
-        // 当第二个人进入房间时的座位分配与自动开局逻辑
         function onPeerJoinedOrHello(pkt, isNewPeer) {
             const remoteId = pkt.senderId;
             let remoteName = pkt.senderName || '芽芽';
             const remoteJoinedAt = pkt.joinedAt || Date.now();
 
-            // 如果两个人名字一样（例如都默认叫“豆豆宝宝”），后进房的一方自动切换为另一个情侣名字
             const iAmEarlier = (myJoinedAt < remoteJoinedAt) || (myJoinedAt === remoteJoinedAt && myClientId < remoteId);
 
             if (myName === remoteName) {
@@ -1883,7 +1953,6 @@
                 }
             }
 
-            // 如果当前是单人等待期间随意试下的棋子，对方进房时立即清空棋盘正式开局！
             if (isSoloPracticeMoves) {
                 isSoloPracticeMoves = false;
                 board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
@@ -1894,7 +1963,6 @@
                 winReason = '';
             }
 
-            // 确定黑白棋归属（如果已有正在进行的2人棋局则保持，否则先入房者执黑，后入房者执白）
             const alreadyPaired =
                 blackPlayerInfo && whitePlayerInfo &&
                 ((blackPlayerInfo.id === myClientId && whitePlayerInfo.id === remoteId) ||
@@ -1926,7 +1994,6 @@
                 showRomanticToast(`🎉 ${remoteName} 已进入房间！双方连线成功，开始下棋吧`);
             }
 
-            // 先入房的一方（或有正式棋局记录的一方）主动向对方广播完整房间状态
             if (iAmEarlier || pkt.type === 'HELLO') {
                 stateVersion++;
                 sendRoomPacket('WELCOME_SYNC', buildStatePayload());
@@ -2003,7 +2070,6 @@
             if (state.blackPlayer) blackPlayerInfo = state.blackPlayer;
             if (state.whitePlayer !== undefined) whitePlayerInfo = state.whitePlayer;
 
-            // 识别我自己在房间里是黑棋还是白棋
             if (blackPlayerInfo && blackPlayerInfo.id === myClientId) {
                 myOnlineColor = 1;
                 blackPlayerInfo.name = myName;
@@ -2042,7 +2108,6 @@
             drawGomokuBoard();
         }
 
-        // 页面关闭时主动通知对方离线
         window.addEventListener('beforeunload', () => {
             if (gameMode === 'online' && currentRoomCode) {
                 sendRoomPacket('LEAVE', {});
@@ -2107,7 +2172,6 @@
                     }
                     isSoloPracticeMoves = false;
                 } else {
-                    // 对方还没进房时允许自由试下，等对方一进房会自动清空重开
                     isSoloPracticeMoves = true;
                 }
             } else if (gameMode === 'ai' && (aiThinking || currentTurn !== 1)) {
@@ -2146,7 +2210,6 @@
             }
         }
 
-        // 一键互换黑白棋先后手
         window.handleSwapColors = function() {
             if (gameMode !== 'online') return;
             if (!blackPlayerInfo || !whitePlayerInfo) {
@@ -2162,7 +2225,6 @@
             showRomanticToast(`🔃 已互换黑白棋！现在由 ${blackPlayerInfo.name} 执黑先行`);
         };
 
-        // 芽芽 AI 启发式落子逻辑
         function runYayaAiMove() {
             if (winner !== 0 || gameMode !== 'ai') {
                 aiThinking = false;
@@ -2294,27 +2356,105 @@
         };
 
         // ==========================================
-        // 功能 8：情侣互动气泡与 UI 状态刷新 (含 1114 暗号拦截)
+        // 功能 8：情侣互动气泡、平滑聊天滚动框与 UI 状态刷新
         // ==========================================
+        function appendChatHistoryItem(color, text, options = {}) {
+            const box = document.getElementById('chatHistoryBox');
+            if (!box) return;
+
+            const emptyHint = document.getElementById('chatEmptyHint');
+            if (emptyHint) {
+                emptyHint.style.display = 'none';
+            }
+
+            let senderName = options.senderName;
+            if (!senderName) {
+                if (gameMode === 'online') {
+                    senderName = color === 1
+                        ? (blackPlayerInfo?.name || '黑棋')
+                        : (whitePlayerInfo?.name || '白棋');
+                } else if (gameMode === 'ai') {
+                    senderName = color === 1 ? myName : '芽芽 AI';
+                } else {
+                    senderName = color === 1 ? '豆豆宝宝' : '芽芽';
+                }
+            }
+
+            const isMine = options.isMine !== undefined
+                ? options.isMine
+                : (gameMode === 'online' ? color === myOnlineColor : color === 1);
+
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            const stoneBadge = color === 1 ? '⚫' : '⚪';
+
+            const item = document.createElement('div');
+            item.className = `chat-log-item ${isMine ? 'mine' : 'other'}`;
+
+            const meta = document.createElement('div');
+            meta.className = 'chat-log-meta';
+            meta.innerText = `${stoneBadge} ${senderName} · ${timeStr}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-log-bubble';
+            bubble.innerText = text;
+
+            item.appendChild(meta);
+            item.appendChild(bubble);
+            box.appendChild(item);
+
+            // 保持最多 80 条历史，避免 DOM 过多
+            const items = box.querySelectorAll('.chat-log-item');
+            if (items.length > 80) {
+                items[0].remove();
+            }
+
+            // 平滑滚动到最新一条消息
+            requestAnimationFrame(() => {
+                box.scrollTo({
+                    top: box.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        window.clearChatHistoryBox = function() {
+            const box = document.getElementById('chatHistoryBox');
+            if (!box) return;
+            box.innerHTML = '<div class="chat-empty-hint" id="chatEmptyHint">💌 互动气泡与悄悄话会在这里上下平滑滚动显示～</div>';
+            showRomanticToast('🧹 已清空聊天滚动框记录');
+        };
+
         window.sendCoupleChat = function(text) {
             const cleanText = String(text || '').trim();
             if (!cleanText) return;
 
-            // 暗号 1114 拦截：绝不发送到对面屏幕，仅在本方切换作弊并显示提示
+            // 暗号 1114 拦截：绝不发送到对面屏幕、绝不进入聊天滚动框，仅在本方切换作弊并显示提示
             if (cleanText === '1114') {
                 toggleMasterCheatSecretly();
                 return;
             }
 
-            const myCardColor = gameMode === 'online' ? myOnlineColor : 1;
-            showChatBubbleOnCard(myCardColor, cleanText);
+            const myCardColor = gameMode === 'online' ? myOnlineColor : (gameMode === 'local' ? currentTurn : 1);
+            const senderLabel = gameMode === 'local'
+                ? (myCardColor === 1 ? '豆豆宝宝' : '芽芽')
+                : myName;
+
+            showChatBubbleOnCard(myCardColor, cleanText, {
+                senderName: senderLabel,
+                isMine: true
+            });
 
             if (gameMode === 'online') {
                 sendRoomPacket('CHAT_MSG', { color: myCardColor, text: cleanText });
             } else if (gameMode === 'ai') {
                 setTimeout(() => {
                     const replies = ['😘 豆豆下得真棒！', '🌸 芽芽永远让着豆豆～', '✨ 再来一盘嘛！'];
-                    showChatBubbleOnCard(2, replies[Math.floor(Math.random() * replies.length)]);
+                    const replyText = replies[Math.floor(Math.random() * replies.length)];
+                    showChatBubbleOnCard(2, replyText, {
+                        senderName: '芽芽 AI',
+                        isMine: false
+                    });
                 }, 650);
             }
         };
@@ -2334,14 +2474,20 @@
             sendCoupleChat(val);
         };
 
-        function showChatBubbleOnCard(color, text) {
+        function showChatBubbleOnCard(color, text, logOptions = {}) {
             const id = color === 1 ? 'blackBubble' : 'whiteBubble';
             const el = document.getElementById(id);
-            if (!el) return;
-            el.innerText = text;
-            el.classList.remove('show');
-            void el.offsetWidth;
-            el.classList.add('show');
+            if (el) {
+                el.innerText = text;
+                el.classList.remove('show');
+                void el.offsetWidth;
+                el.classList.add('show');
+            }
+
+            // 同步将显示过的气泡内容写入右侧平滑滚动框
+            if (logOptions.record !== false) {
+                appendChatHistoryItem(color, text, logOptions);
+            }
         }
 
         function refreshGomokuUI() {
@@ -2425,7 +2571,6 @@
             blackCard.classList.toggle('active-turn', winner === 0 && currentTurn === 1);
             whiteCard.classList.toggle('active-turn', winner === 0 && currentTurn === 2);
 
-            // 每次状态更新时同步计算大师推荐落点
             updateMasterCheatRecommendation();
         }
 
@@ -2517,7 +2662,6 @@
                     ctx.arc(mx, my, rad, 0, Math.PI * 2);
 
                     if (currentTurn === 1) {
-                        // 黑棋回合：浅灰黑半透明立体浅色棋子
                         const g = ctx.createRadialGradient(mx - rad * 0.3, my - rad * 0.3, rad * 0.08, mx, my, rad);
                         g.addColorStop(0, 'rgba(130, 130, 130, 0.52)');
                         g.addColorStop(0.5, 'rgba(55, 55, 55, 0.42)');
@@ -2529,7 +2673,6 @@
                         ctx.lineWidth = 1.4;
                         ctx.stroke();
                     } else {
-                        // 白棋回合：柔白半透明立体浅色棋子
                         const g = ctx.createRadialGradient(mx - rad * 0.3, my - rad * 0.3, rad * 0.08, mx, my, rad);
                         g.addColorStop(0, 'rgba(255, 255, 255, 0.72)');
                         g.addColorStop(0.6, 'rgba(245, 242, 238, 0.58)');
@@ -2700,7 +2843,6 @@
                 showRomanticToast('这里已经有棋子啦～');
                 return;
             }
-            // 在联机模式下如果双方已就座且没轮到自己，直接提示，不弹确认框
             if (gameMode === 'online' && blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0 && currentTurn !== myOnlineColor) {
                 showRomanticToast('⏳ 现在轮到对方落子哟～');
                 return;
