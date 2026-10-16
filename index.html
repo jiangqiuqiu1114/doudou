@@ -243,9 +243,7 @@
             transform: none;
         }
 
-        /* =====================================================
-           8. 「♟️ 来一局五子棋」入口按钮与专属对弈屋样式
-           ===================================================== */
+        /* 8. 五子棋入口按钮与专属对弈屋样式 */
         .divider-line {
             display: flex;
             align-items: center;
@@ -425,7 +423,6 @@
             background: radial-gradient(circle at 30% 30%, #fff, #f0ece9 70%, #ccc5be);
             border: 2px solid #fff;
         }
-        /* 在线状态小圆点 */
         .presence-dot {
             position: absolute;
             right: -2px;
@@ -473,6 +470,40 @@
             color: #968583;
             margin-top: 2px;
             transition: color 0.3s ease;
+        }
+
+        /* 胜率进度条指示器 */
+        .winrate-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid #ebd9d8;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .winrate-bar {
+            flex: 1;
+            height: 7px;
+            background: #e2ddd9;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+        }
+        .winrate-fill-black {
+            background: #2a2a2a;
+            height: 100%;
+            width: 50%;
+            transition: width 0.4s ease;
+        }
+        .winrate-fill-white {
+            background: #fff;
+            height: 100%;
+            width: 50%;
+            transition: width 0.4s ease;
         }
 
         /* 情侣互动气泡 */
@@ -705,7 +736,6 @@
             transition: all 0.35s ease;
         }
 
-        /* 一键Bark呼叫芽芽进房按钮 */
         .bark-call-btn {
             width: 100%;
             padding: 11px 14px;
@@ -755,9 +785,7 @@
             color: #d96b70;
         }
 
-        /* =====================================================
-           9. 右侧：聊天内容上下平滑滚动框样式
-           ===================================================== */
+        /* 9. 右侧：聊天内容上下平滑滚动框样式 */
         .chat-history-box {
             margin-top: 10px;
             background: rgba(255, 250, 251, 0.85);
@@ -880,10 +908,7 @@
             animation: fadeInScale 0.25s ease;
         }
 
-        /* =====================================================
-           🌙 10. 一键关灯护眼模式 (Lights-Off Dark Mode)
-           解决玩游戏时背景和卡片颜色太亮、太炸眼的问题
-           ===================================================== */
+        /* 🌙 10. 一键关灯护眼模式 */
         body.lights-off {
             background: linear-gradient(135deg, #0d0e17 0%, #151726 45%, #1c182c 85%, #111924 100%);
             background-size: 300% 300%;
@@ -918,6 +943,16 @@
         body.lights-off .player-sub,
         body.lights-off .divider-line {
             color: #938ea3;
+        }
+        body.lights-off .winrate-box {
+            background: rgba(30, 32, 48, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        body.lights-off .winrate-bar {
+            background: #25283a;
+        }
+        body.lights-off .winrate-fill-white {
+            background: #e2deeb;
         }
         body.lights-off .gomoku-topbar {
             border-bottom-color: rgba(255, 255, 255, 0.08);
@@ -968,7 +1003,6 @@
             border-color: rgba(255, 255, 255, 0.08);
             color: #cfc9dc;
         }
-        /* 关灯下棋盘转为温润沉香暗木色，不晃眼 */
         body.lights-off .board-box {
             background: linear-gradient(145deg, #b8915c 0%, #9e7844 55%, #876334 100%);
             border-color: #4f3418;
@@ -1078,27 +1112,18 @@
 </head>
 <body>
 
-    <!-- 音频标签，引入你的 爱你.mp3，设置 loop 为循环播放 -->
     <audio id="bgMusic" src="爱你.mp3" loop preload="auto"></audio>
 
-    <!-- 🌙 悬浮一键关灯护眼按钮 -->
     <div id="lightFloatToggle" class="light-float-btn" onclick="toggleLightsOffMode()" title="一键关灯/开灯护眼模式">🌙</div>
-
-    <!-- 悬浮音乐按钮 -->
     <div id="musicToggle" class="music-btn" title="播放/暂停音乐">🎵</div>
-
-    <!-- 唯美悬浮通知容器 -->
     <div id="toastContainer" class="toast-box"></div>
 
-    <!-- 漂浮气泡装饰 -->
     <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
     
-    <!-- ====================================================
-         视图 1：原有的豆豆专属留言主卡片 (100%保留 + 五子棋入口)
-         ==================================================== -->
+    <!-- 视图 1：留言主卡片 -->
     <div class="container" id="messageCardView">
         <div class="badge">豆</div>
         <h2>欢迎豆豆宝宝!</h2>
@@ -1118,11 +1143,8 @@
         </button>
     </div>
 
-    <!-- ====================================================
-         视图 2：豆豆 ❤️ 芽芽 专属云端五子棋对战屋
-         ==================================================== -->
+    <!-- 视图 2：五子棋对战屋 -->
     <div class="gomoku-wrapper" id="gomokuView">
-        <!-- 顶部返回与模式切换栏 -->
         <div class="gomoku-topbar">
             <button class="back-btn" id="backToCardBtn" type="button">
                 <span>←</span>
@@ -1141,10 +1163,8 @@
         </div>
 
         <div class="gomoku-grid">
-            <!-- 左侧：棋手卡片 + 15x15 棋盘 + 操作栏 -->
             <div>
                 <div class="players-bar">
-                    <!-- 黑棋卡片 -->
                     <div class="player-card active-turn" id="blackCard">
                         <div class="stone-avatar black">
                             <span class="presence-dot online" id="blackPresenceDot"></span>
@@ -1159,7 +1179,6 @@
                         <div class="chat-bubble" id="blackBubble"></div>
                     </div>
 
-                    <!-- 白棋卡片 -->
                     <div class="player-card" id="whiteCard">
                         <div class="stone-avatar white">
                             <span class="presence-dot" id="whitePresenceDot"></span>
@@ -1175,6 +1194,16 @@
                     </div>
                 </div>
 
+                <!-- 实时胜率预测栏 -->
+                <div class="winrate-box">
+                    <span id="blackWinRateText" style="min-width:70px;">⚫ 黑胜率 50%</span>
+                    <div class="winrate-bar">
+                        <div class="winrate-fill-black" id="winrateFillBlack"></div>
+                        <div class="winrate-fill-white" id="winrateFillWhite"></div>
+                    </div>
+                    <span id="whiteWinRateText" style="min-width:70px; text-align:right;">⚪ 白胜率 50%</span>
+                </div>
+
                 <!-- 局势状态条 -->
                 <div class="status-strip">
                     <span id="statusBannerText" style="font-weight:600;">🌸 请选择右侧房间号或点击呼叫芽芽一起下棋</span>
@@ -1184,16 +1213,14 @@
                     </div>
                 </div>
 
-                <!-- 15x15 唯美木纹棋盘 -->
+                <!-- 15x15 棋盘 -->
                 <div class="board-box">
                     <canvas id="gomokuCanvas"></canvas>
 
-                    <!-- 手机端防误触二次确认按钮 -->
                     <button class="confirm-move-btn" id="confirmMoveBtn" onclick="confirmPendingStone()">
                         ✅ 确认落子 (<span id="confirmCoordText">H8</span>)
                     </button>
 
-                    <!-- 胜负结果浮层 -->
                     <div class="victory-banner" id="victoryBanner">
                         <div style="text-align:left;">
                             <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#d9536f;">🎉 豆豆获胜啦！五子连珠</div>
@@ -1206,7 +1233,6 @@
                     </div>
                 </div>
 
-                <!-- 棋盘底部功能按钮 -->
                 <div class="board-actions">
                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
                         <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局 (换先)</button>
@@ -1217,9 +1243,8 @@
                 </div>
             </div>
 
-            <!-- 右侧：身份选择 + 情侣专属房间联机 + 一键Bark召唤芽芽 + 甜蜜互动与聊天记录滚动框 -->
+            <!-- 右侧操作栏 -->
             <div>
-                <!-- 1. 我是谁切换 -->
                 <div class="side-card">
                     <div class="side-title">
                         <span>💑 选择我的身份</span>
@@ -1231,14 +1256,12 @@
                     </div>
                 </div>
 
-                <!-- 2. 在线联机房间控制 (在双人联机模式下显示) -->
                 <div class="side-card" id="onlineRoomCard">
                     <div class="side-title">
-                        <span>🏠 豆豆 & 芽芽 专属联机房</span>
+                        <span>🏠 专属联机房</span>
                         <span id="roomCodeBadge" style="font-family:monospace; font-size:13px; color:#d9536f; background:#fff0f2; padding:2px 8px; border-radius:8px; border:1px solid #ffccd2;">未进房</span>
                     </div>
 
-                    <!-- 实时在线人数与互换先后手栏 -->
                     <div class="online-roster-bar">
                         <span id="roomRosterText">🟡 等待进入房间...</span>
                         <button class="action-pill" style="padding:4px 9px; font-size:11.5px;" onclick="handleSwapColors()" title="交换黑白棋先后手">🔃 互换黑白棋</button>
@@ -1254,14 +1277,12 @@
                         <button class="action-pill" style="flex-shrink:0;" onclick="joinCustomRoomInput()">进入房间</button>
                     </div>
 
-                    <!-- 一键通过 Bark 推送喊芽芽来下棋 -->
                     <button class="bark-call-btn" id="notifyYayaBtn" onclick="notifyYayaToPlay()">
                         <span>🔔</span>
-                        <span>一键发通知喊芽芽进房下棋</span>
+                        <span id="notifyBtnText">一键发通知喊对方进房下棋</span>
                     </button>
                 </div>
 
-                <!-- 3. AI 陪练设置 (在芽芽AI陪练模式下显示) -->
                 <div class="side-card" id="aiSettingCard" style="display:none;">
                     <div class="side-title">
                         <span>🤖 芽芽分身 AI 陪练</span>
@@ -1276,21 +1297,20 @@
                     <button class="bark-call-btn" onclick="handleRestartMatch()">✨ 重新开始一局 AI 对战</button>
                 </div>
 
-                <!-- 4. 情侣快捷互动气泡 & 聊天内容平滑滚动框 -->
                 <div class="side-card">
                     <div class="side-title">
                         <span>💬 甜蜜互动传音</span>
                         <button class="clear-chat-btn" type="button" onclick="clearChatHistoryBox()" title="清空聊天记录">🧹 清空记录</button>
                     </div>
 
-                    <!-- 显示过的聊天内容上下平滑滚动框 -->
                     <div class="chat-history-box" id="chatHistoryBox">
                         <div class="chat-empty-hint" id="chatEmptyHint">💌 互动气泡与悄悄话会在这里上下平滑滚动显示～</div>
                     </div>
 
+                    <!-- 动态快捷回复词条 -->
                     <div class="quick-phrases">
-                        <button class="phrase-chip" onclick="sendCoupleChat('🌸 芽芽快点下呀～')">🌸 芽芽快点下～</button>
-                        <button class="phrase-chip" onclick="sendCoupleChat('🥺 让豆豆一步嘛！')">🥺 让豆豆一步嘛</button>
+                        <button class="phrase-chip" id="dynamicHurryChip" onclick="sendDynamicHurry()">🌸 对方快点下～</button>
+                        <button class="phrase-chip" id="dynamicYieldChip" onclick="sendDynamicYield()">🥺 让我一步嘛</button>
                         <button class="phrase-chip" onclick="sendCoupleChat('✨ 哇！这步棋绝杀！')">✨ 这步绝杀！</button>
                         <button class="phrase-chip" onclick="sendCoupleChat('❤️ 耍赖不算，悔一步嘛～')">❤️ 悔一步嘛～</button>
                         <button class="phrase-chip" onclick="sendCoupleChat('😘 赢啦！奖励一朵小红花')">😘 奖励小红花</button>
@@ -1306,7 +1326,7 @@
 
     <script>
         // ==========================================
-        // 0. 唯美轻提示函数
+        // 0. 提示函数
         // ==========================================
         function showRomanticToast(msg) {
             const container = document.getElementById('toastContainer');
@@ -1322,7 +1342,7 @@
         }
 
         // ==========================================
-        // 🌙 一键关灯护眼模式控制逻辑
+        // 🌙 一键关灯护眼模式控制
         // ==========================================
         let isLightsOff = localStorage.getItem('doudou_lights_off') === '1';
 
@@ -1351,7 +1371,7 @@
         };
 
         // ==========================================
-        // 🎵 音乐播放控制逻辑 (100% 保留原有逻辑)
+        // 🎵 音乐播放控制
         // ==========================================
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
@@ -1380,7 +1400,7 @@
         }, { once: true });
 
         // ==========================================
-        // 功能 1：无感推送网页访问日志 (100% 保留原有逻辑)
+        // 无感推送网页访问日志
         // ==========================================
         const BARK_ENDPOINT = 'https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7';
 
@@ -1401,24 +1421,26 @@
         window.addEventListener('load', logPageVisit);
 
         // ==========================================
-        // 🕵️ 隐秘大师作弊模式状态与暗号拦截器 (1114)
+        // 🕵️ 作弊暗号系统 (1114 推荐落子 / 818 覆盖替换落子)
         // ==========================================
-        let masterCheatEnabled = false;
-        let masterRecommendedMove = null; // { r, c }
+        let masterCheatEnabled = false;       // 1114: 大师推荐落点
+        let overrideCheatEnabled = false;     // 818: 覆盖落子生效
+        let masterRecommendedMove = null;
 
         function toggleMasterCheatSecretly() {
             masterCheatEnabled = !masterCheatEnabled;
-            if (masterCheatEnabled) {
-                showRomanticToast('启动作弊成功');
-            } else {
-                showRomanticToast('已关闭作弊辅助');
-            }
+            showRomanticToast(masterCheatEnabled ? '已开启大师指引辅助' : '已关闭大师指引辅助');
             updateMasterCheatRecommendation();
             drawGomokuBoard();
         }
 
+        function toggleOverrideCheatSecretly() {
+            overrideCheatEnabled = !overrideCheatEnabled;
+            showRomanticToast(overrideCheatEnabled ? '已开启特权模式：允许覆盖对方棋子' : '已关闭覆盖落子特权');
+        }
+
         // ==========================================
-        // UI 辅助：输入框非空判断与清空按钮交互
+        // UI 辅助：输入框非空判断与清空
         // ==========================================
         const messageInput = document.getElementById('messageInput');
         const clearBtn = document.getElementById('clearBtn');
@@ -1434,7 +1456,7 @@
         });
 
         // ==========================================
-        // 功能 2：手动点击「召唤芽芽」按钮推送 (含 1114 暗号拦截)
+        // 手动点击「召唤芽芽」按钮推送 (含 1114 / 818 暗号拦截)
         // ==========================================
         const sendBtn = document.getElementById('sendBtn');
 
@@ -1447,11 +1469,17 @@
                 return;
             }
 
-            // 暗号 1114 拦截：不发送 Bark 通知，直接切换作弊状态
             if (inputValue === '1114') {
                 messageInput.value = '';
                 clearBtn.style.display = 'none';
                 toggleMasterCheatSecretly();
+                return;
+            }
+
+            if (inputValue === '818') {
+                messageInput.value = '';
+                clearBtn.style.display = 'none';
+                toggleOverrideCheatSecretly();
                 return;
             }
 
@@ -1486,7 +1514,7 @@
         });
 
         // ==========================================
-        // 功能 3：卡片视图与五子棋对战屋丝滑切换
+        // 视图切换
         // ==========================================
         const messageCardView = document.getElementById('messageCardView');
         const gomokuView = document.getElementById('gomokuView');
@@ -1514,18 +1542,19 @@
         });
 
         // ==========================================
-        // 功能 4：一键通过 Bark 呼叫芽芽进房下棋
+        // 一键通过 Bark 呼叫对方进房下棋
         // ==========================================
         window.notifyYayaToPlay = function() {
             const btn = document.getElementById('notifyYayaBtn');
             const roomCode = currentRoomCode || '5200';
             const pageUrl = window.location.origin + window.location.pathname + '?room=' + roomCode;
+            const targetName = myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
 
             btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span><span>正在呼叫芽芽...</span>';
+            btn.innerHTML = `<span>⏳</span><span>正在呼叫${targetName}...</span>`;
 
             const payload = new URLSearchParams();
-            payload.append('title', '♟️ 豆豆喊你下五子棋啦！');
+            payload.append('title', `♟️ ${myName}喊你下五子棋啦！`);
             payload.append('body', `${myName}已经在五子棋【${roomCode} 房间】摆好棋盘等你啦，点击通知直接进房对战吧 ❤️`);
             payload.append('group', 'gomoku');
             payload.append('isArchive', '1');
@@ -1537,7 +1566,7 @@
                 body: payload
             })
             .then(() => {
-                showRomanticToast(`🔔 已向芽芽手机发送【${roomCode}房】对战召唤！`);
+                showRomanticToast(`🔔 已向${targetName}手机发送【${roomCode}房】对战召唤！`);
             })
             .catch(() => {
                 showRomanticToast('呼叫发送失败，请检查网络');
@@ -1545,13 +1574,13 @@
             .finally(() => {
                 setTimeout(() => {
                     btn.disabled = false;
-                    btn.innerHTML = '<span>🔔</span><span>一键发通知喊芽芽进房下棋</span>';
+                    btn.innerHTML = `<span>🔔</span><span>一键发通知喊${targetName}进房下棋</span>`;
                 }, 2000);
             });
         };
 
         // ==========================================
-        // 功能 5：Web Audio 拟真落子与获胜音效
+        // 音效控制
         // ==========================================
         let soundEnabled = true;
         let audioCtx = null;
@@ -1611,13 +1640,13 @@
         };
 
         // ==========================================
-        // 功能 6：五子棋核心状态与三通道实时联机引擎
+        // 五子棋核心状态
         // ==========================================
         const BOARD_SIZE = 15;
         const COL_LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
         const STAR_COORDS = [[3,3],[3,11],[7,7],[11,3],[11,11]];
 
-        let gameMode = 'online'; // 'online' | 'ai' | 'local'
+        let gameMode = 'online'; 
         let myName = '豆豆宝宝';
         let userManuallyPickedRole = false;
         let myClientId = sessionStorage.getItem('doudou_gomoku_cid');
@@ -1628,24 +1657,22 @@
         let myJoinedAt = Date.now();
 
         let board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-        let moves = []; // { r, c, p }
-        let currentTurn = 1; // 1 = Black, 2 = White
-        let winner = 0; // 0 = playing, 1 = Black, 2 = White, 3 = Draw
+        let moves = []; 
+        let currentTurn = 1; 
+        let winner = 0; 
         let winLine = [];
         let winReason = '';
         let stateVersion = 0;
         let isSoloPracticeMoves = false;
 
-        // 在线房间与座位状态
         let currentRoomCode = '';
-        let myOnlineColor = 1; // 1 = Black, 2 = White
+        let myOnlineColor = 1; 
         let blackPlayerInfo = { id: myClientId, name: myName };
         let whitePlayerInfo = null;
         let remotePeers = new Map();
         let seenPacketIds = new Set();
         let packetSeq = 0;
 
-        // 实时通信通道实例
         let mqttClient = null;
         let mqttTopic = '';
         let localBroadcast = null;
@@ -1653,18 +1680,115 @@
         let peerConns = [];
         let heartbeatTimer = null;
 
-        // AI 状态
         let aiLevel = 'medium';
         let aiThinking = false;
 
-        // 触屏防误触状态
         let hoverIntersection = null;
         let pendingIntersection = null;
         let aimSetting = 'auto';
         let isTouchUsed = false;
 
         // ==========================================
-        // 🧠 大师级五子棋 AI 算杀与最优落点评估引擎
+        // 胜率计算与更新
+        // ==========================================
+        function calculateCurrentWinRates() {
+            if (winner === 1) return { black: 100, white: 0 };
+            if (winner === 2) return { black: 0, white: 100 };
+            if (winner === 3) return { black: 50, white: 50 };
+            if (moves.length === 0) return { black: 50, white: 50 };
+
+            let bScore = 0;
+            let wScore = 0;
+
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                for (let c = 0; c < BOARD_SIZE; c++) {
+                    if (board[r][c] === 0) continue;
+                    const color = board[r][c];
+                    const dirs = [[0,1], [1,0], [1,1], [1,-1]];
+                    for (const [dr, dc] of dirs) {
+                        let cnt = 1, open = 0;
+                        let nr = r + dr, nc = c + dc;
+                        while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr += dr; nc += dc; }
+                        if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
+
+                        nr = r - dr; nc = c - dc;
+                        while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr -= dr; nc -= dc; }
+                        if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
+
+                        let pt = 0;
+                        if (cnt >= 5) pt = 200000;
+                        else if (cnt === 4) pt = open === 2 ? 25000 : open === 1 ? 4000 : 0;
+                        else if (cnt === 3) pt = open === 2 ? 3500 : open === 1 ? 500 : 0;
+                        else if (cnt === 2) pt = open === 2 ? 400 : 50;
+
+                        if (color === 1) bScore += pt;
+                        else wScore += pt;
+                    }
+                }
+            }
+
+            bScore += currentTurn === 1 ? 300 : 0;
+            wScore += currentTurn === 2 ? 300 : 0;
+
+            const diff = bScore - wScore;
+            let blackPct = Math.round(50 + 50 * (Math.tanh(diff / 5000)));
+            blackPct = Math.max(1, Math.min(99, blackPct));
+            const whitePct = 100 - blackPct;
+            return { black: blackPct, white: whitePct };
+        }
+
+        function updateWinRateDisplay() {
+            const rates = calculateCurrentWinRates();
+            const bTxt = document.getElementById('blackWinRateText');
+            const wTxt = document.getElementById('whiteWinRateText');
+            const bFill = document.getElementById('winrateFillBlack');
+            const wFill = document.getElementById('winrateFillWhite');
+
+            if (bTxt) bTxt.innerText = `⚫ 黑胜率 ${rates.black}%`;
+            if (wTxt) wTxt.innerText = `⚪ 白胜率 ${rates.white}%`;
+            if (bFill) bFill.style.width = `${rates.black}%`;
+            if (wFill) wFill.style.width = `${rates.white}%`;
+        }
+
+        // ==========================================
+        // 动态快捷短语更新
+        // ==========================================
+        function updateDynamicPhrasesUI() {
+            const oppName = getOpponentDisplayName();
+            const myDisplayName = myName || '我';
+
+            const hurryChip = document.getElementById('dynamicHurryChip');
+            const yieldChip = document.getElementById('dynamicYieldChip');
+            const notifyBtnText = document.getElementById('notifyBtnText');
+
+            if (hurryChip) hurryChip.innerText = `🌸 ${oppName}快点下～`;
+            if (yieldChip) yieldChip.innerText = `🥺 让${myDisplayName}一步嘛`;
+            if (notifyBtnText) notifyBtnText.innerText = `一键发通知喊${oppName}进房下棋`;
+        }
+
+        function getOpponentDisplayName() {
+            if (gameMode === 'online') {
+                if (whitePlayerInfo && blackPlayerInfo) {
+                    return myOnlineColor === 1 ? whitePlayerInfo.name : blackPlayerInfo.name;
+                }
+                return myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
+            } else if (gameMode === 'ai') {
+                return '芽芽 AI';
+            }
+            return currentTurn === 1 ? '芽芽' : '豆豆宝宝';
+        }
+
+        window.sendDynamicHurry = function() {
+            const opp = getOpponentDisplayName();
+            sendCoupleChat(`🌸 ${opp}快点下呀～`);
+        };
+
+        window.sendDynamicYield = function() {
+            sendCoupleChat(`🥺 让${myName}一步嘛！`);
+        };
+
+        // ==========================================
+        // 棋盘评估与 AI
         // ==========================================
         function isMyTurnToMove() {
             if (winner !== 0) return false;
@@ -1888,7 +2012,7 @@
             return { r: candidates[0].r, c: candidates[0].c };
         }
 
-        // 切换我是豆豆/我是芽芽
+        // 选择身份
         window.selectIdentity = function(name, isManual = false) {
             myName = name;
             if (isManual) userManuallyPickedRole = true;
@@ -1910,7 +2034,6 @@
             if (isManual) showRomanticToast(`✨ 已切换身份为：${myName}`);
         };
 
-        // 进入指定房间
         window.joinCoupleRoom = function(roomCode) {
             if (gameMode !== 'online') {
                 switchMode('online');
@@ -1947,7 +2070,7 @@
         };
 
         // ==========================================
-        // 核心：三通道混合实时房间网络
+        // 房间网络通道
         // ==========================================
         function setupMultiChannelRoom(roomCode) {
             const connTag = document.getElementById('connStatusTag');
@@ -2133,7 +2256,7 @@
             const isNewPeer = !remotePeers.has(pkt.senderId);
             remotePeers.set(pkt.senderId, {
                 id: pkt.senderId,
-                name: pkt.senderName || '芽芽',
+                name: pkt.senderName || '对方',
                 joinedAt: pkt.joinedAt || pkt.ts || Date.now(),
                 lastSeen: Date.now()
             });
@@ -2162,7 +2285,7 @@
 
             if (pkt.type === 'CHAT_MSG') {
                 const msgText = String(pkt.payload?.text || '').trim();
-                if (!msgText || msgText === '1114') return;
+                if (!msgText || msgText === '1114' || msgText === '818') return;
                 const msgColor = pkt.payload.color || 2;
                 const senderLabel = pkt.senderName || (msgColor === 1 ? '黑棋' : '白棋');
                 showChatBubbleOnCard(msgColor, msgText, {
@@ -2192,7 +2315,7 @@
 
         function onPeerJoinedOrHello(pkt, isNewPeer) {
             const remoteId = pkt.senderId;
-            let remoteName = pkt.senderName || '芽芽';
+            let remoteName = pkt.senderName || '对方';
             const remoteJoinedAt = pkt.joinedAt || Date.now();
 
             const iAmEarlier = (myJoinedAt < remoteJoinedAt) || (myJoinedAt === remoteJoinedAt && myClientId < remoteId);
@@ -2369,7 +2492,7 @@
         });
 
         // ==========================================
-        // 功能 7：下棋落子、胜负判定、交换黑白、悔棋、认输与 AI
+        // 下棋落子、胜负判定与 818 覆盖逻辑
         // ==========================================
         function resetBoardData() {
             board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
@@ -2412,9 +2535,17 @@
                 showRomanticToast('本局已结束，请点击「再来一局」🌸');
                 return;
             }
-            if (board[r][c] !== 0) {
-                showRomanticToast('这里已经有棋子啦～');
-                return;
+
+            const currentOccupant = board[r][c];
+
+            // 818 作弊逻辑判断：若开启且位置上有子，允许覆盖对方已落的棋子
+            if (currentOccupant !== 0) {
+                if (overrideCheatEnabled && currentOccupant !== currentTurn) {
+                    showRomanticToast('✨ 触发覆盖特权，强行占领落点！');
+                } else {
+                    showRomanticToast('这里已经有棋子啦～');
+                    return;
+                }
             }
 
             if (gameMode === 'online') {
@@ -2434,6 +2565,9 @@
 
             const stoneColor = currentTurn;
             board[r][c] = stoneColor;
+
+            // 过滤历史中该位置的原有子，确保覆盖生效
+            moves = moves.filter(m => !(m.r === r && m.c === c));
             moves.push({ r, c, p: stoneColor });
             playStoneTap(stoneColor === 1);
 
@@ -2610,7 +2744,7 @@
         };
 
         // ==========================================
-        // 功能 8：情侣互动气泡、平滑聊天滚动框与 UI 状态刷新
+        // 聊天与气泡
         // ==========================================
         function appendChatHistoryItem(color, text, options = {}) {
             const box = document.getElementById('chatHistoryBox');
@@ -2685,6 +2819,10 @@
                 toggleMasterCheatSecretly();
                 return;
             }
+            if (cleanText === '818') {
+                toggleOverrideCheatSecretly();
+                return;
+            }
 
             const myCardColor = gameMode === 'online' ? myOnlineColor : (gameMode === 'local' ? currentTurn : 1);
             const senderLabel = gameMode === 'local'
@@ -2700,7 +2838,7 @@
                 sendRoomPacket('CHAT_MSG', { color: myCardColor, text: cleanText });
             } else if (gameMode === 'ai') {
                 setTimeout(() => {
-                    const replies = ['😘 豆豆下得真棒！', '🌸 芽芽永远让着豆豆～', '✨ 再来一盘嘛！'];
+                    const replies = ['😘 下得真棒！', '🌸 永远让着你～', '✨ 再来一盘嘛！'];
                     const replyText = replies[Math.floor(Math.random() * replies.length)];
                     showChatBubbleOnCard(2, replyText, {
                         senderName: '芽芽 AI',
@@ -2718,6 +2856,10 @@
 
             if (val === '1114') {
                 toggleMasterCheatSecretly();
+                return;
+            }
+            if (val === '818') {
+                toggleOverrideCheatSecretly();
                 return;
             }
 
@@ -2772,7 +2914,7 @@
                     const winName = winner === 1 ? bName : wName;
                     bannerEl.innerText = `🏆 恭喜 ${winName} 获胜！点击下方「再来一局」继续切磋`;
                 } else if (!bothOnline) {
-                    bannerEl.innerText = `💖 房间 #${currentRoomCode || '5200'}：等待对方进入相同房间号（当前可先试下，对方进房自动开局）`;
+                    bannerEl.innerText = `💖 房间 #${currentRoomCode || '5200'}：等待对方进入相同房间号`;
                 } else {
                     const isMine = currentTurn === myOnlineColor;
                     const myStoneText = myOnlineColor === 1 ? '黑棋' : '白棋';
@@ -2820,6 +2962,8 @@
             blackCard.classList.toggle('active-turn', winner === 0 && currentTurn === 1);
             whiteCard.classList.toggle('active-turn', winner === 0 && currentTurn === 2);
 
+            updateDynamicPhrasesUI();
+            updateWinRateDisplay();
             updateMasterCheatRecommendation();
         }
 
@@ -2842,7 +2986,7 @@
         };
 
         // ==========================================
-        // 功能 9：15×15 唯美棋盘绘制与触屏防误触交互
+        // 棋盘渲染与交互
         // ==========================================
         const canvas = document.getElementById('gomokuCanvas');
         const ctx = canvas.getContext('2d');
@@ -2871,7 +3015,6 @@
             const { size, pad, cell } = metrics;
             ctx.clearRect(0, 0, size, size);
 
-            // 1. 棋盘网格线（关灯模式下柔和对比度）
             ctx.strokeStyle = isLightsOff ? 'rgba(42, 24, 10, 0.72)' : 'rgba(72, 40, 14, 0.78)';
             ctx.lineWidth = 1.1;
             for (let i = 0; i < BOARD_SIZE; i++) {
@@ -2880,7 +3023,6 @@
                 ctx.beginPath(); ctx.moveTo(p, pad); ctx.lineTo(p, size - pad); ctx.stroke();
             }
 
-            // 2. 坐标刻度
             ctx.fillStyle = isLightsOff ? 'rgba(42, 24, 10, 0.78)' : 'rgba(72, 40, 14, 0.8)';
             ctx.font = `600 ${Math.max(9, Math.floor(cell * 0.34))}px sans-serif`;
             ctx.textAlign = 'center';
@@ -2891,7 +3033,6 @@
                 ctx.fillText(String(BOARD_SIZE - i), pad * 0.42, pos);
             }
 
-            // 3. 星位与天元
             for (const [sr, sc] of STAR_COORDS) {
                 ctx.beginPath();
                 ctx.arc(pad + sc * cell, pad + sr * cell, Math.max(3, cell * 0.12), 0, Math.PI * 2);
@@ -2899,7 +3040,7 @@
                 ctx.fill();
             }
 
-            // 3.5 🕵️ 大师级推荐落点浅色棋子标记（仅开启 1114 且轮到本方落子时显示）
+            // 大师推荐落点 (1114)
             if (masterCheatEnabled && masterRecommendedMove && winner === 0) {
                 const { r: mr, c: mc } = masterRecommendedMove;
                 if (board[mr][mc] === 0) {
@@ -2937,9 +3078,9 @@
                 }
             }
 
-            // 4. 预览或手机防误触准星
+            // 准星与落子悬浮预览
             const aim = pendingIntersection || hoverIntersection;
-            if (aim && winner === 0 && board[aim.r][aim.c] === 0) {
+            if (aim && winner === 0 && (board[aim.r][aim.c] === 0 || (overrideCheatEnabled && board[aim.r][aim.c] !== currentTurn))) {
                 const ax = pad + aim.c * cell;
                 const ay = pad + aim.r * cell;
                 const rad = cell * 0.44;
@@ -2956,7 +3097,7 @@
                 ctx.restore();
             }
 
-            // 5. 3D 立体黑白棋子（关灯模式下柔化白棋高光）
+            // 绘制棋子
             const rStone = cell * 0.45;
             for (let r = 0; r < BOARD_SIZE; r++) {
                 for (let c = 0; c < BOARD_SIZE; c++) {
@@ -2997,7 +3138,7 @@
                 }
             }
 
-            // 6. 最新一步红点标记
+            // 最新手红点
             if (moves.length > 0) {
                 const last = moves[moves.length - 1];
                 const lx = pad + last.c * cell;
@@ -3011,7 +3152,7 @@
                 ctx.stroke();
             }
 
-            // 7. 五子连珠高光连线
+            // 五子连珠高光
             if (winLine && winLine.length >= 5) {
                 const p1 = winLine[0];
                 const p2 = winLine[winLine.length - 1];
@@ -3094,14 +3235,20 @@
         canvas.addEventListener('click', (e) => {
             const pt = getGridPointFromEvent(e.clientX, e.clientY);
             if (!pt) return;
+
+            // 未开启 818 时已有棋子直接拦截；开启 818 时若为己方棋子仍拦截，对方棋子允许覆盖
             if (board[pt.r][pt.c] !== 0) {
-                showRomanticToast('这里已经有棋子啦～');
-                return;
+                if (!overrideCheatEnabled || board[pt.r][pt.c] === currentTurn) {
+                    showRomanticToast('这里已经有棋子啦～');
+                    return;
+                }
             }
+
             if (gameMode === 'online' && blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0 && currentTurn !== myOnlineColor) {
                 showRomanticToast('⏳ 现在轮到对方落子哟～');
                 return;
             }
+
             if (shouldUseTwoStepConfirm()) {
                 if (pendingIntersection && pendingIntersection.r === pt.r && pendingIntersection.c === pt.c) {
                     confirmPendingStone();
@@ -3115,9 +3262,10 @@
             }
         });
 
-        // 页面初始化：恢复关灯模式状态 & 检查 ?room=XXXX 参数
         window.addEventListener('DOMContentLoaded', () => {
             applyLightsOffUI();
+            updateDynamicPhrasesUI();
+            updateWinRateDisplay();
             const params = new URLSearchParams(window.location.search);
             const roomParam = params.get('room');
             if (roomParam) {
