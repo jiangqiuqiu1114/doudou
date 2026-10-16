@@ -33,6 +33,7 @@
             position: relative;
             padding: 20px 0;
             user-select: none;
+            transition: background 0.45s ease, color 0.35s ease;
         }
 
         @keyframes gradientBG {
@@ -50,6 +51,7 @@
             animation: floatUpDown 8s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 1;
+            transition: opacity 0.4s ease, background 0.4s ease;
         }
         .bubble:nth-of-type(1) { width: 120px; height: 120px; top: 10%; left: 8%; animation-delay: 0s; }
         .bubble:nth-of-type(2) { width: 80px; height: 80px; bottom: 15%; right: 10%; animation-delay: 2s; }
@@ -61,11 +63,11 @@
             100% { transform: translateY(-30px) scale(1.05); }
         }
 
-        /* 🎵 悬浮音乐按钮样式 */
-        .music-btn {
+        /* 🎵 悬浮音乐按钮与 🌙 悬浮关灯按钮样式 */
+        .music-btn,
+        .light-float-btn {
             position: fixed;
             top: 20px;
-            right: 20px;
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -76,12 +78,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s, transform 0.2s;
+            transition: all 0.3s ease;
+            opacity: 0.78;
+        }
+        .music-btn {
+            right: 20px;
+            font-size: 22px;
             opacity: 0.6;
+        }
+        .light-float-btn {
+            right: 74px;
+        }
+        .music-btn:hover,
+        .light-float-btn:hover {
+            opacity: 1;
+            transform: scale(1.05);
         }
 
         .playing {
@@ -141,12 +156,14 @@
             font-size: 26px;
             font-weight: 800;
             letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
 
         p.subtitle {
             font-size: 14px;
             color: #8b7c7a;
             margin-bottom: 30px;
+            transition: color 0.3s ease;
         }
 
         /* 6. 交互式文本框 */
@@ -292,6 +309,7 @@
             color: #4a3e3d;
             display: none;
             animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
         }
 
         @keyframes fadeInScale {
@@ -308,6 +326,7 @@
             padding-bottom: 14px;
             border-bottom: 1px solid rgba(234, 225, 223, 0.8);
             margin-bottom: 14px;
+            transition: border-color 0.35s ease;
         }
 
         .back-btn {
@@ -336,6 +355,7 @@
             padding: 4px;
             border-radius: 14px;
             gap: 4px;
+            transition: background 0.35s ease;
         }
         .mode-tab {
             border: none;
@@ -436,6 +456,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            transition: color 0.3s ease;
         }
         .me-tag {
             display: inline-block;
@@ -451,6 +472,7 @@
             font-size: 11px;
             color: #968583;
             margin-top: 2px;
+            transition: color 0.3s ease;
         }
 
         /* 情侣互动气泡 */
@@ -502,6 +524,7 @@
             gap: 8px;
             font-size: 12.5px;
             color: #6e5856;
+            transition: all 0.35s ease;
         }
 
         /* 唯美暖木色棋盘容器 */
@@ -522,6 +545,7 @@
             align-items: center;
             justify-content: center;
             padding: 6px;
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
         canvas#gomokuCanvas {
             display: block;
@@ -567,6 +591,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
+            transition: background 0.35s ease, border-color 0.35s ease;
         }
 
         /* 棋盘下方按钮栏 */
@@ -607,6 +632,7 @@
             padding: 14px;
             margin-bottom: 12px;
             text-align: left;
+            transition: background 0.35s ease, border-color 0.35s ease;
         }
         .side-title {
             font-size: 14px;
@@ -616,6 +642,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: color 0.3s ease;
         }
         .role-switch {
             display: grid;
@@ -675,6 +702,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 6px;
+            transition: all 0.35s ease;
         }
 
         /* 一键Bark呼叫芽芽进房按钮 */
@@ -728,7 +756,7 @@
         }
 
         /* =====================================================
-           9. 右侧新增：聊天内容上下平滑滚动框样式
+           9. 右侧：聊天内容上下平滑滚动框样式
            ===================================================== */
         .chat-history-box {
             margin-top: 10px;
@@ -744,6 +772,7 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             box-shadow: inset 0 2px 6px rgba(255, 154, 159, 0.08);
+            transition: background 0.35s ease, border-color 0.35s ease;
         }
         .chat-history-box::-webkit-scrollbar {
             width: 5px;
@@ -850,12 +879,210 @@
             box-shadow: 0 10px 25px rgba(255, 154, 159, 0.35);
             animation: fadeInScale 0.25s ease;
         }
+
+        /* =====================================================
+           🌙 10. 一键关灯护眼模式 (Lights-Off Dark Mode)
+           解决玩游戏时背景和卡片颜色太亮、太炸眼的问题
+           ===================================================== */
+        body.lights-off {
+            background: linear-gradient(135deg, #0d0e17 0%, #151726 45%, #1c182c 85%, #111924 100%);
+            background-size: 300% 300%;
+            color: #d8d4e2;
+        }
+        body.lights-off .bubble {
+            background: rgba(255, 255, 255, 0.035);
+            opacity: 0.35;
+        }
+        body.lights-off .music-btn,
+        body.lights-off .light-float-btn {
+            background: rgba(30, 32, 48, 0.85);
+            border-color: rgba(255, 255, 255, 0.14);
+            color: #ffd97d;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        body.lights-off .container,
+        body.lights-off .gomoku-wrapper {
+            background: rgba(22, 24, 36, 0.92);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 24px 55px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            color: #e2deeb;
+        }
+        body.lights-off h2,
+        body.lights-off .side-title,
+        body.lights-off .player-name {
+            color: #ebe7f3;
+        }
+        body.lights-off p.subtitle,
+        body.lights-off .player-sub,
+        body.lights-off .divider-line {
+            color: #938ea3;
+        }
+        body.lights-off .gomoku-topbar {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+        body.lights-off .back-btn,
+        body.lights-off .action-pill {
+            background: rgba(36, 39, 58, 0.9);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #d5d0e2;
+        }
+        body.lights-off .back-btn:hover,
+        body.lights-off .action-pill:hover {
+            background: rgba(52, 56, 82, 0.95);
+            border-color: #c96f80;
+            color: #ffd6de;
+        }
+        body.lights-off .action-pill.primary {
+            background: linear-gradient(135deg, #c85a70 0%, #9b5277 100%);
+            color: #f7f2f6;
+            box-shadow: 0 4px 12px rgba(200, 90, 112, 0.25);
+        }
+        body.lights-off .mode-tabs {
+            background: rgba(14, 15, 24, 0.75);
+        }
+        body.lights-off .mode-tab {
+            color: #8f8a9f;
+        }
+        body.lights-off .mode-tab.active {
+            background: linear-gradient(135deg, #c85a70 0%, #a34e6c 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        body.lights-off .player-card {
+            background: rgba(31, 34, 50, 0.85);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        body.lights-off .player-card.active-turn {
+            background: rgba(45, 36, 56, 0.92);
+            border-color: #d46b82;
+            box-shadow: 0 6px 18px rgba(212, 107, 130, 0.18);
+        }
+        body.lights-off .me-tag {
+            background: rgba(212, 107, 130, 0.22);
+            color: #ff9eb0;
+        }
+        body.lights-off .status-strip {
+            background: rgba(30, 32, 48, 0.9);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #cfc9dc;
+        }
+        /* 关灯下棋盘转为温润沉香暗木色，不晃眼 */
+        body.lights-off .board-box {
+            background: linear-gradient(145deg, #b8915c 0%, #9e7844 55%, #876334 100%);
+            border-color: #4f3418;
+            box-shadow:
+                0 16px 40px rgba(0, 0, 0, 0.65),
+                inset 0 2px 4px rgba(255, 255, 255, 0.15),
+                inset 0 -3px 6px rgba(30, 16, 5, 0.6);
+        }
+        body.lights-off .side-card {
+            background: rgba(29, 31, 46, 0.85);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        body.lights-off .role-btn {
+            background: rgba(38, 41, 60, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #b8b2c8;
+        }
+        body.lights-off .role-btn.active {
+            background: rgba(200, 90, 112, 0.22);
+            border-color: #d46b82;
+            color: #ffb3c1;
+        }
+        body.lights-off .online-roster-bar {
+            background: rgba(22, 24, 37, 0.9);
+            border-color: rgba(212, 107, 130, 0.35);
+            color: #c5bfd4;
+        }
+        body.lights-off #roomCodeBadge {
+            background: rgba(212, 107, 130, 0.18) !important;
+            border-color: rgba(212, 107, 130, 0.4) !important;
+            color: #ff9eb0 !important;
+        }
+        body.lights-off .couple-room-btn {
+            background: linear-gradient(135deg, rgba(64, 42, 60, 0.9) 0%, rgba(48, 35, 54, 0.9) 100%);
+            border-color: rgba(212, 107, 130, 0.35);
+            color: #ffadc0;
+        }
+        body.lights-off input[type="text"] {
+            background-color: rgba(18, 20, 32, 0.85);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #eae6f2;
+        }
+        body.lights-off input[type="text"]::placeholder {
+            color: #6e6a7c;
+        }
+        body.lights-off input[type="text"]:focus {
+            background-color: rgba(24, 27, 42, 0.95);
+            border-color: #d46b82;
+            box-shadow: 0 0 12px rgba(212, 107, 130, 0.25);
+        }
+        body.lights-off .bark-call-btn,
+        body.lights-off button#sendBtn {
+            background: linear-gradient(135deg, #c4556d 0%, #99496e 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+        body.lights-off button#gomokuBtn {
+            background: linear-gradient(135deg, #6b5b95 0%, #9b5d89 100%);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        }
+        body.lights-off .chat-history-box {
+            background: rgba(18, 20, 31, 0.9);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+        body.lights-off .chat-history-box::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        body.lights-off .chat-history-box::-webkit-scrollbar-thumb {
+            background: rgba(212, 107, 130, 0.45);
+        }
+        body.lights-off .chat-empty-hint,
+        body.lights-off .chat-log-meta {
+            color: #7c778c;
+        }
+        body.lights-off .chat-log-item.mine .chat-log-bubble {
+            background: linear-gradient(135deg, #b84f66 0%, #944468 100%);
+            color: #f5f0f6;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+        body.lights-off .chat-log-item.other .chat-log-bubble {
+            background: rgba(38, 41, 60, 0.95);
+            color: #e2deeb;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        body.lights-off .phrase-chip {
+            background: rgba(36, 39, 58, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #c2bdd1;
+        }
+        body.lights-off .phrase-chip:hover {
+            background: rgba(200, 90, 112, 0.25);
+            border-color: #d46b82;
+            color: #ffccd5;
+        }
+        body.lights-off .victory-banner {
+            background: rgba(26, 28, 42, 0.96);
+            border-color: #d46b82;
+        }
+        body.lights-off .toast-item {
+            background: rgba(30, 32, 48, 0.96);
+            border-color: #d46b82;
+            color: #f0ecf8;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+        }
     </style>
 </head>
 <body>
 
     <!-- 音频标签，引入你的 爱你.mp3，设置 loop 为循环播放 -->
     <audio id="bgMusic" src="爱你.mp3" loop preload="auto"></audio>
+
+    <!-- 🌙 悬浮一键关灯护眼按钮 -->
+    <div id="lightFloatToggle" class="light-float-btn" onclick="toggleLightsOffMode()" title="一键关灯/开灯护眼模式">🌙</div>
 
     <!-- 悬浮音乐按钮 -->
     <div id="musicToggle" class="music-btn" title="播放/暂停音乐">🎵</div>
@@ -908,6 +1135,7 @@
                     <button class="mode-tab" id="tabAi" onclick="switchMode('ai')">🤖 芽芽AI陪练</button>
                     <button class="mode-tab" id="tabLocal" onclick="switchMode('local')">👥 同屏双人</button>
                 </div>
+                <button class="action-pill" id="lightInlineBtn" onclick="toggleLightsOffMode()" title="一键关灯/开灯护眼">🌙 关灯</button>
                 <button class="action-pill" id="soundBtn" onclick="toggleSoundEffect()" title="落子音效开关">🔊 音效</button>
             </div>
         </div>
@@ -1055,7 +1283,7 @@
                         <button class="clear-chat-btn" type="button" onclick="clearChatHistoryBox()" title="清空聊天记录">🧹 清空记录</button>
                     </div>
 
-                    <!-- 新增：显示过的聊天内容上下平滑滚动框 -->
+                    <!-- 显示过的聊天内容上下平滑滚动框 -->
                     <div class="chat-history-box" id="chatHistoryBox">
                         <div class="chat-empty-hint" id="chatEmptyHint">💌 互动气泡与悄悄话会在这里上下平滑滚动显示～</div>
                     </div>
@@ -1092,6 +1320,35 @@
                 setTimeout(() => div.remove(), 300);
             }, 2600);
         }
+
+        // ==========================================
+        // 🌙 一键关灯护眼模式控制逻辑
+        // ==========================================
+        let isLightsOff = localStorage.getItem('doudou_lights_off') === '1';
+
+        function applyLightsOffUI() {
+            document.body.classList.toggle('lights-off', isLightsOff);
+            const floatBtn = document.getElementById('lightFloatToggle');
+            const inlineBtn = document.getElementById('lightInlineBtn');
+            if (floatBtn) {
+                floatBtn.innerText = isLightsOff ? '☀️' : '🌙';
+                floatBtn.title = isLightsOff ? '切换到日间亮色模式' : '切换到夜间关灯护眼模式';
+            }
+            if (inlineBtn) {
+                inlineBtn.innerText = isLightsOff ? '☀️ 开灯' : '🌙 关灯';
+            }
+            if (typeof drawGomokuBoard === 'function') {
+                drawGomokuBoard();
+            }
+        }
+
+        window.toggleLightsOffMode = function(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            isLightsOff = !isLightsOff;
+            localStorage.setItem('doudou_lights_off', isLightsOff ? '1' : '0');
+            applyLightsOffUI();
+            showRomanticToast(isLightsOff ? '🌙 已开启关灯护眼模式，下棋不刺眼啦' : '☀️ 已恢复浪漫亮色模式');
+        };
 
         // ==========================================
         // 🎵 音乐播放控制逻辑 (100% 保留原有逻辑)
@@ -1355,7 +1612,6 @@
 
         // ==========================================
         // 功能 6：五子棋核心状态与三通道实时联机引擎
-        // (MQTT over WSS + PeerJS P2P + BroadcastChannel)
         // ==========================================
         const BOARD_SIZE = 15;
         const COL_LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
@@ -1378,14 +1634,14 @@
         let winLine = [];
         let winReason = '';
         let stateVersion = 0;
-        let isSoloPracticeMoves = false; // 标记是否为等待对方进房前的单人试下
+        let isSoloPracticeMoves = false;
 
         // 在线房间与座位状态
         let currentRoomCode = '';
         let myOnlineColor = 1; // 1 = Black, 2 = White
         let blackPlayerInfo = { id: myClientId, name: myName };
         let whitePlayerInfo = null;
-        let remotePeers = new Map(); // id -> { id, name, joinedAt, lastSeen }
+        let remotePeers = new Map();
         let seenPacketIds = new Set();
         let packetSeq = 0;
 
@@ -1404,7 +1660,7 @@
         // 触屏防误触状态
         let hoverIntersection = null;
         let pendingIntersection = null;
-        let aimSetting = 'auto'; // 'auto' | 'on' | 'off'
+        let aimSetting = 'auto';
         let isTouchUsed = false;
 
         // ==========================================
@@ -1691,7 +1947,7 @@
         };
 
         // ==========================================
-        // 核心：三通道混合实时房间网络 (MQTT + BroadcastChannel + PeerJS)
+        // 核心：三通道混合实时房间网络
         // ==========================================
         function setupMultiChannelRoom(roomCode) {
             const connTag = document.getElementById('connStatusTag');
@@ -1862,7 +2118,6 @@
             });
         }
 
-        // 处理收到的所有房间数据包
         function handleIncomingPacket(pkt) {
             if (!pkt || typeof pkt !== 'object') return;
             if (pkt.roomCode !== currentRoomCode || pkt.senderId === myClientId) return;
@@ -1906,7 +2161,6 @@
             }
 
             if (pkt.type === 'CHAT_MSG') {
-                // 双重保险：即便收到 1114 也绝不显示气泡或写入滚动框
                 const msgText = String(pkt.payload?.text || '').trim();
                 if (!msgText || msgText === '1114') return;
                 const msgColor = pkt.payload.color || 2;
@@ -2403,13 +2657,11 @@
             item.appendChild(bubble);
             box.appendChild(item);
 
-            // 保持最多 80 条历史，避免 DOM 过多
             const items = box.querySelectorAll('.chat-log-item');
             if (items.length > 80) {
                 items[0].remove();
             }
 
-            // 平滑滚动到最新一条消息
             requestAnimationFrame(() => {
                 box.scrollTo({
                     top: box.scrollHeight,
@@ -2429,7 +2681,6 @@
             const cleanText = String(text || '').trim();
             if (!cleanText) return;
 
-            // 暗号 1114 拦截：绝不发送到对面屏幕、绝不进入聊天滚动框，仅在本方切换作弊并显示提示
             if (cleanText === '1114') {
                 toggleMasterCheatSecretly();
                 return;
@@ -2465,7 +2716,6 @@
             if (!val) return;
             inp.value = '';
 
-            // 暗号 1114 拦截：忽略聊天显示与网络发送，仅本方开启/关闭大师作弊
             if (val === '1114') {
                 toggleMasterCheatSecretly();
                 return;
@@ -2484,7 +2734,6 @@
                 el.classList.add('show');
             }
 
-            // 同步将显示过的气泡内容写入右侧平滑滚动框
             if (logOptions.record !== false) {
                 appendChatHistoryItem(color, text, logOptions);
             }
@@ -2622,8 +2871,8 @@
             const { size, pad, cell } = metrics;
             ctx.clearRect(0, 0, size, size);
 
-            // 1. 棋盘网格线
-            ctx.strokeStyle = 'rgba(72, 40, 14, 0.78)';
+            // 1. 棋盘网格线（关灯模式下柔和对比度）
+            ctx.strokeStyle = isLightsOff ? 'rgba(42, 24, 10, 0.72)' : 'rgba(72, 40, 14, 0.78)';
             ctx.lineWidth = 1.1;
             for (let i = 0; i < BOARD_SIZE; i++) {
                 const p = pad + i * cell;
@@ -2632,7 +2881,7 @@
             }
 
             // 2. 坐标刻度
-            ctx.fillStyle = 'rgba(72, 40, 14, 0.8)';
+            ctx.fillStyle = isLightsOff ? 'rgba(42, 24, 10, 0.78)' : 'rgba(72, 40, 14, 0.8)';
             ctx.font = `600 ${Math.max(9, Math.floor(cell * 0.34))}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2646,7 +2895,7 @@
             for (const [sr, sc] of STAR_COORDS) {
                 ctx.beginPath();
                 ctx.arc(pad + sc * cell, pad + sr * cell, Math.max(3, cell * 0.12), 0, Math.PI * 2);
-                ctx.fillStyle = '#48280e';
+                ctx.fillStyle = isLightsOff ? '#2f1b0a' : '#48280e';
                 ctx.fill();
             }
 
@@ -2707,7 +2956,7 @@
                 ctx.restore();
             }
 
-            // 5. 3D 立体黑白棋子
+            // 5. 3D 立体黑白棋子（关灯模式下柔化白棋高光）
             const rStone = cell * 0.45;
             for (let r = 0; r < BOARD_SIZE; r++) {
                 for (let c = 0; c < BOARD_SIZE; c++) {
@@ -2732,9 +2981,15 @@
                         ctx.fillStyle = g;
                     } else {
                         const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
-                        g.addColorStop(0, '#ffffff');
-                        g.addColorStop(0.7, '#f2efec');
-                        g.addColorStop(1, '#cdc6be');
+                        if (isLightsOff) {
+                            g.addColorStop(0, '#ebe7e0');
+                            g.addColorStop(0.7, '#d5cfc6');
+                            g.addColorStop(1, '#b0a99f');
+                        } else {
+                            g.addColorStop(0, '#ffffff');
+                            g.addColorStop(0.7, '#f2efec');
+                            g.addColorStop(1, '#cdc6be');
+                        }
                         ctx.fillStyle = g;
                     }
                     ctx.fill();
@@ -2860,8 +3115,9 @@
             }
         });
 
-        // 检查网址是否带有 ?room=XXXX 参数（点击 Bark 推送通知打开时直接进房！）
+        // 页面初始化：恢复关灯模式状态 & 检查 ?room=XXXX 参数
         window.addEventListener('DOMContentLoaded', () => {
+            applyLightsOffUI();
             const params = new URLSearchParams(window.location.search);
             const roomParam = params.get('room');
             if (roomParam) {
