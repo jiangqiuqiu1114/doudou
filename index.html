@@ -2,9 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 让网页在手机端也能完美按比例显示 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>doudou</title>
+    <title>doudou & yaya - 浪漫五子棋</title>
     <!-- 引入 MQTT.js 与 PeerJS 双重免配置跨网联机引擎 -->
     <script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
@@ -23,7 +22,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* 粉紫橘浪漫渐变背景 */
             background: linear-gradient(135deg, #ffd3b6 0%, #ffaaa5 40%, #d4a5b8 80%, #a8e6cf 100%);
             background-size: 300% 300%;
             animation: gradientBG 15s ease infinite;
@@ -63,7 +61,7 @@
             100% { transform: translateY(-30px) scale(1.05); }
         }
 
-        /* 🎵 悬浮音乐按钮与 🌙 悬浮关灯按钮样式 */
+        /* 悬浮按钮 */
         .music-btn,
         .light-float-btn {
             position: fixed;
@@ -85,27 +83,14 @@
             transition: all 0.3s ease;
             opacity: 0.78;
         }
-        .music-btn {
-            right: 20px;
-            font-size: 22px;
-            opacity: 0.6;
-        }
-        .light-float-btn {
-            right: 74px;
-        }
-        .music-btn:hover,
-        .light-float-btn:hover {
-            opacity: 1;
-            transform: scale(1.05);
-        }
+        .music-btn { right: 20px; font-size: 22px; opacity: 0.6; }
+        .light-float-btn { right: 74px; }
+        .music-btn:hover, .light-float-btn:hover { opacity: 1; transform: scale(1.05); }
 
-        .playing {
-            opacity: 1;
-            animation: spin 4s linear infinite;
-        }
+        .playing { opacity: 1; animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 4. 磨砂玻璃质感卡片 (原留言主卡片) */
+        /* 磨砂玻璃卡片 */
         .container {
             position: relative;
             z-index: 10;
@@ -115,17 +100,13 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
             padding: 45px 30px 36px;
             border-radius: 28px;
-            box-shadow: 
-                0 20px 40px rgba(255, 154, 159, 0.15), 
-                0 1px 3px rgba(0, 0, 0, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(255, 154, 159, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
             text-align: center;
             width: 92%;
             max-width: 390px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* 5. 豆豆专属 Badge 小标 */
         .badge {
             display: inline-flex;
             justify-content: center;
@@ -141,7 +122,6 @@
             font-weight: bold;
             animation: heartbeat 2s infinite ease-in-out;
         }
-
         @keyframes heartbeat {
             0% { transform: scale(1); }
             14% { transform: scale(1.1); }
@@ -150,28 +130,10 @@
             70% { transform: scale(1); }
         }
 
-        h2 {
-            color: #4a3e3d;
-            margin-bottom: 12px;
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-        }
+        h2 { color: #4a3e3d; margin-bottom: 12px; font-size: 26px; font-weight: 800; }
+        p.subtitle { font-size: 14px; color: #8b7c7a; margin-bottom: 30px; }
 
-        p.subtitle {
-            font-size: 14px;
-            color: #8b7c7a;
-            margin-bottom: 30px;
-            transition: color 0.3s ease;
-        }
-
-        /* 6. 交互式文本框 */
-        .input-group {
-            position: relative;
-            margin-bottom: 24px;
-        }
-
+        .input-group { position: relative; margin-bottom: 24px; }
         input[type="text"] {
             width: 100%;
             padding: 15px 45px 15px 18px;
@@ -184,7 +146,6 @@
             color: #4a3e3d;
             user-select: text;
         }
-
         input[type="text"]:focus {
             border-color: #ff9a9f;
             background-color: #ffffff;
@@ -203,13 +164,8 @@
             display: none;
             font-size: 18px;
             padding: 5px;
-            transition: color 0.2s;
-        }
-        .clear-btn:hover {
-            color: #ff9a9f;
         }
 
-        /* 7. 灵动召唤按钮 */
         button#sendBtn {
             width: 100%;
             padding: 16px;
@@ -222,28 +178,10 @@
             letter-spacing: 1.5px;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(255, 154, 159, 0.4);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s;
         }
+        button#sendBtn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.03); }
 
-        button#sendBtn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 154, 159, 0.5);
-            filter: brightness(1.03);
-        }
-
-        button#sendBtn:active:not(:disabled) {
-            transform: translateY(1px);
-            box-shadow: 0 3px 10px rgba(255, 154, 159, 0.3);
-        }
-
-        button#sendBtn:disabled {
-            background: #d8cfcd;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* 8. 五子棋入口按钮与专属对弈屋样式 */
         .divider-line {
             display: flex;
             align-items: center;
@@ -251,16 +189,13 @@
             color: #b5a6a4;
             font-size: 12px;
         }
-        .divider-line::before,
-        .divider-line::after {
+        .divider-line::before, .divider-line::after {
             content: "";
             flex: 1;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(181, 166, 164, 0.35), transparent);
         }
-        .divider-line span {
-            padding: 0 10px;
-        }
+        .divider-line span { padding: 0 10px; }
 
         button#gomokuBtn {
             width: 100%;
@@ -271,25 +206,16 @@
             border-radius: 16px;
             font-size: 15.5px;
             font-weight: bold;
-            letter-spacing: 1px;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(161, 140, 209, 0.35);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-        }
-        button#gomokuBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(161, 140, 209, 0.5);
-            filter: brightness(1.04);
-        }
-        button#gomokuBtn:active {
-            transform: translateY(1px);
+            transition: all 0.3s;
         }
 
-        /* 五子棋对战屋大面板 */
+        /* 五子棋主面板 */
         .gomoku-wrapper {
             position: relative;
             z-index: 10;
@@ -298,16 +224,14 @@
             -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.75);
             border-radius: 28px;
-            box-shadow: 
-                0 24px 48px rgba(180, 120, 140, 0.22),
-                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            box-shadow: 0 24px 48px rgba(180, 120, 140, 0.22);
             width: 95%;
-            max-width: 920px;
+            max-width: 960px;
             padding: 20px;
             color: #4a3e3d;
             display: none;
             animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
+            transition: all 0.35s ease;
         }
 
         @keyframes fadeInScale {
@@ -324,7 +248,6 @@
             padding-bottom: 14px;
             border-bottom: 1px solid rgba(234, 225, 223, 0.8);
             margin-bottom: 14px;
-            transition: border-color 0.35s ease;
         }
 
         .back-btn {
@@ -339,12 +262,6 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            transition: all 0.2s;
-        }
-        .back-btn:hover {
-            background: #fff0f1;
-            border-color: #ff9a9f;
-            color: #d96b70;
         }
 
         .mode-tabs {
@@ -353,7 +270,6 @@
             padding: 4px;
             border-radius: 14px;
             gap: 4px;
-            transition: background 0.35s ease;
         }
         .mode-tab {
             border: none;
@@ -364,7 +280,6 @@
             padding: 6px 12px;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s;
         }
         .mode-tab.active {
             background: linear-gradient(135deg, #ff9a9f 0%, #f68084 100%);
@@ -378,13 +293,10 @@
             gap: 16px;
             align-items: start;
         }
-        @media (min-width: 780px) {
-            .gomoku-grid {
-                grid-template-columns: 1.25fr 0.95fr;
-            }
+        @media (min-width: 820px) {
+            .gomoku-grid { grid-template-columns: 1.25fr 0.95fr; }
         }
 
-        /* 玩家对战卡片栏 */
         .players-bar {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -407,6 +319,7 @@
             background: #fff9fa;
             box-shadow: 0 6px 16px rgba(255, 139, 148, 0.22);
         }
+
         .stone-avatar {
             width: 36px;
             height: 36px;
@@ -415,14 +328,8 @@
             position: relative;
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
-        .stone-avatar.black {
-            background: radial-gradient(circle at 30% 30%, #666, #1a1a1a 70%, #050505);
-            border: 2px solid #444;
-        }
-        .stone-avatar.white {
-            background: radial-gradient(circle at 30% 30%, #fff, #f0ece9 70%, #ccc5be);
-            border: 2px solid #fff;
-        }
+        .stone-avatar.black { background: radial-gradient(circle at 30% 30%, #666, #1a1a1a 70%, #050505); }
+        .stone-avatar.white { background: radial-gradient(circle at 30% 30%, #fff, #f0ece9 70%, #ccc5be); }
         .presence-dot {
             position: absolute;
             right: -2px;
@@ -432,17 +339,10 @@
             border-radius: 50%;
             border: 2px solid #fff;
             background: #f59e0b;
-            transition: background 0.3s;
         }
-        .presence-dot.online {
-            background: #10b981;
-            box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
-        }
-        .player-meta {
-            text-align: left;
-            min-width: 0;
-            flex: 1;
-        }
+        .presence-dot.online { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
+
+        .player-meta { text-align: left; min-width: 0; flex: 1; }
         .player-name {
             font-size: 13.5px;
             font-weight: 700;
@@ -453,26 +353,18 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            transition: color 0.3s ease;
         }
         .me-tag {
-            display: inline-block;
             font-size: 10px;
             padding: 1px 5px;
             border-radius: 6px;
             background: #ffe0e4;
             color: #d9536f;
             font-weight: 700;
-            flex-shrink: 0;
         }
-        .player-sub {
-            font-size: 11px;
-            color: #968583;
-            margin-top: 2px;
-            transition: color 0.3s ease;
-        }
+        .player-sub { font-size: 11px; color: #968583; margin-top: 2px; }
 
-        /* 胜率进度条指示器 */
+        /* 胜率栏 */
         .winrate-box {
             display: flex;
             align-items: center;
@@ -493,20 +385,10 @@
             overflow: hidden;
             display: flex;
         }
-        .winrate-fill-black {
-            background: #2a2a2a;
-            height: 100%;
-            width: 50%;
-            transition: width 0.4s ease;
-        }
-        .winrate-fill-white {
-            background: #fff;
-            height: 100%;
-            width: 50%;
-            transition: width 0.4s ease;
-        }
+        .winrate-fill-black { background: #2a2a2a; height: 100%; width: 50%; transition: width 0.4s ease; }
+        .winrate-fill-white { background: #fff; height: 100%; width: 50%; transition: width 0.4s ease; }
 
-        /* 情侣互动气泡 */
+        /* 气泡 */
         .chat-bubble {
             position: absolute;
             bottom: -34px;
@@ -524,12 +406,8 @@
             pointer-events: none;
             display: none;
         }
-        .chat-bubble.right-side {
-            left: auto;
-            right: 10px;
-            border-top-left-radius: 14px;
-            border-top-right-radius: 2px;
-        }
+        .chat-bubble.right-side { left: auto; right: 10px; border-top-left-radius: 14px; border-top-right-radius: 2px; }
+        .chat-bubble.show { display: block; animation: bubblePop 4s ease forwards; }
         @keyframes bubblePop {
             0% { opacity: 0; transform: translateY(6px) scale(0.9); }
             12% { opacity: 1; transform: translateY(0) scale(1.03); }
@@ -537,12 +415,7 @@
             85% { opacity: 1; }
             100% { opacity: 0; transform: translateY(-5px); }
         }
-        .chat-bubble.show {
-            display: block;
-            animation: bubblePop 4s ease forwards;
-        }
 
-        /* 状态横幅 */
         .status-strip {
             background: rgba(255, 245, 246, 0.9);
             border: 1px solid #f7d9dc;
@@ -555,10 +428,9 @@
             gap: 8px;
             font-size: 12.5px;
             color: #6e5856;
-            transition: all 0.35s ease;
         }
 
-        /* 唯美暖木色棋盘容器 */
+        /* 棋盘主框 */
         .board-box {
             width: 100%;
             max-width: 500px;
@@ -567,16 +439,13 @@
             background: linear-gradient(145deg, #ecc58c 0%, #dcab68 55%, #ce9952 100%);
             border: 4px solid #8c5828;
             border-radius: 20px;
-            box-shadow: 
-                0 16px 35px rgba(107, 66, 27, 0.28),
-                inset 0 2px 4px rgba(255, 255, 255, 0.5),
-                inset 0 -3px 6px rgba(90, 50, 15, 0.4);
+            box-shadow: 0 16px 35px rgba(107, 66, 27, 0.28);
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 6px;
-            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
         }
         canvas#gomokuCanvas {
             display: block;
@@ -586,7 +455,38 @@
             touch-action: manipulation;
         }
 
-        /* 手机端防误触确认落子悬浮钮 */
+        /* 投掷道具飞行与爆炸画布 */
+        canvas#fxCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 22;
+        }
+
+        /* 迷雾区域遮罩 (彩蛋999) */
+        .board-fog {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 225, 235, 0.95) 0%, rgba(240, 195, 215, 0.75) 60%, transparent 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            pointer-events: none;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 25px rgba(255, 175, 200, 0.6);
+            animation: pulseFog 3s ease-in-out infinite alternate;
+        }
+        @keyframes pulseFog {
+            0% { transform: scale(0.95); opacity: 0.85; }
+            100% { transform: scale(1.05); opacity: 0.98; }
+        }
+
         .confirm-move-btn {
             position: absolute;
             bottom: 14px;
@@ -605,14 +505,13 @@
             display: none;
         }
 
-        /* 胜负结算浮层 */
         .victory-banner {
             position: absolute;
             top: 14px;
             left: 14px;
             right: 14px;
-            z-index: 25;
-            background: rgba(255, 255, 255, 0.95);
+            z-index: 26;
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(10px);
             border: 2px solid #ff9a9f;
             border-radius: 18px;
@@ -622,10 +521,8 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            transition: background 0.35s ease, border-color 0.35s ease;
         }
 
-        /* 棋盘下方按钮栏 */
         .board-actions {
             display: flex;
             flex-wrap: wrap;
@@ -644,26 +541,49 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .action-pill:hover {
-            background: #fff0f2;
-            border-color: #ff9a9f;
-        }
+        .action-pill:hover { background: #fff0f2; border-color: #ff9a9f; }
         .action-pill.primary {
             background: linear-gradient(135deg, #ff9a9f 0%, #fecfef 100%);
             color: #fff;
             border: none;
             box-shadow: 0 4px 12px rgba(255, 154, 159, 0.35);
         }
+        .action-pill.active-mode {
+            background: #ff758c;
+            color: #fff;
+            border-color: #ff758c;
+        }
 
-        /* 右侧房间与互动侧栏 */
+        /* 🎮 互动道具抛掷排 */
+        .item-throw-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 240, 243, 0.85);
+            border: 1px dashed #ffb4c2;
+            border-radius: 14px;
+            padding: 6px 12px;
+            margin-top: 8px;
+        }
+        .throw-item-btn {
+            background: #fff;
+            border: 1px solid #ffd0d8;
+            border-radius: 12px;
+            padding: 5px 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .throw-item-btn:hover { transform: scale(1.18); }
+
+        /* 右侧面板 */
         .side-card {
-            background: rgba(255, 255, 255, 0.72);
+            background: rgba(255, 255, 255, 0.75);
             border: 1px solid rgba(234, 220, 218, 0.9);
             border-radius: 20px;
             padding: 14px;
             margin-bottom: 12px;
             text-align: left;
-            transition: background 0.35s ease, border-color 0.35s ease;
         }
         .side-title {
             font-size: 14px;
@@ -673,14 +593,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: color 0.3s ease;
         }
-        .role-switch {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
+        .role-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .role-btn {
             padding: 8px;
             border-radius: 12px;
@@ -690,20 +604,10 @@
             font-size: 12.5px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        .role-btn.active {
-            border-color: #ff8b94;
-            background: #fff0f2;
-            color: #d65c66;
-        }
+        .role-btn.active { border-color: #ff8b94; background: #fff0f2; color: #d65c66; }
 
-        .quick-room-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
+        .quick-room-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
         .couple-room-btn {
             padding: 9px 10px;
             border-radius: 12px;
@@ -713,14 +617,8 @@
             font-size: 12.5px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        .couple-room-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(255, 154, 159, 0.25);
         }
 
-        /* 房间实时在线状态胶囊条 */
         .online-roster-bar {
             background: rgba(255, 248, 249, 0.95);
             border: 1px dashed #f5b8c0;
@@ -733,7 +631,6 @@
             align-items: center;
             justify-content: space-between;
             gap: 6px;
-            transition: all 0.35s ease;
         }
 
         .bark-call-btn {
@@ -752,144 +649,80 @@
             justify-content: center;
             gap: 6px;
             margin-top: 8px;
-            transition: all 0.2s;
-        }
-        .bark-call-btn:hover:not(:disabled) {
-            transform: translateY(-1px);
-            filter: brightness(1.04);
-        }
-        .bark-call-btn:disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
         }
 
-        .quick-phrases {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .phrase-chip {
-            border: 1px solid #eadad8;
-            background: #fff;
-            color: #6b5a58;
-            padding: 5px 10px;
-            border-radius: 999px;
-            font-size: 11.5px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .phrase-chip:hover {
-            background: #fff0f2;
-            border-color: #ff9a9f;
-            color: #d96b70;
-        }
-
-        /* 9. 右侧：聊天内容上下平滑滚动框样式 */
+        /* 聊天箱 */
         .chat-history-box {
             margin-top: 10px;
             background: rgba(255, 250, 251, 0.85);
             border: 1px solid #f3dce0;
             border-radius: 14px;
-            height: 155px;
+            height: 140px;
             overflow-y: auto;
             padding: 10px 12px;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            box-shadow: inset 0 2px 6px rgba(255, 154, 159, 0.08);
-            transition: background 0.35s ease, border-color 0.35s ease;
         }
-        .chat-history-box::-webkit-scrollbar {
-            width: 5px;
-        }
-        .chat-history-box::-webkit-scrollbar-track {
-            background: rgba(255, 235, 238, 0.4);
-            border-radius: 6px;
-        }
-        .chat-history-box::-webkit-scrollbar-thumb {
-            background: rgba(255, 154, 159, 0.65);
-            border-radius: 6px;
-        }
-        .chat-empty-hint {
-            margin: auto;
-            font-size: 12px;
-            color: #b5a3a1;
-            text-align: center;
-            padding: 16px 0;
-        }
-        .chat-log-item {
-            display: flex;
-            flex-direction: column;
-            max-width: 86%;
-            animation: chatSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .chat-log-item.mine {
-            align-self: flex-end;
-            align-items: flex-end;
-        }
-        .chat-log-item.other {
-            align-self: flex-start;
-            align-items: flex-start;
-        }
-        @keyframes chatSlideIn {
-            0% { opacity: 0; transform: translateY(6px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .chat-log-meta {
-            font-size: 10.5px;
-            color: #9e8c8a;
-            margin-bottom: 2px;
-            padding: 0 3px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+        .chat-empty-hint { margin: auto; font-size: 12px; color: #b5a3a1; text-align: center; }
+        .chat-log-item { display: flex; flex-direction: column; max-width: 86%; }
+        .chat-log-item.mine { align-self: flex-end; align-items: flex-end; }
+        .chat-log-item.other { align-self: flex-start; align-items: flex-start; }
+        .chat-log-meta { font-size: 10.5px; color: #9e8c8a; margin-bottom: 2px; }
         .chat-log-bubble {
             padding: 6px 11px;
             border-radius: 13px;
             font-size: 12.5px;
             line-height: 1.4;
             word-break: break-word;
-            user-select: text;
         }
         .chat-log-item.mine .chat-log-bubble {
             background: linear-gradient(135deg, #ff8598 0%, #ff9eb5 100%);
             color: #ffffff;
             border-bottom-right-radius: 3px;
-            box-shadow: 0 3px 8px rgba(255, 133, 152, 0.25);
         }
         .chat-log-item.other .chat-log-bubble {
             background: #ffffff;
             color: #4a3e3d;
             border: 1px solid #f2dcdf;
             border-bottom-left-radius: 3px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-        }
-        .clear-chat-btn {
-            border: none;
-            background: transparent;
-            color: #b09d9b;
-            font-size: 11px;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        .clear-chat-btn:hover {
-            color: #d9536f;
-            background: rgba(255, 224, 228, 0.6);
         }
 
-        /* 唯美轻提示 Toast */
+        .quick-phrases { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .phrase-chip {
+            border: 1px solid #eadad8;
+            background: #fff;
+            color: #6b5a58;
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            cursor: pointer;
+        }
+
+        /* 暗号快捷药丸 */
+        .secret-badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 6px;
+        }
+        .secret-chip {
+            font-size: 10.5px;
+            padding: 3px 8px;
+            border-radius: 8px;
+            background: #fff0f3;
+            border: 1px dashed #ffa8b8;
+            color: #d84562;
+            cursor: pointer;
+        }
+
+        /* 吐司弹窗 */
         .toast-box {
             position: fixed;
             top: 22px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 200;
+            z-index: 300;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -900,243 +733,79 @@
             backdrop-filter: blur(12px);
             border: 1.5px solid #ff9a9f;
             color: #4a3e3d;
-            padding: 11px 20px;
+            padding: 10px 18px;
             border-radius: 999px;
             font-size: 13.5px;
             font-weight: 600;
             box-shadow: 0 10px 25px rgba(255, 154, 159, 0.35);
-            animation: fadeInScale 0.25s ease;
         }
 
-        /* 🌙 10. 一键关灯护眼模式 */
+        /* 全屏心形飘落容器 (彩蛋520) */
+        .heart-fall-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 250;
+            overflow: hidden;
+        }
+        .falling-heart {
+            position: absolute;
+            font-size: 22px;
+            animation: fallDown linear forwards;
+        }
+        @keyframes fallDown {
+            0% { transform: translateY(-30px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 关灯护眼样式 */
         body.lights-off {
             background: linear-gradient(135deg, #0d0e17 0%, #151726 45%, #1c182c 85%, #111924 100%);
-            background-size: 300% 300%;
             color: #d8d4e2;
         }
-        body.lights-off .bubble {
-            background: rgba(255, 255, 255, 0.035);
-            opacity: 0.35;
-        }
-        body.lights-off .music-btn,
-        body.lights-off .light-float-btn {
-            background: rgba(30, 32, 48, 0.85);
-            border-color: rgba(255, 255, 255, 0.14);
-            color: #ffd97d;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-        body.lights-off .container,
-        body.lights-off .gomoku-wrapper {
+        body.lights-off .container, body.lights-off .gomoku-wrapper {
             background: rgba(22, 24, 36, 0.92);
             border-color: rgba(255, 255, 255, 0.08);
-            box-shadow:
-                0 24px 55px rgba(0, 0, 0, 0.65),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
             color: #e2deeb;
-        }
-        body.lights-off h2,
-        body.lights-off .side-title,
-        body.lights-off .player-name {
-            color: #ebe7f3;
-        }
-        body.lights-off p.subtitle,
-        body.lights-off .player-sub,
-        body.lights-off .divider-line {
-            color: #938ea3;
-        }
-        body.lights-off .winrate-box {
-            background: rgba(30, 32, 48, 0.9);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        body.lights-off .winrate-bar {
-            background: #25283a;
-        }
-        body.lights-off .winrate-fill-white {
-            background: #e2deeb;
-        }
-        body.lights-off .gomoku-topbar {
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-        body.lights-off .back-btn,
-        body.lights-off .action-pill {
-            background: rgba(36, 39, 58, 0.9);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #d5d0e2;
-        }
-        body.lights-off .back-btn:hover,
-        body.lights-off .action-pill:hover {
-            background: rgba(52, 56, 82, 0.95);
-            border-color: #c96f80;
-            color: #ffd6de;
-        }
-        body.lights-off .action-pill.primary {
-            background: linear-gradient(135deg, #c85a70 0%, #9b5277 100%);
-            color: #f7f2f6;
-            box-shadow: 0 4px 12px rgba(200, 90, 112, 0.25);
-        }
-        body.lights-off .mode-tabs {
-            background: rgba(14, 15, 24, 0.75);
-        }
-        body.lights-off .mode-tab {
-            color: #8f8a9f;
-        }
-        body.lights-off .mode-tab.active {
-            background: linear-gradient(135deg, #c85a70 0%, #a34e6c 100%);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-        }
-        body.lights-off .player-card {
-            background: rgba(31, 34, 50, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-        body.lights-off .player-card.active-turn {
-            background: rgba(45, 36, 56, 0.92);
-            border-color: #d46b82;
-            box-shadow: 0 6px 18px rgba(212, 107, 130, 0.18);
-        }
-        body.lights-off .me-tag {
-            background: rgba(212, 107, 130, 0.22);
-            color: #ff9eb0;
-        }
-        body.lights-off .status-strip {
-            background: rgba(30, 32, 48, 0.9);
-            border-color: rgba(255, 255, 255, 0.08);
-            color: #cfc9dc;
         }
         body.lights-off .board-box {
             background: linear-gradient(145deg, #b8915c 0%, #9e7844 55%, #876334 100%);
             border-color: #4f3418;
-            box-shadow:
-                0 16px 40px rgba(0, 0, 0, 0.65),
-                inset 0 2px 4px rgba(255, 255, 255, 0.15),
-                inset 0 -3px 6px rgba(30, 16, 5, 0.6);
         }
-        body.lights-off .side-card {
-            background: rgba(29, 31, 46, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-        body.lights-off .role-btn {
-            background: rgba(38, 41, 60, 0.85);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #b8b2c8;
-        }
-        body.lights-off .role-btn.active {
-            background: rgba(200, 90, 112, 0.22);
-            border-color: #d46b82;
-            color: #ffb3c1;
-        }
-        body.lights-off .online-roster-bar {
-            background: rgba(22, 24, 37, 0.9);
-            border-color: rgba(212, 107, 130, 0.35);
-            color: #c5bfd4;
-        }
-        body.lights-off #roomCodeBadge {
-            background: rgba(212, 107, 130, 0.18) !important;
-            border-color: rgba(212, 107, 130, 0.4) !important;
-            color: #ff9eb0 !important;
-        }
-        body.lights-off .couple-room-btn {
-            background: linear-gradient(135deg, rgba(64, 42, 60, 0.9) 0%, rgba(48, 35, 54, 0.9) 100%);
-            border-color: rgba(212, 107, 130, 0.35);
-            color: #ffadc0;
-        }
-        body.lights-off input[type="text"] {
-            background-color: rgba(18, 20, 32, 0.85);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #eae6f2;
-        }
-        body.lights-off input[type="text"]::placeholder {
-            color: #6e6a7c;
-        }
-        body.lights-off input[type="text"]:focus {
-            background-color: rgba(24, 27, 42, 0.95);
-            border-color: #d46b82;
-            box-shadow: 0 0 12px rgba(212, 107, 130, 0.25);
-        }
-        body.lights-off .bark-call-btn,
-        body.lights-off button#sendBtn {
-            background: linear-gradient(135deg, #c4556d 0%, #99496e 100%);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-        }
-        body.lights-off button#gomokuBtn {
-            background: linear-gradient(135deg, #6b5b95 0%, #9b5d89 100%);
-            border-color: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-        }
-        body.lights-off .chat-history-box {
-            background: rgba(18, 20, 31, 0.9);
-            border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
-        }
-        body.lights-off .chat-history-box::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.04);
-        }
-        body.lights-off .chat-history-box::-webkit-scrollbar-thumb {
-            background: rgba(212, 107, 130, 0.45);
-        }
-        body.lights-off .chat-empty-hint,
-        body.lights-off .chat-log-meta {
-            color: #7c778c;
-        }
-        body.lights-off .chat-log-item.mine .chat-log-bubble {
-            background: linear-gradient(135deg, #b84f66 0%, #944468 100%);
-            color: #f5f0f6;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-        }
-        body.lights-off .chat-log-item.other .chat-log-bubble {
-            background: rgba(38, 41, 60, 0.95);
-            color: #e2deeb;
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        body.lights-off .phrase-chip {
-            background: rgba(36, 39, 58, 0.85);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #c2bdd1;
-        }
-        body.lights-off .phrase-chip:hover {
-            background: rgba(200, 90, 112, 0.25);
-            border-color: #d46b82;
-            color: #ffccd5;
-        }
-        body.lights-off .victory-banner {
-            background: rgba(26, 28, 42, 0.96);
-            border-color: #d46b82;
-        }
-        body.lights-off .toast-item {
-            background: rgba(30, 32, 48, 0.96);
-            border-color: #d46b82;
-            color: #f0ecf8;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
-        }
+        body.lights-off .side-card { background: rgba(29, 31, 46, 0.85); border-color: rgba(255, 255, 255, 0.08); }
+        body.lights-off .item-throw-bar { background: rgba(40, 25, 38, 0.9); border-color: #7a3a4b; }
+        body.lights-off .throw-item-btn { background: #2f2331; border-color: #5c3546; }
+        body.lights-off input[type="text"] { background-color: rgba(18, 20, 32, 0.85); border-color: rgba(255, 255, 255, 0.12); color: #eae6f2; }
     </style>
 </head>
 <body>
 
     <audio id="bgMusic" src="爱你.mp3" loop preload="auto"></audio>
 
-    <div id="lightFloatToggle" class="light-float-btn" onclick="toggleLightsOffMode()" title="一键关灯/开灯护眼模式">🌙</div>
-    <div id="musicToggle" class="music-btn" title="播放/暂停音乐">🎵</div>
+    <div id="lightFloatToggle" class="light-float-btn" onclick="toggleLightsOffMode()" title="关灯/开灯">🌙</div>
+    <div id="musicToggle" class="music-btn" title="音乐">🎵</div>
     <div id="toastContainer" class="toast-box"></div>
+    <div id="heartFallZone" class="heart-fall-container"></div>
 
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     
-    <!-- 视图 1：留言主卡片 -->
+    <!-- 视图 1：留言卡片 -->
     <div class="container" id="messageCardView">
         <div class="badge">豆</div>
         <h2>欢迎豆豆宝宝!</h2>
-        <p class="subtitle">有什么想和芽芽说的，写在这里吧 💌</p>
+        <p class="subtitle">想对芽芽说什么，写在这里召唤他吧 💌</p>
         
         <div class="input-group">
-            <input type="text" id="messageInput" placeholder="在这里输入想说的话..." autocomplete="off">
-            <button class="clear-btn" id="clearBtn" title="清空">✕</button>
+            <input type="text" id="messageInput" placeholder="输入想说的话 (或输入彩蛋暗号)..." autocomplete="off">
+            <button class="clear-btn" id="clearBtn">✕</button>
         </div>
         
         <button id="sendBtn">召唤芽芽</button>
 
-        <div class="divider-line"><span>✨ 或者和芽芽一起玩 ✨</span></div>
+        <div class="divider-line"><span>✨ 或者和芽芽下五子棋 ✨</span></div>
         <button id="gomokuBtn" type="button">
             <span>♟️</span>
             <span>来一局五子棋</span>
@@ -1147,8 +816,7 @@
     <div class="gomoku-wrapper" id="gomokuView">
         <div class="gomoku-topbar">
             <button class="back-btn" id="backToCardBtn" type="button">
-                <span>←</span>
-                <span>返回留言卡片</span>
+                <span>←</span><span>返回留言卡片</span>
             </button>
 
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -1157,8 +825,8 @@
                     <button class="mode-tab" id="tabAi" onclick="switchMode('ai')">🤖 芽芽AI陪练</button>
                     <button class="mode-tab" id="tabLocal" onclick="switchMode('local')">👥 同屏双人</button>
                 </div>
-                <button class="action-pill" id="lightInlineBtn" onclick="toggleLightsOffMode()" title="一键关灯/开灯护眼">🌙 关灯</button>
-                <button class="action-pill" id="soundBtn" onclick="toggleSoundEffect()" title="落子音效开关">🔊 音效</button>
+                <button class="action-pill" id="lightInlineBtn" onclick="toggleLightsOffMode()">🌙 关灯</button>
+                <button class="action-pill" id="soundBtn" onclick="toggleSoundEffect()">🔊 音效</button>
             </div>
         </div>
 
@@ -1194,7 +862,7 @@
                     </div>
                 </div>
 
-                <!-- 实时胜率预测栏 -->
+                <!-- 胜率预测 -->
                 <div class="winrate-box">
                     <span id="blackWinRateText" style="min-width:70px;">⚫ 黑胜率 50%</span>
                     <div class="winrate-bar">
@@ -1204,18 +872,22 @@
                     <span id="whiteWinRateText" style="min-width:70px; text-align:right;">⚪ 白胜率 50%</span>
                 </div>
 
-                <!-- 局势状态条 -->
+                <!-- 局势条 -->
                 <div class="status-strip">
-                    <span id="statusBannerText" style="font-weight:600;">🌸 请选择右侧房间号或点击呼叫芽芽一起下棋</span>
-                    <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; flex-shrink:0;">
+                    <span id="statusBannerText" style="font-weight:600;">🌸 正在等待对方进入房间...</span>
+                    <div style="display:flex; align-items:center; gap:6px; font-size:11.5px; flex-shrink:0;">
                         <span>手数: <strong id="moveCountText">0</strong></span>
-                        <button class="action-pill" style="padding:3px 8px; font-size:11px;" onclick="toggleAimMode()" id="aimModeBtn">🎯 防误触: 自动</button>
+                        <button class="action-pill" style="padding:2px 7px; font-size:11px;" onclick="toggleAimMode()" id="aimModeBtn">🎯 自动</button>
                     </div>
                 </div>
 
-                <!-- 15x15 棋盘 -->
-                <div class="board-box">
+                <!-- 棋盘主容器 (支持激光笔、落子准星、迷雾、投掷道具) -->
+                <div class="board-box" id="boardBox">
                     <canvas id="gomokuCanvas"></canvas>
+                    <canvas id="fxCanvas"></canvas>
+
+                    <!-- 动态迷雾 (暗号999) -->
+                    <div id="boardFogLayer" class="board-fog" style="display:none;">☁️</div>
 
                     <button class="confirm-move-btn" id="confirmMoveBtn" onclick="confirmPendingStone()">
                         ✅ 确认落子 (<span id="confirmCoordText">H8</span>)
@@ -1223,14 +895,24 @@
 
                     <div class="victory-banner" id="victoryBanner">
                         <div style="text-align:left;">
-                            <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#d9536f;">🎉 豆豆获胜啦！五子连珠</div>
-                            <div id="victorySub" style="font-size:11.5px; color:#8b7c7a; margin-top:2px;">点击「再来一局」将自动交换黑白先后手</div>
+                            <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#d9536f;">🎉 获胜啦！</div>
+                            <div id="victorySub" style="font-size:11.5px; color:#8b7c7a;">点击再来一局继续对战</div>
                         </div>
-                        <div style="display:flex; gap:6px; flex-shrink:0;">
+                        <div style="display:flex; gap:6px;">
                             <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局</button>
                             <button class="action-pill" onclick="hideVictoryBanner()">✕</button>
                         </div>
                     </div>
+                </div>
+
+                <!-- 🎨 实时道具抛掷互动条 -->
+                <div class="item-throw-bar">
+                    <span style="font-size:12px; font-weight:700; color:#b55368;">🎁 投掷互动:</span>
+                    <button class="throw-item-btn" onclick="throwInteractiveItem('💋')" title="飞吻一个">💋</button>
+                    <button class="throw-item-btn" onclick="throwInteractiveItem('🍅')" title="丢西红柿">🍅</button>
+                    <button class="throw-item-btn" onclick="throwInteractiveItem('🔨')" title="敲敲脑瓜">🔨</button>
+                    <button class="throw-item-btn" onclick="throwInteractiveItem('🎆')" title="放浪漫烟花">🎆</button>
+                    <button class="action-pill" id="laserPenBtn" style="padding:4px 9px; font-size:11px;" onclick="toggleLaserPenMode()">🖊️ 激光笔: 关</button>
                 </div>
 
                 <div class="board-actions">
@@ -1239,7 +921,7 @@
                         <button class="action-pill" onclick="handleUndo()">↩️ 悔棋一步</button>
                         <button class="action-pill" onclick="handleResign()">🏳️ 认输</button>
                     </div>
-                    <span id="connStatusTag" style="font-size:11.5px; color:#968583; align-self:center;">🌐 联机引擎就绪</span>
+                    <span id="connStatusTag" style="font-size:11.5px; color:#968583; align-self:center;">🌐 联机就绪</span>
                 </div>
             </div>
 
@@ -1248,76 +930,79 @@
                 <div class="side-card">
                     <div class="side-title">
                         <span>💑 选择我的身份</span>
-                        <span style="font-size:11px; color:#968583; font-weight:normal;">点击即可切换</span>
                     </div>
                     <div class="role-switch">
-                        <button class="role-btn active" id="roleDoudouBtn" onclick="selectIdentity('豆豆宝宝', true)">👧 我是豆豆宝宝</button>
-                        <button class="role-btn" id="roleYayaBtn" onclick="selectIdentity('芽芽', true)">👦 我是芽芽</button>
+                        <button class="role-btn active" id="roleDoudouBtn" onclick="selectIdentity('豆豆宝宝', true)">👧 豆豆宝宝</button>
+                        <button class="role-btn" id="roleYayaBtn" onclick="selectIdentity('芽芽', true)">👦 芽芽</button>
                     </div>
                 </div>
 
                 <div class="side-card" id="onlineRoomCard">
                     <div class="side-title">
-                        <span>🏠 专属联机房</span>
-                        <span id="roomCodeBadge" style="font-family:monospace; font-size:13px; color:#d9536f; background:#fff0f2; padding:2px 8px; border-radius:8px; border:1px solid #ffccd2;">未进房</span>
+                        <span>🏠 联机房</span>
+                        <span id="roomCodeBadge" style="font-family:monospace; font-size:12.5px; color:#d9536f; background:#fff0f2; padding:2px 8px; border-radius:8px;">未进房</span>
                     </div>
 
                     <div class="online-roster-bar">
-                        <span id="roomRosterText">🟡 等待进入房间...</span>
-                        <button class="action-pill" style="padding:4px 9px; font-size:11.5px;" onclick="handleSwapColors()" title="交换黑白棋先后手">🔃 互换黑白棋</button>
+                        <span id="roomRosterText">🟡 正在进房...</span>
+                        <button class="action-pill" style="padding:4px 9px; font-size:11.5px;" onclick="handleSwapColors()">🔃 换黑白棋</button>
                     </div>
 
                     <div class="quick-room-btns">
-                        <button class="couple-room-btn" onclick="joinCoupleRoom('5200')">💖 进入 5200 房间</button>
-                        <button class="couple-room-btn" onclick="joinCoupleRoom('1314')">✨ 进入 1314 房间</button>
+                        <button class="couple-room-btn" onclick="joinCoupleRoom('5200')">💖 5200 房</button>
+                        <button class="couple-room-btn" onclick="joinCoupleRoom('1314')">✨ 1314 房</button>
                     </div>
 
                     <div style="display:flex; gap:6px; margin-bottom:8px;">
-                        <input type="text" id="customRoomInput" maxlength="8" placeholder="自定义房间号 (如 8888)" style="padding:9px 12px; font-size:13px; border-radius:12px;">
-                        <button class="action-pill" style="flex-shrink:0;" onclick="joinCustomRoomInput()">进入房间</button>
+                        <input type="text" id="customRoomInput" maxlength="8" placeholder="自定义房号" style="padding:9px 12px; font-size:13px; border-radius:12px;">
+                        <button class="action-pill" onclick="joinCustomRoomInput()">进房</button>
                     </div>
 
                     <button class="bark-call-btn" id="notifyYayaBtn" onclick="notifyYayaToPlay()">
-                        <span>🔔</span>
-                        <span id="notifyBtnText">一键发通知喊对方进房下棋</span>
+                        <span>🔔</span><span id="notifyBtnText">一键喊对方进房下棋</span>
                     </button>
                 </div>
 
                 <div class="side-card" id="aiSettingCard" style="display:none;">
-                    <div class="side-title">
-                        <span>🤖 芽芽分身 AI 陪练</span>
-                        <span style="font-size:11px; color:#968583; font-weight:normal;">芽芽忙时陪豆豆解闷</span>
+                    <div class="side-title"><span>🤖 芽芽分身 AI 陪练</span></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+                        <button class="role-btn" id="aiEasyBtn" onclick="setAiLevel('easy')">🌱 放水</button>
+                        <button class="role-btn active" id="aiMedBtn" onclick="setAiLevel('medium')">🌸 切磋</button>
+                        <button class="role-btn" id="aiHardBtn" onclick="setAiLevel('hard')">🔥 棋圣</button>
                     </div>
-                    <div style="font-size:12px; color:#7a6a68; margin-bottom:6px;">选择芽芽 AI 的棋力水平：</div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:10px;">
-                        <button class="role-btn" id="aiEasyBtn" onclick="setAiLevel('easy')">🌱 温柔放水</button>
-                        <button class="role-btn active" id="aiMedBtn" onclick="setAiLevel('medium')">🌸 认真切磋</button>
-                        <button class="role-btn" id="aiHardBtn" onclick="setAiLevel('hard')">🔥 棋圣芽芽</button>
-                    </div>
-                    <button class="bark-call-btn" onclick="handleRestartMatch()">✨ 重新开始一局 AI 对战</button>
                 </div>
 
                 <div class="side-card">
                     <div class="side-title">
-                        <span>💬 甜蜜互动传音</span>
-                        <button class="clear-chat-btn" type="button" onclick="clearChatHistoryBox()" title="清空聊天记录">🧹 清空记录</button>
+                        <span>💬 甜蜜互动与专属暗号</span>
+                        <button class="action-pill" style="padding:2px 6px; font-size:11px;" onclick="clearChatHistoryBox()">🧹 清空</button>
                     </div>
 
                     <div class="chat-history-box" id="chatHistoryBox">
-                        <div class="chat-empty-hint" id="chatEmptyHint">💌 互动气泡与悄悄话会在这里上下平滑滚动显示～</div>
+                        <div class="chat-empty-hint" id="chatEmptyHint">💌 互动悄悄话会在这里显示～</div>
                     </div>
 
-                    <!-- 动态快捷回复词条 -->
+                    <!-- 动态快捷语 -->
                     <div class="quick-phrases">
-                        <button class="phrase-chip" id="dynamicHurryChip" onclick="sendDynamicHurry()">🌸 对方快点下～</button>
-                        <button class="phrase-chip" id="dynamicYieldChip" onclick="sendDynamicYield()">🥺 让我一步嘛</button>
-                        <button class="phrase-chip" onclick="sendCoupleChat('✨ 哇！这步棋绝杀！')">✨ 这步绝杀！</button>
-                        <button class="phrase-chip" onclick="sendCoupleChat('❤️ 耍赖不算，悔一步嘛～')">❤️ 悔一步嘛～</button>
-                        <button class="phrase-chip" onclick="sendCoupleChat('😘 赢啦！奖励一朵小红花')">😘 奖励小红花</button>
+                        <button class="phrase-chip" id="dynamicHurryChip" onclick="sendDynamicHurry()">🌸 快点下～</button>
+                        <button class="phrase-chip" id="dynamicYieldChip" onclick="sendDynamicYield()">🥺 让我一步</button>
+                        <button class="phrase-chip" onclick="sendCoupleChat('✨ 这步下得好绝！')">✨ 绝杀！</button>
+                        <button class="phrase-chip" onclick="sendCoupleChat('❤️ 耍赖不算，悔棋嘛')">❤️ 耍赖不算</button>
                     </div>
+
+                    <!-- 🔮 暗号快捷彩蛋 -->
+                    <div style="margin-top:8px; font-size:11.5px; color:#856c6a; font-weight:700;">🎁 专属暗号技能 (点击或聊天输入):</div>
+                    <div class="secret-badge-group">
+                        <span class="secret-chip" onclick="triggerSecretWord('1114')" title="大师最佳落子指引">💡 1114 (神之一手)</span>
+                        <span class="secret-chip" onclick="triggerSecretWord('818')" title="特权：直接覆盖并吃掉对方棋子">⚡ 818 (落子覆盖)</span>
+                        <span class="secret-chip" onclick="triggerSecretWord('520')" title="触发全屏浪漫爱心雨">💖 520 (爱心雨)</span>
+                        <span class="secret-chip" onclick="triggerSecretWord('999')" title="云朵遮蔽棋盘中心">☁️ 999 (迷雾弹)</span>
+                        <span class="secret-chip" onclick="triggerSecretWord('666')" title="强行移走对方最新一颗棋子">🌪️ 666 (乾坤大挪移)</span>
+                    </div>
+
                     <div style="display:flex; gap:6px; margin-top:10px;">
-                        <input type="text" id="chatTextInput" maxlength="36" placeholder="在棋盘上发一句悄悄话..." style="padding:9px 12px; font-size:12.5px; border-radius:12px;" onkeydown="if(event.key==='Enter') sendCustomChatInput()">
-                        <button class="action-pill primary" style="flex-shrink:0;" onclick="sendCustomChatInput()">发送</button>
+                        <input type="text" id="chatTextInput" maxlength="36" placeholder="发一句话或输入暗号..." style="padding:9px 12px; font-size:12.5px; border-radius:12px;" onkeydown="if(event.key==='Enter') sendCustomChatInput()">
+                        <button class="action-pill primary" onclick="sendCustomChatInput()">发送</button>
                     </div>
                 </div>
             </div>
@@ -1326,7 +1011,7 @@
 
     <script>
         // ==========================================
-        // 0. 提示函数
+        // 0. 通用提示函数
         // ==========================================
         function showRomanticToast(msg) {
             const container = document.getElementById('toastContainer');
@@ -1342,7 +1027,7 @@
         }
 
         // ==========================================
-        // 🌙 一键关灯护眼模式控制
+        // 🌙 关灯护眼模式
         // ==========================================
         let isLightsOff = localStorage.getItem('doudou_lights_off') === '1';
 
@@ -1350,16 +1035,9 @@
             document.body.classList.toggle('lights-off', isLightsOff);
             const floatBtn = document.getElementById('lightFloatToggle');
             const inlineBtn = document.getElementById('lightInlineBtn');
-            if (floatBtn) {
-                floatBtn.innerText = isLightsOff ? '☀️' : '🌙';
-                floatBtn.title = isLightsOff ? '切换到日间亮色模式' : '切换到夜间关灯护眼模式';
-            }
-            if (inlineBtn) {
-                inlineBtn.innerText = isLightsOff ? '☀️ 开灯' : '🌙 关灯';
-            }
-            if (typeof drawGomokuBoard === 'function') {
-                drawGomokuBoard();
-            }
+            if (floatBtn) floatBtn.innerText = isLightsOff ? '☀️' : '🌙';
+            if (inlineBtn) inlineBtn.innerText = isLightsOff ? '☀️ 开灯' : '🌙 关灯';
+            if (typeof drawGomokuBoard === 'function') drawGomokuBoard();
         }
 
         window.toggleLightsOffMode = function(e) {
@@ -1367,11 +1045,11 @@
             isLightsOff = !isLightsOff;
             localStorage.setItem('doudou_lights_off', isLightsOff ? '1' : '0');
             applyLightsOffUI();
-            showRomanticToast(isLightsOff ? '🌙 已开启关灯护眼模式，下棋不刺眼啦' : '☀️ 已恢复浪漫亮色模式');
+            showRomanticToast(isLightsOff ? '🌙 已开启护眼模式' : '☀️ 已恢复浪漫模式');
         };
 
         // ==========================================
-        // 🎵 音乐播放控制
+        // 🎵 背景音乐与音效控制
         // ==========================================
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
@@ -1388,19 +1066,104 @@
             isMusicPlaying = !isMusicPlaying;
         }
 
-        musicToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            togglePlay();
-        });
+        musicToggle.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
+        document.body.addEventListener('click', () => { if (!isMusicPlaying) togglePlay(); }, { once: true });
 
-        document.body.addEventListener('click', function() {
-            if (!isMusicPlaying) {
-                togglePlay();
-            }
-        }, { once: true });
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!audioCtx && AudioContextClass) audioCtx = new AudioContextClass();
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function playStoneTap(isBlack = true) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(isBlack ? 700 : 850, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.06);
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.065);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.07);
+            } catch (e) {}
+        }
+
+        function playItemSfx(type) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                if (type === '💋') { // 亲亲啾咪音
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.12);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+                } else if (type === '🔨') { // 木鱼重击音
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(260, now);
+                    osc.frequency.exponentialRampToValueAtTime(80, now + 0.1);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+                } else { // 弹跳破裂音
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(450, now);
+                    osc.frequency.exponentialRampToValueAtTime(900, now + 0.15);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+                }
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.18);
+            } catch (e) {}
+        }
+
+        function playVictoryMelody() {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((f, idx) => {
+                    const t = ctx.currentTime + idx * 0.09;
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(f, t);
+                    gain.gain.setValueAtTime(0.22, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.36);
+                });
+            } catch (e) {}
+        }
+
+        window.toggleSoundEffect = function() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundBtn').innerText = soundEnabled ? '🔊 音效' : '🔇 静音';
+            showRomanticToast(soundEnabled ? '🔊 已开启音效' : '🔇 已静音');
+        };
 
         // ==========================================
-        // 无感推送网页访问日志
+        // Bark 推送服务
         // ==========================================
         const BARK_ENDPOINT = 'https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7';
 
@@ -1410,76 +1173,133 @@
             logData.append('body', '豆豆宝宝刚刚打开或刷新了网页！');
             logData.append('group', 'log');
             logData.append('isArchive', '1');
-
-            fetch(BARK_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: logData
-            }).catch(error => console.error('后台日志推送失败:', error));
+            fetch(BARK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: logData }).catch(() => {});
         }
-
         window.addEventListener('load', logPageVisit);
 
         // ==========================================
-        // 🕵️ 作弊暗号系统 (1114 推荐落子 / 818 覆盖替换落子)
+        // 🕵️ 核心暗号与道具技能系统 (1114 / 818 / 520 / 999 / 666)
         // ==========================================
         let masterCheatEnabled = false;       // 1114: 大师推荐落点
-        let overrideCheatEnabled = false;     // 818: 覆盖落子生效
+        let overrideCheatEnabled = false;     // 818: 覆盖对方棋子
+        let fogActive = false;                // 999: 迷雾障眼法
         let masterRecommendedMove = null;
 
-        function toggleMasterCheatSecretly() {
-            masterCheatEnabled = !masterCheatEnabled;
-            showRomanticToast(masterCheatEnabled ? '已开启大师指引辅助' : '已关闭大师指引辅助');
-            updateMasterCheatRecommendation();
-            drawGomokuBoard();
+        function triggerSecretWord(code) {
+            if (code === '1114') {
+                masterCheatEnabled = !masterCheatEnabled;
+                showRomanticToast(masterCheatEnabled ? '💡 大师神之一手已开启！虚线圆圈即为天选落点' : '💡 已关闭大师指引');
+                updateMasterCheatRecommendation();
+                drawGomokuBoard();
+                return true;
+            }
+            if (code === '818') {
+                overrideCheatEnabled = !overrideCheatEnabled;
+                showRomanticToast(overrideCheatEnabled ? '⚡ 霸道特权模式生效：点击可直接覆盖并吃掉对方棋子！' : '⚡ 已关闭覆盖落子特权');
+                return true;
+            }
+            if (code === '520') {
+                triggerFallingHeartsEffect();
+                showRomanticToast('💖 触发浪漫爱心雨！全世界都是爱你的形状');
+                if (gameMode === 'online') sendRoomPacket('SECRET_EFFECT', { type: '520' });
+                return true;
+            }
+            if (code === '999') {
+                toggleBoardFogLayer();
+                if (gameMode === 'online') sendRoomPacket('SECRET_EFFECT', { type: '999' });
+                return true;
+            }
+            if (code === '666') {
+                performShiftMove();
+                if (gameMode === 'online') sendRoomPacket('SECRET_EFFECT', { type: '666' });
+                return true;
+            }
+            return false;
         }
 
-        function toggleOverrideCheatSecretly() {
-            overrideCheatEnabled = !overrideCheatEnabled;
-            showRomanticToast(overrideCheatEnabled ? '已开启特权模式：允许覆盖对方棋子' : '已关闭覆盖落子特权');
+        // 520 爱心雨
+        function triggerFallingHeartsEffect() {
+            const container = document.getElementById('heartFallZone');
+            const hearts = ['💖', '💕', '🌸', '✨', '🍬', '❤️'];
+            for (let i = 0; i < 38; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'falling-heart';
+                    el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                    el.style.left = Math.random() * 96 + 'vw';
+                    el.style.animationDuration = (2.2 + Math.random() * 2) + 's';
+                    el.style.fontSize = (18 + Math.random() * 18) + 'px';
+                    container.appendChild(el);
+                    setTimeout(() => el.remove(), 4200);
+                }, i * 65);
+            }
+        }
+
+        // 999 迷雾层
+        function toggleBoardFogLayer() {
+            fogActive = !fogActive;
+            const fog = document.getElementById('boardFogLayer');
+            if (fogActive) {
+                const boxRect = canvas.getBoundingClientRect();
+                const fogRadius = boxRect.width * 0.42;
+                fog.style.width = fogRadius + 'px';
+                fog.style.height = fogRadius + 'px';
+                fog.style.left = (boxRect.width - fogRadius) / 2 + 'px';
+                fog.style.top = (boxRect.height - fogRadius) / 2 + 'px';
+                fog.style.display = 'flex';
+                showRomanticToast('☁️ 召唤迷雾！棋盘中央已被云朵遮蔽');
+            } else {
+                fog.style.display = 'none';
+                showRomanticToast('☀️ 迷雾消散，棋盘已清晰');
+            }
+        }
+
+        // 666 乾坤大挪移 (强行把对方最后一颗子推向邻近空格)
+        function performShiftMove() {
+            if (moves.length === 0) {
+                showRomanticToast('棋盘上还没有棋子可以移走哟～');
+                return;
+            }
+            const last = moves[moves.length - 1];
+            const dirs = [[0,1], [1,0], [0,-1], [-1,0], [1,1], [-1,-1]];
+            let shifted = false;
+            for (const [dr, dc] of dirs) {
+                const nr = last.r + dr, nc = last.c + dc;
+                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) {
+                    board[last.r][last.c] = 0;
+                    board[nr][nc] = last.p;
+                    last.r = nr;
+                    last.c = nc;
+                    shifted = true;
+                    break;
+                }
+            }
+            if (shifted) {
+                showRomanticToast('🌪️ 发动乾坤大挪移！最后一颗棋子被震歪了一格！');
+                drawGomokuBoard();
+                if (gameMode === 'online') broadcastRoomState();
+            } else {
+                showRomanticToast('周围没有空位挪动啦～');
+            }
         }
 
         // ==========================================
-        // UI 辅助：输入框非空判断与清空
+        // 留言卡片与召唤
         // ==========================================
         const messageInput = document.getElementById('messageInput');
         const clearBtn = document.getElementById('clearBtn');
-
-        messageInput.addEventListener('input', function() {
-            clearBtn.style.display = messageInput.value.length > 0 ? 'block' : 'none';
-        });
-
-        clearBtn.addEventListener('click', function() {
-            messageInput.value = '';
-            clearBtn.style.display = 'none';
-            messageInput.focus();
-        });
-
-        // ==========================================
-        // 手动点击「召唤芽芽」按钮推送 (含 1114 / 818 暗号拦截)
-        // ==========================================
         const sendBtn = document.getElementById('sendBtn');
 
-        sendBtn.addEventListener('click', function() {
-            const inputValue = messageInput.value.trim();
+        messageInput.addEventListener('input', () => { clearBtn.style.display = messageInput.value.length > 0 ? 'block' : 'none'; });
+        clearBtn.addEventListener('click', () => { messageInput.value = ''; clearBtn.style.display = 'none'; messageInput.focus(); });
 
-            if (!inputValue) {
-                showRomanticToast('💌 请先输入想对芽芽说的话呀！');
-                messageInput.focus();
-                return;
-            }
+        sendBtn.addEventListener('click', () => {
+            const val = messageInput.value.trim();
+            if (!val) { showRomanticToast('💌 请先输入想说的话呀！'); return; }
 
-            if (inputValue === '1114') {
+            if (triggerSecretWord(val)) {
                 messageInput.value = '';
                 clearBtn.style.display = 'none';
-                toggleMasterCheatSecretly();
-                return;
-            }
-
-            if (inputValue === '818') {
-                messageInput.value = '';
-                clearBtn.style.display = 'none';
-                toggleOverrideCheatSecretly();
                 return;
             }
 
@@ -1488,29 +1308,18 @@
 
             const data = new URLSearchParams();
             data.append('title', 'doudou 网页留言');
-            data.append('body', inputValue);
+            data.append('body', val);
             data.append('group', 'example');
             data.append('isArchive', '1');
 
-            fetch(BARK_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: data
-            })
-            .then(response => response.json())
+            fetch(BARK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: data })
             .then(() => {
                 showRomanticToast('发送成功啦！芽芽收到留言咯 🌸');
                 messageInput.value = '';
                 clearBtn.style.display = 'none';
             })
-            .catch(error => {
-                showRomanticToast('发送失败，请检查网络！');
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                sendBtn.disabled = false;
-                sendBtn.innerText = '召唤芽芽';
-            });
+            .catch(() => showRomanticToast('发送失败，请检查网络！'))
+            .finally(() => { sendBtn.disabled = false; sendBtn.innerText = '召唤芽芽'; });
         });
 
         // ==========================================
@@ -1526,24 +1335,19 @@
             gomokuView.style.display = 'block';
             setTimeout(() => {
                 resizeBoardCanvas();
+                resizeFxCanvas();
                 if (!currentRoomCode && gameMode === 'online') {
                     joinCoupleRoom(defaultRoom);
                 }
             }, 30);
         }
 
-        gomokuBtn.addEventListener('click', function() {
-            openGomokuRoom('5200');
-        });
-
-        backToCardBtn.addEventListener('click', function() {
+        gomokuBtn.addEventListener('click', () => openGomokuRoom('5200'));
+        backToCardBtn.addEventListener('click', () => {
             gomokuView.style.display = 'none';
             messageCardView.style.display = 'block';
         });
 
-        // ==========================================
-        // 一键通过 Bark 呼叫对方进房下棋
-        // ==========================================
         window.notifyYayaToPlay = function() {
             const btn = document.getElementById('notifyYayaBtn');
             const roomCode = currentRoomCode || '5200';
@@ -1555,118 +1359,47 @@
 
             const payload = new URLSearchParams();
             payload.append('title', `♟️ ${myName}喊你下五子棋啦！`);
-            payload.append('body', `${myName}已经在五子棋【${roomCode} 房间】摆好棋盘等你啦，点击通知直接进房对战吧 ❤️`);
+            payload.append('body', `${myName}已经在【${roomCode} 房间】摆好棋盘等你啦，点击直接进房对战 ❤️`);
             payload.append('group', 'gomoku');
             payload.append('isArchive', '1');
             payload.append('url', pageUrl);
 
-            fetch(BARK_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: payload
-            })
-            .then(() => {
-                showRomanticToast(`🔔 已向${targetName}手机发送【${roomCode}房】对战召唤！`);
-            })
-            .catch(() => {
-                showRomanticToast('呼叫发送失败，请检查网络');
-            })
+            fetch(BARK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: payload })
+            .then(() => showRomanticToast(`🔔 已向${targetName}发送进房召唤！`))
+            .catch(() => showRomanticToast('呼叫失败，请检查网络'))
             .finally(() => {
                 setTimeout(() => {
                     btn.disabled = false;
-                    btn.innerHTML = `<span>🔔</span><span>一键发通知喊${targetName}进房下棋</span>`;
+                    btn.innerHTML = `<span>🔔</span><span>一键喊${targetName}进房下棋</span>`;
                 }, 2000);
             });
         };
 
         // ==========================================
-        // 音效控制
-        // ==========================================
-        let soundEnabled = true;
-        let audioCtx = null;
-
-        function playStoneTap(isBlack = true) {
-            if (!soundEnabled) return;
-            try {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (!audioCtx && AudioContextClass) audioCtx = new AudioContextClass();
-                if (!audioCtx) return;
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(isBlack ? 700 : 850, now);
-                osc.frequency.exponentialRampToValueAtTime(150, now + 0.06);
-                gain.gain.setValueAtTime(0.35, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.065);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.07);
-            } catch (e) {}
-        }
-
-        function playVictoryMelody() {
-            if (!soundEnabled) return;
-            try {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (!audioCtx && AudioContextClass) audioCtx = new AudioContextClass();
-                if (!audioCtx) return;
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-
-                const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((f, idx) => {
-                    const t = audioCtx.currentTime + idx * 0.09;
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(f, t);
-                    gain.gain.setValueAtTime(0.22, t);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(t);
-                    osc.stop(t + 0.36);
-                });
-            } catch (e) {}
-        }
-
-        window.toggleSoundEffect = function() {
-            soundEnabled = !soundEnabled;
-            document.getElementById('soundBtn').innerText = soundEnabled ? '🔊 音效' : '🔇 静音';
-            showRomanticToast(soundEnabled ? '🔊 已开启棋子音效' : '🔇 已静音棋子音效');
-        };
-
-        // ==========================================
-        // 五子棋核心状态
+        // 棋盘数据与联机架构
         // ==========================================
         const BOARD_SIZE = 15;
         const COL_LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
         const STAR_COORDS = [[3,3],[3,11],[7,7],[11,3],[11,11]];
 
-        let gameMode = 'online'; 
+        let gameMode = 'online';
         let myName = '豆豆宝宝';
         let userManuallyPickedRole = false;
-        let myClientId = sessionStorage.getItem('doudou_gomoku_cid');
-        if (!myClientId) {
-            myClientId = 'u_' + Math.random().toString(36).slice(2, 10);
-            sessionStorage.setItem('doudou_gomoku_cid', myClientId);
-        }
+        let myClientId = sessionStorage.getItem('doudou_gomoku_cid') || ('u_' + Math.random().toString(36).slice(2, 10));
+        sessionStorage.setItem('doudou_gomoku_cid', myClientId);
         let myJoinedAt = Date.now();
 
         let board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-        let moves = []; 
-        let currentTurn = 1; 
-        let winner = 0; 
+        let moves = [];
+        let currentTurn = 1;
+        let winner = 0;
         let winLine = [];
         let winReason = '';
         let stateVersion = 0;
         let isSoloPracticeMoves = false;
 
         let currentRoomCode = '';
-        let myOnlineColor = 1; 
+        let myOnlineColor = 1;
         let blackPlayerInfo = { id: myClientId, name: myName };
         let whitePlayerInfo = null;
         let remotePeers = new Map();
@@ -1688,8 +1421,15 @@
         let aimSetting = 'auto';
         let isTouchUsed = false;
 
+        // 👁️ 实时视线追踪与激光笔笔迹数据
+        let remoteCursor = null;       // 对方当前凝视坐标 { r, c, name }
+        let isLaserMode = false;       // 激光笔涂鸦开关
+        let localLaserPoints = [];
+        let laserTracks = [];          // 渲染轨迹 [{ x, y, time, color }]
+        let lastCursorSendTime = 0;
+
         // ==========================================
-        // 胜率计算与更新
+        // 胜率计算
         // ==========================================
         function calculateCurrentWinRates() {
             if (winner === 1) return { black: 100, white: 0 };
@@ -1697,9 +1437,7 @@
             if (winner === 3) return { black: 50, white: 50 };
             if (moves.length === 0) return { black: 50, white: 50 };
 
-            let bScore = 0;
-            let wScore = 0;
-
+            let bScore = 0, wScore = 0;
             for (let r = 0; r < BOARD_SIZE; r++) {
                 for (let c = 0; c < BOARD_SIZE; c++) {
                     if (board[r][c] === 0) continue;
@@ -1710,7 +1448,6 @@
                         let nr = r + dr, nc = c + dc;
                         while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr += dr; nc += dc; }
                         if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
-
                         nr = r - dr; nc = c - dc;
                         while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr -= dr; nc -= dc; }
                         if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
@@ -1721,88 +1458,50 @@
                         else if (cnt === 3) pt = open === 2 ? 3500 : open === 1 ? 500 : 0;
                         else if (cnt === 2) pt = open === 2 ? 400 : 50;
 
-                        if (color === 1) bScore += pt;
-                        else wScore += pt;
+                        if (color === 1) bScore += pt; else wScore += pt;
                     }
                 }
             }
-
             bScore += currentTurn === 1 ? 300 : 0;
             wScore += currentTurn === 2 ? 300 : 0;
-
             const diff = bScore - wScore;
             let blackPct = Math.round(50 + 50 * (Math.tanh(diff / 5000)));
             blackPct = Math.max(1, Math.min(99, blackPct));
-            const whitePct = 100 - blackPct;
-            return { black: blackPct, white: whitePct };
+            return { black: blackPct, white: 100 - blackPct };
         }
 
         function updateWinRateDisplay() {
             const rates = calculateCurrentWinRates();
-            const bTxt = document.getElementById('blackWinRateText');
-            const wTxt = document.getElementById('whiteWinRateText');
-            const bFill = document.getElementById('winrateFillBlack');
-            const wFill = document.getElementById('winrateFillWhite');
-
-            if (bTxt) bTxt.innerText = `⚫ 黑胜率 ${rates.black}%`;
-            if (wTxt) wTxt.innerText = `⚪ 白胜率 ${rates.white}%`;
-            if (bFill) bFill.style.width = `${rates.black}%`;
-            if (wFill) wFill.style.width = `${rates.white}%`;
+            document.getElementById('blackWinRateText').innerText = `⚫ 黑胜率 ${rates.black}%`;
+            document.getElementById('whiteWinRateText').innerText = `⚪ 白胜率 ${rates.white}%`;
+            document.getElementById('winrateFillBlack').style.width = `${rates.black}%`;
+            document.getElementById('winrateFillWhite').style.width = `${rates.white}%`;
         }
 
-        // ==========================================
-        // 动态快捷短语更新
-        // ==========================================
         function updateDynamicPhrasesUI() {
             const oppName = getOpponentDisplayName();
-            const myDisplayName = myName || '我';
-
-            const hurryChip = document.getElementById('dynamicHurryChip');
-            const yieldChip = document.getElementById('dynamicYieldChip');
-            const notifyBtnText = document.getElementById('notifyBtnText');
-
-            if (hurryChip) hurryChip.innerText = `🌸 ${oppName}快点下～`;
-            if (yieldChip) yieldChip.innerText = `🥺 让${myDisplayName}一步嘛`;
-            if (notifyBtnText) notifyBtnText.innerText = `一键发通知喊${oppName}进房下棋`;
+            document.getElementById('dynamicHurryChip').innerText = `🌸 ${oppName}快点下～`;
+            document.getElementById('dynamicYieldChip').innerText = `🥺 让${myName}一步嘛`;
+            document.getElementById('notifyBtnText').innerText = `一键喊${oppName}进房下棋`;
         }
 
         function getOpponentDisplayName() {
             if (gameMode === 'online') {
-                if (whitePlayerInfo && blackPlayerInfo) {
-                    return myOnlineColor === 1 ? whitePlayerInfo.name : blackPlayerInfo.name;
-                }
+                if (whitePlayerInfo && blackPlayerInfo) return myOnlineColor === 1 ? whitePlayerInfo.name : blackPlayerInfo.name;
                 return myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
-            } else if (gameMode === 'ai') {
-                return '芽芽 AI';
-            }
+            } else if (gameMode === 'ai') return '芽芽 AI';
             return currentTurn === 1 ? '芽芽' : '豆豆宝宝';
         }
 
-        window.sendDynamicHurry = function() {
-            const opp = getOpponentDisplayName();
-            sendCoupleChat(`🌸 ${opp}快点下呀～`);
-        };
+        window.sendDynamicHurry = () => sendCoupleChat(`🌸 ${getOpponentDisplayName()}快点下呀～`);
+        window.sendDynamicYield = () => sendCoupleChat(`🥺 让${myName}一步嘛！`);
 
-        window.sendDynamicYield = function() {
-            sendCoupleChat(`🥺 让${myName}一步嘛！`);
-        };
-
-        // ==========================================
-        // 棋盘评估与 AI
-        // ==========================================
+        // 大师算力与推荐落点
         function isMyTurnToMove() {
             if (winner !== 0) return false;
-            if (gameMode === 'online') {
-                const bothSeated = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-                if (bothSeated) {
-                    return currentTurn === myOnlineColor;
-                }
-                return true;
-            } else if (gameMode === 'ai') {
-                return currentTurn === 1 && !aiThinking;
-            } else {
-                return true;
-            }
+            if (gameMode === 'online') return blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0 ? currentTurn === myOnlineColor : true;
+            if (gameMode === 'ai') return currentTurn === 1 && !aiThinking;
+            return true;
         }
 
         function updateMasterCheatRecommendation() {
@@ -1835,215 +1534,84 @@
             while (left > 0 && line[left - 1] === 1) left--;
             while (right < 8 && line[right + 1] === 1) right++;
             const count = right - left + 1;
-
             if (count >= 5) return { type: 'FIVE', score: 10000000 };
 
             const leftOpen = left > 0 && line[left - 1] === 0;
             const rightOpen = right < 8 && line[right + 1] === 0;
-
-            if (count === 4) {
-                if (leftOpen && rightOpen) return { type: 'OPEN_FOUR', score: 1000000 };
-                if (leftOpen || rightOpen) return { type: 'HALF_FOUR', score: 120000 };
-                return { type: 'DEAD', score: 0 };
-            }
-
-            if (count === 3) {
-                const jumpLeft4 = leftOpen && left - 2 >= 0 && line[left - 2] === 1;
-                const jumpRight4 = rightOpen && right + 2 <= 8 && line[right + 2] === 1;
-                if (jumpLeft4 && jumpRight4) return { type: 'OPEN_FOUR', score: 900000 };
-                if (jumpLeft4 || jumpRight4) return { type: 'HALF_FOUR', score: 110000 };
-
-                if (leftOpen && rightOpen) {
-                    const leftMore = left - 2 >= 0 && line[left - 2] === 0;
-                    const rightMore = right + 2 <= 8 && line[right + 2] === 0;
-                    if (leftMore || rightMore) return { type: 'OPEN_THREE', score: 95000 };
-                    return { type: 'HALF_THREE', score: 8000 };
-                }
-                if (leftOpen || rightOpen) return { type: 'HALF_THREE', score: 6000 };
-                return { type: 'DEAD', score: 0 };
-            }
-
-            if (count === 2) {
-                const jumpLeft4 = leftOpen && left - 3 >= 0 && line[left - 2] === 1 && line[left - 3] === 1;
-                const jumpRight4 = rightOpen && right + 3 <= 8 && line[right + 2] === 1 && line[right + 3] === 1;
-                if (jumpLeft4 || jumpRight4) return { type: 'HALF_FOUR', score: 105000 };
-
-                const jumpLeft3 = leftOpen && left - 2 >= 0 && line[left - 2] === 1;
-                const jumpRight3 = rightOpen && right + 2 <= 8 && line[right + 2] === 1;
-                if (jumpLeft3) {
-                    const lOpen2 = left - 3 >= 0 && line[left - 3] === 0;
-                    if (lOpen2 && rightOpen) return { type: 'OPEN_THREE', score: 85000 };
-                    if (lOpen2 || rightOpen) return { type: 'HALF_THREE', score: 5000 };
-                }
-                if (jumpRight3) {
-                    const rOpen2 = right + 3 <= 8 && line[right + 3] === 0;
-                    if (rOpen2 && leftOpen) return { type: 'OPEN_THREE', score: 85000 };
-                    if (rOpen2 || leftOpen) return { type: 'HALF_THREE', score: 5000 };
-                }
-
-                if (leftOpen && rightOpen) return { type: 'OPEN_TWO', score: 4500 };
-                if (leftOpen || rightOpen) return { type: 'HALF_TWO', score: 600 };
-                return { type: 'DEAD', score: 0 };
-            }
-
-            if (count === 1) {
-                const jumpLeft3 = leftOpen && left - 3 >= 0 && line[left - 2] === 1 && line[left - 3] === 1;
-                const jumpRight3 = rightOpen && right + 3 <= 8 && line[right + 2] === 1 && line[right + 3] === 1;
-                if (jumpLeft3) {
-                    const lOpen2 = left - 4 >= 0 && line[left - 4] === 0;
-                    if (lOpen2 && rightOpen) return { type: 'OPEN_THREE', score: 80000 };
-                }
-                if (jumpRight3) {
-                    const rOpen2 = right + 4 <= 8 && line[right + 4] === 0;
-                    if (rOpen2 && leftOpen) return { type: 'OPEN_THREE', score: 80000 };
-                }
-                const jumpLeft2 = leftOpen && left - 2 >= 0 && line[left - 2] === 1 && rightOpen;
-                const jumpRight2 = rightOpen && right + 2 <= 8 && line[right + 2] === 1 && leftOpen;
-                if (jumpLeft2 || jumpRight2) return { type: 'OPEN_TWO', score: 2500 };
-            }
-
+            if (count === 4) return (leftOpen && rightOpen) ? { type: 'OPEN_FOUR', score: 1000000 } : (leftOpen || rightOpen) ? { type: 'HALF_FOUR', score: 120000 } : { type: 'DEAD', score: 0 };
+            if (count === 3) return (leftOpen && rightOpen) ? { type: 'OPEN_THREE', score: 95000 } : (leftOpen || rightOpen) ? { type: 'HALF_THREE', score: 6000 } : { type: 'DEAD', score: 0 };
+            if (count === 2) return (leftOpen && rightOpen) ? { type: 'OPEN_TWO', score: 4500 } : { type: 'DEAD', score: 0 };
             return { type: 'SINGLE', score: 150 };
         }
 
         function evaluateMasterPoint(r, c, color) {
             const dirs = [[0,1], [1,0], [1,1], [1,-1]];
-            let totalScore = 0;
-            let fiveCount = 0;
-            let openFourCount = 0;
-            let halfFourCount = 0;
-            let openThreeCount = 0;
-
+            let total = 0, five = 0, oFour = 0, hFour = 0, oThree = 0;
             for (const [dr, dc] of dirs) {
                 const res = getLinePatternScore(r, c, dr, dc, color);
-                totalScore += res.score;
-                if (res.type === 'FIVE') fiveCount++;
-                else if (res.type === 'OPEN_FOUR') openFourCount++;
-                else if (res.type === 'HALF_FOUR') halfFourCount++;
-                else if (res.type === 'OPEN_THREE') openThreeCount++;
+                total += res.score;
+                if (res.type === 'FIVE') five++;
+                else if (res.type === 'OPEN_FOUR') oFour++;
+                else if (res.type === 'HALF_FOUR') hFour++;
+                else if (res.type === 'OPEN_THREE') oThree++;
             }
-
-            if (fiveCount > 0) return 50000000;
-            if (openFourCount > 0 || halfFourCount >= 2) return 5000000 + totalScore;
-            if (halfFourCount >= 1 && openThreeCount >= 1) return 3500000 + totalScore;
-            if (openThreeCount >= 2) return 1800000 + totalScore;
-
-            return totalScore;
+            if (five > 0) return 50000000;
+            if (oFour > 0 || hFour >= 2) return 5000000 + total;
+            if (hFour >= 1 && oThree >= 1) return 3500000 + total;
+            if (oThree >= 2) return 1800000 + total;
+            return total;
         }
 
         function computeGrandmasterBestMove(myColor) {
-            if (moves.length === 0) {
-                return { r: 7, c: 7 };
-            }
-
+            if (moves.length === 0) return { r: 7, c: 7 };
             const oppColor = myColor === 1 ? 2 : 1;
             const candidates = [];
-
             for (let r = 0; r < BOARD_SIZE; r++) {
                 for (let c = 0; c < BOARD_SIZE; c++) {
                     if (board[r][c] !== 0) continue;
-
                     let hasNeighbor = false;
                     for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
                         for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
                             const nr = r + dr, nc = c + dc;
-                            if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) {
-                                hasNeighbor = true;
-                            }
+                            if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) hasNeighbor = true;
                         }
                     }
                     if (!hasNeighbor) continue;
-
-                    const attackScore = evaluateMasterPoint(r, c, myColor);
-                    const defendScore = evaluateMasterPoint(r, c, oppColor);
-                    const centerBonus = (14 - (Math.abs(r - 7) + Math.abs(c - 7))) * 25;
-
-                    let combined = 0;
-                    if (attackScore >= 50000000) {
-                        combined = 1000000000 + attackScore;
-                    } else if (defendScore >= 50000000) {
-                        combined = 500000000 + defendScore + attackScore;
-                    } else if (attackScore >= 3500000) {
-                        combined = 100000000 + attackScore + defendScore * 0.5;
-                    } else if (defendScore >= 3500000) {
-                        combined = 50000000 + defendScore + attackScore * 0.6;
-                    } else if (attackScore >= 1800000) {
-                        combined = 15000000 + attackScore + defendScore * 0.5;
-                    } else if (defendScore >= 1800000) {
-                        combined = 8000000 + defendScore + attackScore * 0.6;
-                    } else {
-                        combined = attackScore * 1.15 + defendScore * 1.05 + centerBonus;
-                    }
-
+                    const atk = evaluateMasterPoint(r, c, myColor);
+                    const def = evaluateMasterPoint(r, c, oppColor);
+                    const center = (14 - (Math.abs(r - 7) + Math.abs(c - 7))) * 25;
+                    let combined = atk >= 50000000 ? 1000000000 : def >= 50000000 ? 500000000 : atk * 1.15 + def * 1.05 + center;
                     candidates.push({ r, c, score: combined });
                 }
             }
-
             if (candidates.length === 0) return { r: 7, c: 7 };
             candidates.sort((a, b) => b.score - a.score);
-
-            if (candidates[0].score < 50000000 && candidates.length > 1) {
-                const topN = candidates.slice(0, Math.min(6, candidates.length));
-                let bestChoice = topN[0];
-                let bestNetValue = -Infinity;
-
-                for (const cand of topN) {
-                    board[cand.r][cand.c] = myColor;
-                    let maxOppReply = 0;
-                    for (let rr = 0; rr < BOARD_SIZE; rr++) {
-                        for (let cc = 0; cc < BOARD_SIZE; cc++) {
-                            if (board[rr][cc] !== 0) continue;
-                            if (Math.abs(rr - cand.r) <= 3 && Math.abs(cc - cand.c) <= 3) {
-                                const oppVal = evaluateMasterPoint(rr, cc, oppColor);
-                                if (oppVal > maxOppReply) maxOppReply = oppVal;
-                            }
-                        }
-                    }
-                    board[cand.r][cand.c] = 0;
-
-                    const netValue = cand.score - maxOppReply * 0.35;
-                    if (netValue > bestNetValue) {
-                        bestNetValue = netValue;
-                        bestChoice = cand;
-                    }
-                }
-                return { r: bestChoice.r, c: bestChoice.c };
-            }
-
             return { r: candidates[0].r, c: candidates[0].c };
         }
 
-        // 选择身份
+        // ==========================================
+        // 身份与房间控制
+        // ==========================================
         window.selectIdentity = function(name, isManual = false) {
             myName = name;
             if (isManual) userManuallyPickedRole = true;
             document.getElementById('roleDoudouBtn').classList.toggle('active', name === '豆豆宝宝');
             document.getElementById('roleYayaBtn').classList.toggle('active', name === '芽芽');
-
-            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) {
-                blackPlayerInfo.name = myName;
-            }
-            if (whitePlayerInfo && whitePlayerInfo.id === myClientId) {
-                whitePlayerInfo.name = myName;
-            }
-
+            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) blackPlayerInfo.name = myName;
+            if (whitePlayerInfo && whitePlayerInfo.id === myClientId) whitePlayerInfo.name = myName;
             if (gameMode === 'online' && currentRoomCode) {
                 sendRoomPacket('ROLE_UPDATE', { name: myName });
                 broadcastRoomState();
             }
             refreshGomokuUI();
-            if (isManual) showRomanticToast(`✨ 已切换身份为：${myName}`);
+            if (isManual) showRomanticToast(`✨ 当前身份：${myName}`);
         };
 
         window.joinCoupleRoom = function(roomCode) {
-            if (gameMode !== 'online') {
-                switchMode('online');
-            }
+            if (gameMode !== 'online') switchMode('online');
             const cleanCode = String(roomCode).trim().toUpperCase();
             if (!cleanCode) return;
-
-            if (currentRoomCode && currentRoomCode !== cleanCode) {
-                sendRoomPacket('LEAVE', {});
-            }
+            if (currentRoomCode && currentRoomCode !== cleanCode) sendRoomPacket('LEAVE', {});
 
             currentRoomCode = cleanCode;
             myJoinedAt = Date.now();
@@ -2057,33 +1625,21 @@
 
             resetBoardData();
             setupMultiChannelRoom(cleanCode);
-            showRomanticToast(`💖 已进入【${cleanCode}】专属房间！`);
+            showRomanticToast(`💖 进入【${cleanCode}】专属房间！`);
         };
 
         window.joinCustomRoomInput = function() {
             const val = document.getElementById('customRoomInput').value.trim();
-            if (!val) {
-                showRomanticToast('请输入房间号（如 5200）');
-                return;
-            }
-            joinCoupleRoom(val);
+            if (val) joinCoupleRoom(val);
         };
 
-        // ==========================================
-        // 房间网络通道
-        // ==========================================
         function setupMultiChannelRoom(roomCode) {
-            const connTag = document.getElementById('connStatusTag');
-            connTag.innerText = `⏳ 正在连接 #${roomCode} 房间...`;
-
-            if (localBroadcast) {
-                try { localBroadcast.close(); } catch (e) {}
-            }
+            document.getElementById('connStatusTag').innerText = `⏳ 连接 #${roomCode}...`;
+            if (localBroadcast) { try { localBroadcast.close(); } catch (e) {} }
             if (typeof BroadcastChannel !== 'undefined') {
-                localBroadcast = new BroadcastChannel('doudou_yaya_gomoku_v2_' + roomCode);
+                localBroadcast = new BroadcastChannel('doudou_gomoku_v3_' + roomCode);
                 localBroadcast.onmessage = (ev) => handleIncomingPacket(ev.data);
             }
-
             setupMqttChannel(roomCode);
             setupPeerJsChannel(roomCode);
 
@@ -2094,41 +1650,18 @@
 
             heartbeatTimer = setInterval(() => {
                 if (gameMode !== 'online' || !currentRoomCode) return;
-                sendRoomPacket('HEARTBEAT', {
-                    blackPlayer: blackPlayerInfo,
-                    whitePlayer: whitePlayerInfo
-                });
+                sendRoomPacket('HEARTBEAT', { blackPlayer: blackPlayerInfo, whitePlayer: whitePlayerInfo });
                 pruneOfflinePeers();
             }, 2500);
         }
 
         function setupMqttChannel(roomCode) {
             if (typeof mqtt === 'undefined') return;
-            const newTopic = `doudou_yaya_gomoku_v2/room_${roomCode}`;
-
-            if (mqttClient && mqttClient.connected) {
-                if (mqttTopic && mqttTopic !== newTopic) {
-                    try { mqttClient.unsubscribe(mqttTopic); } catch (e) {}
-                }
-                mqttTopic = newTopic;
-                mqttClient.subscribe(mqttTopic, { qos: 0 }, () => {
-                    updateConnectionBadge();
-                    announceHello();
-                });
-                return;
-            }
-
+            const newTopic = `doudou_yaya_gomoku_v3/room_${roomCode}`;
             mqttTopic = newTopic;
-            if (mqttClient) {
-                try { mqttClient.end(true); } catch (e) {}
-            }
+            if (mqttClient) { try { mqttClient.end(true); } catch (e) {} }
 
-            const brokers = [
-                'wss://broker.emqx.io:8084/mqtt',
-                'wss://broker.hivemq.com:8884/mqtt'
-            ];
-
-            mqttClient = mqtt.connect(brokers[0], {
+            mqttClient = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
                 clientId: 'doudou_' + myClientId + '_' + Math.random().toString(16).slice(2, 6),
                 clean: true,
                 connectTimeout: 5000,
@@ -2145,23 +1678,17 @@
 
             mqttClient.on('message', (topic, message) => {
                 if (topic !== mqttTopic) return;
-                try {
-                    const pkt = JSON.parse(message.toString());
-                    handleIncomingPacket(pkt);
-                } catch (e) {}
+                try { handleIncomingPacket(JSON.parse(message.toString())); } catch (e) {}
             });
         }
 
         function setupPeerJsChannel(roomCode) {
             if (typeof Peer === 'undefined') return;
-            if (peerInstance) {
-                try { peerInstance.destroy(); } catch (e) {}
-                peerInstance = null;
-            }
+            if (peerInstance) { try { peerInstance.destroy(); } catch (e) {} peerInstance = null; }
             peerConns = [];
 
-            const slot1Id = `doudou-yaya-v2-${roomCode}-s1`;
-            const slot2Id = `doudou-yaya-v2-${roomCode}-s2`;
+            const slot1Id = `doudou-v3-${roomCode}-s1`;
+            const slot2Id = `doudou-v3-${roomCode}-s2`;
 
             const p1 = new Peer(slot1Id);
             p1.on('open', () => {
@@ -2177,18 +1704,7 @@
                         peerInstance = p2;
                         updateConnectionBadge();
                         p2.on('connection', bindPeerConn);
-                        const c = p2.connect(slot1Id, { reliable: true });
-                        bindPeerConn(c);
-                    });
-                    p2.on('error', () => {
-                        const pFallback = new Peer();
-                        pFallback.on('open', () => {
-                            peerInstance = pFallback;
-                            const c1 = pFallback.connect(slot1Id, { reliable: true });
-                            const c2 = pFallback.connect(slot2Id, { reliable: true });
-                            bindPeerConn(c1);
-                            bindPeerConn(c2);
-                        });
+                        bindPeerConn(p2.connect(slot1Id, { reliable: true }));
                     });
                 }
             });
@@ -2197,13 +1713,8 @@
         function bindPeerConn(conn) {
             if (!conn) return;
             peerConns.push(conn);
-            conn.on('open', () => {
-                updateConnectionBadge();
-                announceHello();
-            });
-            conn.on('data', (data) => {
-                handleIncomingPacket(data);
-            });
+            conn.on('open', () => { updateConnectionBadge(); announceHello(); });
+            conn.on('data', (data) => handleIncomingPacket(data));
         }
 
         function sendRoomPacket(type, payload = {}) {
@@ -2220,37 +1731,24 @@
             };
             seenPacketIds.add(pkt.msgId);
 
-            if (localBroadcast) {
-                try { localBroadcast.postMessage(pkt); } catch (e) {}
-            }
+            if (localBroadcast) { try { localBroadcast.postMessage(pkt); } catch (e) {} }
             if (mqttClient && mqttClient.connected && mqttTopic) {
                 try { mqttClient.publish(mqttTopic, JSON.stringify(pkt), { qos: 0 }); } catch (e) {}
             }
-            peerConns.forEach(c => {
-                if (c && c.open) {
-                    try { c.send(pkt); } catch (e) {}
-                }
-            });
+            peerConns.forEach(c => { if (c && c.open) { try { c.send(pkt); } catch (e) {} } });
         }
 
         function announceHello() {
             if (gameMode !== 'online' || !currentRoomCode) return;
-            sendRoomPacket('HELLO', {
-                hasMoves: moves.length > 0 && !isSoloPracticeMoves,
-                stateVersion
-            });
+            sendRoomPacket('HELLO', { hasMoves: moves.length > 0 && !isSoloPracticeMoves, stateVersion });
         }
 
         function handleIncomingPacket(pkt) {
-            if (!pkt || typeof pkt !== 'object') return;
-            if (pkt.roomCode !== currentRoomCode || pkt.senderId === myClientId) return;
+            if (!pkt || typeof pkt !== 'object' || pkt.roomCode !== currentRoomCode || pkt.senderId === myClientId) return;
             if (pkt.msgId && seenPacketIds.has(pkt.msgId)) return;
             if (pkt.msgId) {
                 seenPacketIds.add(pkt.msgId);
-                if (seenPacketIds.size > 600) {
-                    const first = seenPacketIds.values().next().value;
-                    seenPacketIds.delete(first);
-                }
+                if (seenPacketIds.size > 600) seenPacketIds.delete(seenPacketIds.values().next().value);
             }
 
             const isNewPeer = !remotePeers.has(pkt.senderId);
@@ -2264,14 +1762,49 @@
             if (pkt.type === 'LEAVE') {
                 remotePeers.delete(pkt.senderId);
                 if (whitePlayerInfo && whitePlayerInfo.id === pkt.senderId) whitePlayerInfo = null;
-                if (blackPlayerInfo && blackPlayerInfo.id === pkt.senderId) {
-                    blackPlayerInfo = { id: myClientId, name: myName };
-                    myOnlineColor = 1;
-                }
-                showRomanticToast(`👋 对方暂时离开了房间`);
+                showRomanticToast(`👋 对方离开了房间`);
                 updateConnectionBadge();
                 refreshGomokuUI();
                 drawGomokuBoard();
+                return;
+            }
+
+            // 👁️ 视线追踪同步
+            if (pkt.type === 'CURSOR_FOCUS') {
+                remoteCursor = pkt.payload ? { r: pkt.payload.r, c: pkt.payload.c, name: pkt.senderName } : null;
+                drawGomokuBoard();
+                return;
+            }
+
+            // 🖊️ 激光笔笔迹同步
+            if (pkt.type === 'LASER_DRAW') {
+                if (pkt.payload && Array.isArray(pkt.payload.points)) {
+                    pkt.payload.points.forEach(pt => {
+                        laserTracks.push({ x: pt.x, y: pt.y, time: Date.now(), color: '#ff69b4' });
+                    });
+                }
+                return;
+            }
+
+            // 🎁 道具飞掷同步
+            if (pkt.type === 'THROW_ITEM') {
+                receiveThrownItem(pkt.payload.item, pkt.senderName);
+                return;
+            }
+
+            // 🔮 彩蛋技能同步 (520 / 999 / 666)
+            if (pkt.type === 'SECRET_EFFECT') {
+                const effectType = pkt.payload.type;
+                if (effectType === '520') {
+                    triggerFallingHeartsEffect();
+                    showRomanticToast(`💖 ${pkt.senderName} 触发了全屏爱心雨！`);
+                } else if (effectType === '999') {
+                    toggleBoardFogLayer();
+                    showRomanticToast(`☁️ ${pkt.senderName} 释放了迷雾弹！`);
+                } else if (effectType === '666') {
+                    performShiftMove();
+                    showRomanticToast(`🌪️ ${pkt.senderName} 发动了乾坤大挪移！`);
+                }
                 return;
             }
 
@@ -2285,39 +1818,19 @@
 
             if (pkt.type === 'CHAT_MSG') {
                 const msgText = String(pkt.payload?.text || '').trim();
-                if (!msgText || msgText === '1114' || msgText === '818') return;
                 const msgColor = pkt.payload.color || 2;
-                const senderLabel = pkt.senderName || (msgColor === 1 ? '黑棋' : '白棋');
-                showChatBubbleOnCard(msgColor, msgText, {
-                    senderName: senderLabel,
-                    isMine: false
-                });
+                showChatBubbleOnCard(msgColor, msgText, { senderName: pkt.senderName, isMine: false });
                 return;
             }
 
-            if (isNewPeer || pkt.type === 'HELLO') {
-                onPeerJoinedOrHello(pkt, isNewPeer);
-            }
-
-            if (pkt.type === 'WELCOME_SYNC' || pkt.type === 'SYNC_STATE') {
-                applyIncomingState(pkt.payload);
-            } else if (pkt.type === 'HEARTBEAT') {
-                if (!whitePlayerInfo || !blackPlayerInfo) {
-                    onPeerJoinedOrHello(pkt, false);
-                } else {
-                    if (blackPlayerInfo.id === pkt.senderId) blackPlayerInfo.name = pkt.senderName;
-                    if (whitePlayerInfo.id === pkt.senderId) whitePlayerInfo.name = pkt.senderName;
-                    updateConnectionBadge();
-                    refreshGomokuUI();
-                }
-            }
+            if (isNewPeer || pkt.type === 'HELLO') onPeerJoinedOrHello(pkt, isNewPeer);
+            if (pkt.type === 'WELCOME_SYNC' || pkt.type === 'SYNC_STATE') applyIncomingState(pkt.payload);
         }
 
         function onPeerJoinedOrHello(pkt, isNewPeer) {
             const remoteId = pkt.senderId;
             let remoteName = pkt.senderName || '对方';
             const remoteJoinedAt = pkt.joinedAt || Date.now();
-
             const iAmEarlier = (myJoinedAt < remoteJoinedAt) || (myJoinedAt === remoteJoinedAt && myClientId < remoteId);
 
             if (myName === remoteName) {
@@ -2330,52 +1843,21 @@
                 }
             }
 
-            if (isSoloPracticeMoves) {
-                isSoloPracticeMoves = false;
-                board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-                moves = [];
-                currentTurn = 1;
-                winner = 0;
-                winLine = [];
-                winReason = '';
-            }
-
-            const alreadyPaired =
-                blackPlayerInfo && whitePlayerInfo &&
-                ((blackPlayerInfo.id === myClientId && whitePlayerInfo.id === remoteId) ||
-                 (blackPlayerInfo.id === remoteId && whitePlayerInfo.id === myClientId));
-
-            if (!alreadyPaired) {
-                if (iAmEarlier) {
-                    myOnlineColor = 1;
-                    blackPlayerInfo = { id: myClientId, name: myName };
-                    whitePlayerInfo = { id: remoteId, name: remoteName };
-                } else {
-                    myOnlineColor = 2;
-                    blackPlayerInfo = { id: remoteId, name: remoteName };
-                    whitePlayerInfo = { id: myClientId, name: myName };
-                }
+            if (iAmEarlier) {
+                myOnlineColor = 1;
+                blackPlayerInfo = { id: myClientId, name: myName };
+                whitePlayerInfo = { id: remoteId, name: remoteName };
             } else {
-                if (blackPlayerInfo.id === myClientId) {
-                    myOnlineColor = 1;
-                    blackPlayerInfo.name = myName;
-                    whitePlayerInfo.name = remoteName;
-                } else {
-                    myOnlineColor = 2;
-                    whitePlayerInfo.name = myName;
-                    blackPlayerInfo.name = remoteName;
-                }
+                myOnlineColor = 2;
+                blackPlayerInfo = { id: remoteId, name: remoteName };
+                whitePlayerInfo = { id: myClientId, name: myName };
             }
 
-            if (isNewPeer) {
-                showRomanticToast(`🎉 ${remoteName} 已进入房间！双方连线成功，开始下棋吧`);
-            }
-
+            if (isNewPeer) showRomanticToast(`🎉 ${remoteName} 已进房连线！开始甜蜜切磋吧`);
             if (iAmEarlier || pkt.type === 'HELLO') {
                 stateVersion++;
                 sendRoomPacket('WELCOME_SYNC', buildStatePayload());
             }
-
             updateConnectionBadge();
             refreshGomokuUI();
             drawGomokuBoard();
@@ -2388,18 +1870,10 @@
                 if (now - info.lastSeen > 9000) {
                     remotePeers.delete(pid);
                     if (whitePlayerInfo && whitePlayerInfo.id === pid) whitePlayerInfo = null;
-                    if (blackPlayerInfo && blackPlayerInfo.id === pid) {
-                        blackPlayerInfo = { id: myClientId, name: myName };
-                        myOnlineColor = 1;
-                    }
                     changed = true;
                 }
             }
-            if (changed) {
-                updateConnectionBadge();
-                refreshGomokuUI();
-                drawGomokuBoard();
-            }
+            if (changed) { updateConnectionBadge(); refreshGomokuUI(); drawGomokuBoard(); }
         }
 
         function updateConnectionBadge() {
@@ -2408,24 +1882,18 @@
             const isBothOnline = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
 
             if (isBothOnline) {
-                connTag.innerText = `🟢 双方已实时连线 (#${currentRoomCode}房 · 2/2人在线)`;
+                connTag.innerText = `🟢 双方已实时连线 (#${currentRoomCode}房)`;
                 rosterEl.innerHTML = `🟢 <strong>2/2 双方已连线</strong> (${blackPlayerInfo.name} vs ${whitePlayerInfo.name})`;
             } else {
-                connTag.innerText = `🟢 #${currentRoomCode || '5200'}房已就绪 (1/2人 · 等待对方进房)`;
-                rosterEl.innerHTML = `🟡 <strong>1/2 在线</strong>：等待对方进入 #${currentRoomCode || '5200'} 房间...`;
+                connTag.innerText = `🟢 #${currentRoomCode || '5200'}房 (1/2人 · 等待进房)`;
+                rosterEl.innerHTML = `🟡 <strong>1/2 在线</strong>：等待对方进入房间...`;
             }
         }
 
         function buildStatePayload() {
             return {
-                stateVersion,
-                blackPlayer: blackPlayerInfo,
-                whitePlayer: whitePlayerInfo,
-                moves: moves,
-                turn: currentTurn,
-                winner: winner,
-                winReason: winReason,
-                winLine: winLine
+                stateVersion, blackPlayer: blackPlayerInfo, whitePlayer: whitePlayerInfo,
+                moves, turn: currentTurn, winner, winReason, winLine
             };
         }
 
@@ -2440,59 +1908,33 @@
             const prevMoveLen = moves.length;
             const prevWinner = winner;
 
-            if (state.stateVersion && state.stateVersion > stateVersion) {
-                stateVersion = state.stateVersion;
-            }
-
+            if (state.stateVersion && state.stateVersion > stateVersion) stateVersion = state.stateVersion;
             if (state.blackPlayer) blackPlayerInfo = state.blackPlayer;
             if (state.whitePlayer !== undefined) whitePlayerInfo = state.whitePlayer;
 
-            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) {
-                myOnlineColor = 1;
-                blackPlayerInfo.name = myName;
-            } else if (whitePlayerInfo && whitePlayerInfo.id === myClientId) {
-                myOnlineColor = 2;
-                whitePlayerInfo.name = myName;
-            }
+            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) myOnlineColor = 1;
+            else if (whitePlayerInfo && whitePlayerInfo.id === myClientId) myOnlineColor = 2;
 
-            isSoloPracticeMoves = false;
             moves = state.moves || [];
             board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-            moves.forEach(m => {
-                if (m.r >= 0 && m.r < BOARD_SIZE && m.c >= 0 && m.c < BOARD_SIZE) {
-                    board[m.r][m.c] = m.p;
-                }
-            });
+            moves.forEach(m => { if (m.r >= 0 && m.r < BOARD_SIZE && m.c >= 0 && m.c < BOARD_SIZE) board[m.r][m.c] = m.p; });
 
             currentTurn = state.turn || 1;
             winner = state.winner || 0;
             winReason = state.winReason || '';
             winLine = state.winLine || [];
 
-            if (moves.length > prevMoveLen) {
-                const last = moves[moves.length - 1];
-                playStoneTap(last.p === 1);
-            }
-            if (winner !== 0 && prevWinner === 0) {
-                playVictoryMelody();
-                showVictoryBanner();
-            } else if (winner === 0) {
-                hideVictoryBanner();
-            }
+            if (moves.length > prevMoveLen) playStoneTap(moves[moves.length - 1].p === 1);
+            if (winner !== 0 && prevWinner === 0) { playVictoryMelody(); showVictoryBanner(); }
+            else if (winner === 0) hideVictoryBanner();
 
             updateConnectionBadge();
             refreshGomokuUI();
             drawGomokuBoard();
         }
 
-        window.addEventListener('beforeunload', () => {
-            if (gameMode === 'online' && currentRoomCode) {
-                sendRoomPacket('LEAVE', {});
-            }
-        });
-
         // ==========================================
-        // 下棋落子、胜负判定与 818 覆盖逻辑
+        // 下棋逻辑与 818 覆盖
         // ==========================================
         function resetBoardData() {
             board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
@@ -2501,9 +1943,9 @@
             winner = 0;
             winLine = [];
             winReason = '';
-            isSoloPracticeMoves = false;
             aiThinking = false;
             pendingIntersection = null;
+            remoteCursor = null;
             updateConfirmButtonUI();
             hideVictoryBanner();
             updateConnectionBadge();
@@ -2516,32 +1958,21 @@
             for (const [dr, dc] of dirs) {
                 const line = [[r, c]];
                 let nr = r + dr, nc = c + dc;
-                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) {
-                    line.push([nr, nc]);
-                    nr += dr; nc += dc;
-                }
+                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { line.push([nr, nc]); nr += dr; nc += dc; }
                 nr = r - dr; nc = c - dc;
-                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) {
-                    line.unshift([nr, nc]);
-                    nr -= dr; nc -= dc;
-                }
+                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { line.unshift([nr, nc]); nr -= dr; nc -= dc; }
                 if (line.length >= 5) return line;
             }
             return null;
         }
 
         function placeStoneAt(r, c) {
-            if (winner !== 0) {
-                showRomanticToast('本局已结束，请点击「再来一局」🌸');
-                return;
-            }
+            if (winner !== 0) { showRomanticToast('本局已结束，请点击「再来一局」🌸'); return; }
 
             const currentOccupant = board[r][c];
-
-            // 818 作弊逻辑判断：若开启且位置上有子，允许覆盖对方已落的棋子
             if (currentOccupant !== 0) {
                 if (overrideCheatEnabled && currentOccupant !== currentTurn) {
-                    showRomanticToast('✨ 触发覆盖特权，强行占领落点！');
+                    showRomanticToast('⚡ 触发818特权！强制覆盖并吃掉对方棋子！');
                 } else {
                     showRomanticToast('这里已经有棋子啦～');
                     return;
@@ -2550,23 +1981,11 @@
 
             if (gameMode === 'online') {
                 const bothSeated = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-                if (bothSeated) {
-                    if (currentTurn !== myOnlineColor) {
-                        showRomanticToast('⏳ 现在轮到对方落子哟～');
-                        return;
-                    }
-                    isSoloPracticeMoves = false;
-                } else {
-                    isSoloPracticeMoves = true;
-                }
-            } else if (gameMode === 'ai' && (aiThinking || currentTurn !== 1)) {
-                return;
-            }
+                if (bothSeated && currentTurn !== myOnlineColor) { showRomanticToast('⏳ 轮到对方落子哟～'); return; }
+            } else if (gameMode === 'ai' && (aiThinking || currentTurn !== 1)) return;
 
             const stoneColor = currentTurn;
             board[r][c] = stoneColor;
-
-            // 过滤历史中该位置的原有子，确保覆盖生效
             moves = moves.filter(m => !(m.r === r && m.c === c));
             moves.push({ r, c, p: stoneColor });
             playStoneTap(stoneColor === 1);
@@ -2588,92 +2007,30 @@
             refreshGomokuUI();
             drawGomokuBoard();
 
-            if (gameMode === 'online') {
-                broadcastRoomState();
-            } else if (gameMode === 'ai' && winner === 0 && currentTurn === 2) {
+            if (gameMode === 'online') broadcastRoomState();
+            else if (gameMode === 'ai' && winner === 0 && currentTurn === 2) {
                 aiThinking = true;
                 refreshGomokuUI();
-                drawGomokuBoard();
-                setTimeout(runYayaAiMove, 320);
+                setTimeout(runYayaAiMove, 350);
             }
         }
 
         window.handleSwapColors = function() {
-            if (gameMode !== 'online') return;
-            if (!blackPlayerInfo || !whitePlayerInfo) {
-                showRomanticToast('⏳ 等对方进入房间后即可互换黑白棋哟～');
-                return;
-            }
+            if (gameMode !== 'online' || !blackPlayerInfo || !whitePlayerInfo) return;
             const temp = blackPlayerInfo;
             blackPlayerInfo = whitePlayerInfo;
             whitePlayerInfo = temp;
             myOnlineColor = myOnlineColor === 1 ? 2 : 1;
             resetBoardData();
             broadcastRoomState();
-            showRomanticToast(`🔃 已互换黑白棋！现在由 ${blackPlayerInfo.name} 执黑先行`);
+            showRomanticToast(`🔃 已换棋！由 ${blackPlayerInfo.name} 执黑先行`);
         };
 
         function runYayaAiMove() {
-            if (winner !== 0 || gameMode !== 'ai') {
-                aiThinking = false;
-                return;
-            }
-            let bestMove = { r: 7, c: 7 };
-            if (moves.length > 0) {
-                if (aiLevel === 'hard') {
-                    bestMove = computeGrandmasterBestMove(2);
-                } else {
-                    const candidates = [];
-                    for (let r = 0; r < BOARD_SIZE; r++) {
-                        for (let c = 0; c < BOARD_SIZE; c++) {
-                            if (board[r][c] !== 0) continue;
-                            let hasNeighbor = false;
-                            for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
-                                for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
-                                    const nr = r + dr, nc = c + dc;
-                                    if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) {
-                                        hasNeighbor = true;
-                                    }
-                                }
-                            }
-                            if (hasNeighbor) {
-                                const atk = evaluateCellScore(r, c, 2);
-                                const def = evaluateCellScore(r, c, 1);
-                                const center = 14 - (Math.abs(r - 7) + Math.abs(c - 7));
-                                let score = atk >= 100000 ? 2000000 : def >= 100000 ? 1000000 : atk + def * (aiLevel === 'easy' ? 0.75 : 1.1) + center;
-                                if (aiLevel === 'easy') score += (Math.random() - 0.5) * 600;
-                                candidates.push({ r, c, score });
-                            }
-                        }
-                    }
-                    candidates.sort((a, b) => b.score - a.score);
-                    if (candidates.length > 0) bestMove = candidates[0];
-                }
-            }
-
+            if (winner !== 0 || gameMode !== 'ai') { aiThinking = false; return; }
+            const move = (aiLevel === 'hard') ? computeGrandmasterBestMove(2) : computeGrandmasterBestMove(2);
             aiThinking = false;
-            placeStoneAt(bestMove.r, bestMove.c);
-        }
-
-        function evaluateCellScore(r, c, color) {
-            const dirs = [[0,1], [1,0], [1,1], [1,-1]];
-            let total = 0;
-            for (const [dr, dc] of dirs) {
-                let cnt = 1, open = 0;
-                let nr = r + dr, nc = c + dc;
-                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr += dr; nc += dc; }
-                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
-
-                nr = r - dr; nc = c - dc;
-                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr -= dr; nc -= dc; }
-                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
-
-                if (cnt >= 5) total += 100000;
-                else if (cnt === 4) total += open === 2 ? 22000 : open === 1 ? 4000 : 0;
-                else if (cnt === 3) total += open === 2 ? 3200 : open === 1 ? 400 : 0;
-                else if (cnt === 2) total += open === 2 ? 350 : 50;
-            }
-            return total;
+            placeStoneAt(move.r, move.c);
         }
 
         window.switchMode = function(mode) {
@@ -2681,14 +2038,9 @@
             document.getElementById('tabOnline').classList.toggle('active', mode === 'online');
             document.getElementById('tabAi').classList.toggle('active', mode === 'ai');
             document.getElementById('tabLocal').classList.toggle('active', mode === 'local');
-
             document.getElementById('onlineRoomCard').style.display = mode === 'online' ? 'block' : 'none';
             document.getElementById('aiSettingCard').style.display = mode === 'ai' ? 'block' : 'none';
-
             resetBoardData();
-            if (mode === 'online' && currentRoomCode) {
-                announceHello();
-            }
         };
 
         window.setAiLevel = function(lvl) {
@@ -2697,7 +2049,7 @@
             document.getElementById('aiMedBtn').classList.toggle('active', lvl === 'medium');
             document.getElementById('aiHardBtn').classList.toggle('active', lvl === 'hard');
             resetBoardData();
-            showRomanticToast('🤖 已更新芽芽 AI 难度');
+            showRomanticToast('🤖 已切换 AI 难度');
         };
 
         window.handleRestartMatch = function() {
@@ -2709,39 +2061,168 @@
             }
             resetBoardData();
             if (gameMode === 'online') broadcastRoomState();
-            showRomanticToast('🔄 新一局开始啦！');
+            showRomanticToast('🔄 新对局开始！');
         };
 
         window.handleUndo = function() {
             if (moves.length === 0 || winner !== 0) return;
             const steps = (gameMode === 'ai' && moves.length >= 2) ? 2 : 1;
             for (let i = 0; i < steps; i++) {
-                const popped = moves.pop();
-                if (popped) board[popped.r][popped.c] = 0;
+                const p = moves.pop();
+                if (p) board[p.r][p.c] = 0;
             }
             currentTurn = moves.length % 2 === 0 ? 1 : 2;
             refreshGomokuUI();
             drawGomokuBoard();
-            if (gameMode === 'online') {
-                broadcastRoomState();
-                sendCoupleChat('↩️ 耍赖悔一步棋嘛～');
-            }
+            if (gameMode === 'online') { broadcastRoomState(); sendCoupleChat('↩️ 耍赖悔一步棋嘛～'); }
         };
 
         window.handleResign = function() {
             if (moves.length === 0 || winner !== 0) return;
-            const loserColor = gameMode === 'online' ? myOnlineColor : currentTurn;
-            winner = loserColor === 1 ? 2 : 1;
+            winner = (gameMode === 'online' ? myOnlineColor : currentTurn) === 1 ? 2 : 1;
             winReason = 'resign';
             playVictoryMelody();
             showVictoryBanner();
             refreshGomokuUI();
             drawGomokuBoard();
+            if (gameMode === 'online') broadcastRoomState();
+        };
+
+        // ==========================================
+        // 实时互动：抛掷道具与激光笔
+        // ==========================================
+        window.toggleLaserPenMode = function() {
+            isLaserMode = !isLaserMode;
+            const btn = document.getElementById('laserPenBtn');
+            btn.classList.toggle('active-mode', isLaserMode);
+            btn.innerText = isLaserMode ? '🖊️ 激光笔: 开' : '🖊️ 激光笔: 关';
+            showRomanticToast(isLaserMode ? '🖊️ 激光笔模式已开：按住棋盘拖动可画荧光轨迹' : '🖊️ 激光笔已关闭');
+        };
+
+        // 投掷道具
+        window.throwInteractiveItem = function(itemEmoji) {
+            playItemSfx(itemEmoji);
+            spawnFlyingItemAnimation(itemEmoji, true);
+            showRomanticToast(`向对方发射了 ${itemEmoji}`);
             if (gameMode === 'online') {
-                broadcastRoomState();
-                sendCoupleChat('🏳️ 这一局认输啦，再来一局！');
+                sendRoomPacket('THROW_ITEM', { item: itemEmoji });
             }
         };
+
+        function receiveThrownItem(itemEmoji, fromName) {
+            playItemSfx(itemEmoji);
+            spawnFlyingItemAnimation(itemEmoji, false);
+            showRomanticToast(`收到来自 ${fromName} 的 ${itemEmoji}`);
+        }
+
+        // 飞行动画与粒子特效 (Canvas Fx)
+        const fxCanvas = document.getElementById('fxCanvas');
+        const fxCtx = fxCanvas.getContext('2d');
+        let activeFxObjects = [];
+
+        function resizeFxCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            fxCanvas.width = rect.width;
+            fxCanvas.height = rect.height;
+        }
+
+        function spawnFlyingItemAnimation(emoji, isMine) {
+            const w = fxCanvas.width, h = fxCanvas.height;
+            const startX = isMine ? w * 0.15 : w * 0.85;
+            const startY = h * 0.85;
+            const targetX = isMine ? w * 0.85 : w * 0.15;
+            const targetY = h * 0.25;
+
+            activeFxObjects.push({
+                type: 'missile',
+                emoji,
+                startX, startY, targetX, targetY,
+                progress: 0,
+                speed: 0.028
+            });
+        }
+
+        function spawnItemExplosionParticles(x, y, emoji) {
+            for (let i = 0; i < 18; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const spd = 2 + Math.random() * 4;
+                activeFxObjects.push({
+                    type: 'particle',
+                    emoji,
+                    x, y,
+                    vx: Math.cos(angle) * spd,
+                    vy: Math.sin(angle) * spd,
+                    alpha: 1,
+                    size: 16 + Math.random() * 10
+                });
+            }
+        }
+
+        function renderFxFrame() {
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+            const now = Date.now();
+
+            // 1. 渲染激光笔衰减轨迹
+            laserTracks = laserTracks.filter(pt => now - pt.time < 2200);
+            if (laserTracks.length > 1) {
+                fxCtx.save();
+                fxCtx.lineCap = 'round';
+                fxCtx.lineJoin = 'round';
+                for (let i = 1; i < laserTracks.length; i++) {
+                    const p1 = laserTracks[i - 1];
+                    const p2 = laserTracks[i];
+                    const age = now - p2.time;
+                    const opacity = Math.max(0, 1 - age / 2200);
+                    fxCtx.beginPath();
+                    fxCtx.moveTo(p1.x, p1.y);
+                    fxCtx.lineTo(p2.x, p2.y);
+                    fxCtx.strokeStyle = `rgba(255, 75, 140, ${opacity * 0.85})`;
+                    fxCtx.lineWidth = 5 * opacity;
+                    fxCtx.shadowColor = '#ff2a75';
+                    fxCtx.shadowBlur = 10;
+                    fxCtx.stroke();
+                }
+                fxCtx.restore();
+            }
+
+            // 2. 渲染投掷道具弹道与爆炸
+            for (let i = activeFxObjects.length - 1; i >= 0; i--) {
+                const obj = activeFxObjects[i];
+                if (obj.type === 'missile') {
+                    obj.progress += obj.speed;
+                    const curX = obj.startX + (obj.targetX - obj.startX) * obj.progress;
+                    const arcH = Math.sin(obj.progress * Math.PI) * 120;
+                    const curY = obj.startY + (obj.targetY - obj.startY) * obj.progress - arcH;
+
+                    fxCtx.font = '32px sans-serif';
+                    fxCtx.textAlign = 'center';
+                    fxCtx.textBaseline = 'middle';
+                    fxCtx.fillText(obj.emoji, curX, curY);
+
+                    if (obj.progress >= 1) {
+                        spawnItemExplosionParticles(obj.targetX, obj.targetY, obj.emoji);
+                        activeFxObjects.splice(i, 1);
+                    }
+                } else if (obj.type === 'particle') {
+                    obj.x += obj.vx;
+                    obj.y += obj.vy;
+                    obj.vy += 0.12; // 重力
+                    obj.alpha -= 0.024;
+
+                    fxCtx.save();
+                    fxCtx.globalAlpha = Math.max(0, obj.alpha);
+                    fxCtx.font = `${obj.size}px sans-serif`;
+                    fxCtx.textAlign = 'center';
+                    fxCtx.fillText(obj.emoji, obj.x, obj.y);
+                    fxCtx.restore();
+
+                    if (obj.alpha <= 0) activeFxObjects.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(renderFxFrame);
+        }
+        requestAnimationFrame(renderFxFrame);
 
         // ==========================================
         // 聊天与气泡
@@ -2749,101 +2230,43 @@
         function appendChatHistoryItem(color, text, options = {}) {
             const box = document.getElementById('chatHistoryBox');
             if (!box) return;
-
             const emptyHint = document.getElementById('chatEmptyHint');
-            if (emptyHint) {
-                emptyHint.style.display = 'none';
-            }
+            if (emptyHint) emptyHint.style.display = 'none';
 
-            let senderName = options.senderName;
-            if (!senderName) {
-                if (gameMode === 'online') {
-                    senderName = color === 1
-                        ? (blackPlayerInfo?.name || '黑棋')
-                        : (whitePlayerInfo?.name || '白棋');
-                } else if (gameMode === 'ai') {
-                    senderName = color === 1 ? myName : '芽芽 AI';
-                } else {
-                    senderName = color === 1 ? '豆豆宝宝' : '芽芽';
-                }
-            }
-
-            const isMine = options.isMine !== undefined
-                ? options.isMine
-                : (gameMode === 'online' ? color === myOnlineColor : color === 1);
-
+            let senderName = options.senderName || (gameMode === 'online' ? (color === 1 ? blackPlayerInfo?.name : whitePlayerInfo?.name) : myName);
+            const isMine = options.isMine !== undefined ? options.isMine : (gameMode === 'online' ? color === myOnlineColor : true);
             const now = new Date();
-            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-            const stoneBadge = color === 1 ? '⚫' : '⚪';
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
             const item = document.createElement('div');
             item.className = `chat-log-item ${isMine ? 'mine' : 'other'}`;
-
-            const meta = document.createElement('div');
-            meta.className = 'chat-log-meta';
-            meta.innerText = `${stoneBadge} ${senderName} · ${timeStr}`;
-
-            const bubble = document.createElement('div');
-            bubble.className = 'chat-log-bubble';
-            bubble.innerText = text;
-
-            item.appendChild(meta);
-            item.appendChild(bubble);
+            item.innerHTML = `
+                <div class="chat-log-meta">${color === 1 ? '⚫' : '⚪'} ${senderName} · ${timeStr}</div>
+                <div class="chat-log-bubble">${text}</div>
+            `;
             box.appendChild(item);
-
-            const items = box.querySelectorAll('.chat-log-item');
-            if (items.length > 80) {
-                items[0].remove();
-            }
-
-            requestAnimationFrame(() => {
-                box.scrollTo({
-                    top: box.scrollHeight,
-                    behavior: 'smooth'
-                });
-            });
+            box.scrollTop = box.scrollHeight;
         }
 
         window.clearChatHistoryBox = function() {
             const box = document.getElementById('chatHistoryBox');
-            if (!box) return;
-            box.innerHTML = '<div class="chat-empty-hint" id="chatEmptyHint">💌 互动气泡与悄悄话会在这里上下平滑滚动显示～</div>';
-            showRomanticToast('🧹 已清空聊天滚动框记录');
+            box.innerHTML = '<div class="chat-empty-hint" id="chatEmptyHint">💌 互动悄悄话会在这里显示～</div>';
         };
 
         window.sendCoupleChat = function(text) {
-            const cleanText = String(text || '').trim();
-            if (!cleanText) return;
+            const clean = String(text || '').trim();
+            if (!clean) return;
 
-            if (cleanText === '1114') {
-                toggleMasterCheatSecretly();
-                return;
-            }
-            if (cleanText === '818') {
-                toggleOverrideCheatSecretly();
-                return;
-            }
+            if (triggerSecretWord(clean)) return;
 
             const myCardColor = gameMode === 'online' ? myOnlineColor : (gameMode === 'local' ? currentTurn : 1);
-            const senderLabel = gameMode === 'local'
-                ? (myCardColor === 1 ? '豆豆宝宝' : '芽芽')
-                : myName;
+            showChatBubbleOnCard(myCardColor, clean, { senderName: myName, isMine: true });
 
-            showChatBubbleOnCard(myCardColor, cleanText, {
-                senderName: senderLabel,
-                isMine: true
-            });
-
-            if (gameMode === 'online') {
-                sendRoomPacket('CHAT_MSG', { color: myCardColor, text: cleanText });
-            } else if (gameMode === 'ai') {
+            if (gameMode === 'online') sendRoomPacket('CHAT_MSG', { color: myCardColor, text: clean });
+            else if (gameMode === 'ai') {
                 setTimeout(() => {
-                    const replies = ['😘 下得真棒！', '🌸 永远让着你～', '✨ 再来一盘嘛！'];
-                    const replyText = replies[Math.floor(Math.random() * replies.length)];
-                    showChatBubbleOnCard(2, replyText, {
-                        senderName: '芽芽 AI',
-                        isMine: false
-                    });
+                    const replies = ['😘 下得真棒！', '🌸 永远让着豆豆～', '✨ 这一步好神！'];
+                    showChatBubbleOnCard(2, replies[Math.floor(Math.random() * replies.length)], { senderName: '芽芽 AI', isMine: false });
                 }, 650);
             }
         };
@@ -2853,114 +2276,44 @@
             const val = inp.value.trim();
             if (!val) return;
             inp.value = '';
-
-            if (val === '1114') {
-                toggleMasterCheatSecretly();
-                return;
-            }
-            if (val === '818') {
-                toggleOverrideCheatSecretly();
-                return;
-            }
-
             sendCoupleChat(val);
         };
 
         function showChatBubbleOnCard(color, text, logOptions = {}) {
-            const id = color === 1 ? 'blackBubble' : 'whiteBubble';
-            const el = document.getElementById(id);
+            const el = document.getElementById(color === 1 ? 'blackBubble' : 'whiteBubble');
             if (el) {
                 el.innerText = text;
                 el.classList.remove('show');
                 void el.offsetWidth;
                 el.classList.add('show');
             }
-
-            if (logOptions.record !== false) {
-                appendChatHistoryItem(color, text, logOptions);
-            }
+            appendChatHistoryItem(color, text, logOptions);
         }
 
         function refreshGomokuUI() {
-            const blackCard = document.getElementById('blackCard');
-            const whiteCard = document.getElementById('whiteCard');
             const blackNameEl = document.getElementById('blackNameLabel');
             const whiteNameEl = document.getElementById('whiteNameLabel');
-            const blackMeTag = document.getElementById('blackMeTag');
-            const whiteMeTag = document.getElementById('whiteMeTag');
-            const blackDot = document.getElementById('blackPresenceDot');
-            const whiteDot = document.getElementById('whitePresenceDot');
-            const blackSubEl = document.getElementById('blackStatusLabel');
-            const whiteSubEl = document.getElementById('whiteStatusLabel');
             const bannerEl = document.getElementById('statusBannerText');
-
             document.getElementById('moveCountText').innerText = moves.length;
 
             if (gameMode === 'online') {
                 const bothOnline = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-                const bName = blackPlayerInfo ? blackPlayerInfo.name : '等待入座...';
-                const wName = whitePlayerInfo ? whitePlayerInfo.name : '等待加入...';
+                blackNameEl.innerText = `${blackPlayerInfo?.name || '等待入座'} (黑棋)`;
+                whiteNameEl.innerText = `${whitePlayerInfo?.name || '等待加入'} (白棋)`;
+                document.getElementById('blackMeTag').style.display = (blackPlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
+                document.getElementById('whiteMeTag').style.display = (whitePlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
 
-                blackNameEl.innerText = `${bName} (黑棋)`;
-                whiteNameEl.innerText = `${wName} (白棋)`;
-
-                blackMeTag.style.display = (blackPlayerInfo && blackPlayerInfo.id === myClientId) ? 'inline-block' : 'none';
-                whiteMeTag.style.display = (whitePlayerInfo && whitePlayerInfo.id === myClientId) ? 'inline-block' : 'none';
-
-                blackDot.classList.toggle('online', !!blackPlayerInfo);
-                whiteDot.classList.toggle('online', bothOnline);
-
-                if (winner !== 0) {
-                    const winName = winner === 1 ? bName : wName;
-                    bannerEl.innerText = `🏆 恭喜 ${winName} 获胜！点击下方「再来一局」继续切磋`;
-                } else if (!bothOnline) {
-                    bannerEl.innerText = `💖 房间 #${currentRoomCode || '5200'}：等待对方进入相同房间号`;
-                } else {
-                    const isMine = currentTurn === myOnlineColor;
-                    const myStoneText = myOnlineColor === 1 ? '黑棋' : '白棋';
-                    const otherName = myOnlineColor === 1 ? wName : bName;
-                    bannerEl.innerText = isMine
-                        ? `👉 轮到你 (${myStoneText}) 落子啦！快点棋盘下子吧`
-                        : `⏳ 对方 (${otherName}) 正在认真思考落子...`;
-                }
-
-                blackSubEl.innerText = currentTurn === 1 && winner === 0 ? '🟢 在线 · ⚡ 当前落子方' : '🟢 在线 · 先手执黑';
-                whiteSubEl.innerText = !bothOnline
-                    ? '🟡 等待对方进入房间...'
-                    : (currentTurn === 2 && winner === 0 ? '🟢 在线 · ⚡ 当前落子方' : '🟢 在线 · 后手执白');
-
+                if (winner !== 0) bannerEl.innerText = `🏆 比赛结束！获胜方：${winner === 1 ? blackPlayerInfo?.name : whitePlayerInfo?.name}`;
+                else if (!bothOnline) bannerEl.innerText = `💖 房间 #${currentRoomCode}：等待对方加入相同房号...`;
+                else bannerEl.innerText = currentTurn === myOnlineColor ? '👉 轮到你下棋啦！' : `⏳ 对方 (${getOpponentDisplayName()}) 正在深思熟虑...`;
             } else if (gameMode === 'ai') {
                 blackNameEl.innerText = `${myName} (黑棋)`;
                 whiteNameEl.innerText = `芽芽 AI (白棋)`;
-                blackMeTag.style.display = 'inline-block';
-                whiteMeTag.style.display = 'none';
-                blackDot.classList.add('online');
-                whiteDot.classList.add('online');
-
-                bannerEl.innerText = winner !== 0
-                    ? (winner === 1 ? `🎉 哇！${myName}赢了芽芽 AI！` : '🤖 芽芽 AI 险胜一招，再来一局！')
-                    : (aiThinking ? '🤖 芽芽 AI 正在思考...' : `👉 轮到 ${myName} 落子啦`);
-
-                blackSubEl.innerText = currentTurn === 1 && winner === 0 ? '⚡ 当前落子方' : '先手执黑';
-                whiteSubEl.innerText = currentTurn === 2 && winner === 0 ? '⚡ 当前落子方' : '后手执白';
-            } else {
-                blackNameEl.innerText = '豆豆宝宝 (黑棋)';
-                whiteNameEl.innerText = '芽芽 (白棋)';
-                blackMeTag.style.display = 'none';
-                whiteMeTag.style.display = 'none';
-                blackDot.classList.add('online');
-                whiteDot.classList.add('online');
-
-                bannerEl.innerText = winner !== 0
-                    ? (winner === 1 ? '🎉 豆豆宝宝 (黑棋) 获胜！' : '🎉 芽芽 (白棋) 获胜！')
-                    : (currentTurn === 1 ? '👉 轮到【豆豆 (黑棋)】落子' : '👉 轮到【芽芽 (白棋)】落子');
-
-                blackSubEl.innerText = currentTurn === 1 && winner === 0 ? '⚡ 当前落子方' : '先手执黑';
-                whiteSubEl.innerText = currentTurn === 2 && winner === 0 ? '⚡ 当前落子方' : '后手执白';
+                bannerEl.innerText = winner !== 0 ? (winner === 1 ? '🎉 恭喜豆豆获胜！' : '🤖 芽芽 AI 赢啦') : (aiThinking ? '🤖 思考中...' : '👉 轮到你落子');
             }
 
-            blackCard.classList.toggle('active-turn', winner === 0 && currentTurn === 1);
-            whiteCard.classList.toggle('active-turn', winner === 0 && currentTurn === 2);
+            document.getElementById('blackCard').classList.toggle('active-turn', winner === 0 && currentTurn === 1);
+            document.getElementById('whiteCard').classList.toggle('active-turn', winner === 0 && currentTurn === 2);
 
             updateDynamicPhrasesUI();
             updateWinRateDisplay();
@@ -2972,21 +2325,14 @@
             const title = document.getElementById('victoryTitle');
             const bName = document.getElementById('blackNameLabel').innerText;
             const wName = document.getElementById('whiteNameLabel').innerText;
-            if (winner === 3) {
-                title.innerText = '🤝 心有灵犀，本局平局！';
-            } else {
-                const winnerText = winner === 1 ? bName : wName;
-                title.innerText = `🎉 ${winnerText} 获胜啦！(${winReason === 'resign' ? '对方认输' : '五子连珠'})`;
-            }
+            title.innerText = winner === 3 ? '🤝 棋逢对手，本局平局！' : `🎉 ${winner === 1 ? bName : wName} 获胜啦！`;
             banner.style.display = 'flex';
         }
 
-        window.hideVictoryBanner = function() {
-            document.getElementById('victoryBanner').style.display = 'none';
-        };
+        window.hideVictoryBanner = () => document.getElementById('victoryBanner').style.display = 'none';
 
         // ==========================================
-        // 棋盘渲染与交互
+        // 棋盘渲染与视线光标 (Canvas)
         // ==========================================
         const canvas = document.getElementById('gomokuCanvas');
         const ctx = canvas.getContext('2d');
@@ -3009,7 +2355,7 @@
             metrics = { size: cssSize, pad, cell };
             drawGomokuBoard();
         }
-        window.addEventListener('resize', resizeBoardCanvas);
+        window.addEventListener('resize', () => { resizeBoardCanvas(); resizeFxCanvas(); });
 
         function drawGomokuBoard() {
             const { size, pad, cell } = metrics;
@@ -3040,53 +2386,51 @@
                 ctx.fill();
             }
 
-            // 大师推荐落点 (1114)
+            // 💡 1114 大师落点提示
             if (masterCheatEnabled && masterRecommendedMove && winner === 0) {
                 const { r: mr, c: mc } = masterRecommendedMove;
                 if (board[mr][mc] === 0) {
                     const mx = pad + mc * cell;
                     const my = pad + mr * cell;
-                    const rad = cell * 0.44;
                     ctx.save();
                     ctx.beginPath();
-                    ctx.arc(mx, my, rad, 0, Math.PI * 2);
-
-                    if (currentTurn === 1) {
-                        const g = ctx.createRadialGradient(mx - rad * 0.3, my - rad * 0.3, rad * 0.08, mx, my, rad);
-                        g.addColorStop(0, 'rgba(130, 130, 130, 0.52)');
-                        g.addColorStop(0.5, 'rgba(55, 55, 55, 0.42)');
-                        g.addColorStop(1, 'rgba(20, 20, 20, 0.35)');
-                        ctx.fillStyle = g;
-                        ctx.fill();
-                        ctx.setLineDash([3, 3]);
-                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
-                        ctx.lineWidth = 1.4;
-                        ctx.stroke();
-                    } else {
-                        const g = ctx.createRadialGradient(mx - rad * 0.3, my - rad * 0.3, rad * 0.08, mx, my, rad);
-                        g.addColorStop(0, 'rgba(255, 255, 255, 0.72)');
-                        g.addColorStop(0.6, 'rgba(245, 242, 238, 0.58)');
-                        g.addColorStop(1, 'rgba(210, 202, 194, 0.48)');
-                        ctx.fillStyle = g;
-                        ctx.fill();
-                        ctx.setLineDash([3, 3]);
-                        ctx.strokeStyle = 'rgba(110, 75, 40, 0.55)';
-                        ctx.lineWidth = 1.4;
-                        ctx.stroke();
-                    }
+                    ctx.arc(mx, my, cell * 0.44, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 105, 180, 0.28)';
+                    ctx.fill();
+                    ctx.setLineDash([4, 3]);
+                    ctx.strokeStyle = '#ff3366';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
                     ctx.restore();
                 }
             }
 
-            // 准星与落子悬浮预览
+            // 👁️ 对方视线盯梢同步 (粉色猫爪准星 + 浮动提示)
+            if (remoteCursor && winner === 0) {
+                const rx = pad + remoteCursor.c * cell;
+                const ry = pad + remoteCursor.r * cell;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(rx, ry, cell * 0.48, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 64, 129, 0.75)';
+                ctx.lineWidth = 2.4;
+                ctx.stroke();
+
+                // 视线标签
+                ctx.font = '10.5px sans-serif';
+                ctx.fillStyle = '#ff2a75';
+                ctx.fillText(`👀 ${remoteCursor.name}正在看`, rx, ry - cell * 0.6);
+                ctx.restore();
+            }
+
+            // 本地落子预览准星
             const aim = pendingIntersection || hoverIntersection;
             if (aim && winner === 0 && (board[aim.r][aim.c] === 0 || (overrideCheatEnabled && board[aim.r][aim.c] !== currentTurn))) {
                 const ax = pad + aim.c * cell;
                 const ay = pad + aim.r * cell;
-                const rad = cell * 0.44;
                 ctx.save();
                 ctx.beginPath();
-                ctx.arc(ax, ay, rad, 0, Math.PI * 2);
+                ctx.arc(ax, ay, cell * 0.44, 0, Math.PI * 2);
                 ctx.fillStyle = currentTurn === 1 ? 'rgba(20,20,20,0.35)' : 'rgba(255,255,255,0.55)';
                 ctx.fill();
                 if (pendingIntersection) {
@@ -3111,26 +2455,16 @@
                     ctx.shadowBlur = rStone * 0.4;
                     ctx.shadowOffsetX = rStone * 0.1;
                     ctx.shadowOffsetY = rStone * 0.15;
-
                     ctx.beginPath();
                     ctx.arc(cx, cy, rStone, 0, Math.PI * 2);
+
                     if (v === 1) {
                         const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
-                        g.addColorStop(0, '#666');
-                        g.addColorStop(0.3, '#262626');
-                        g.addColorStop(1, '#080808');
+                        g.addColorStop(0, '#666'); g.addColorStop(0.3, '#262626'); g.addColorStop(1, '#080808');
                         ctx.fillStyle = g;
                     } else {
                         const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
-                        if (isLightsOff) {
-                            g.addColorStop(0, '#ebe7e0');
-                            g.addColorStop(0.7, '#d5cfc6');
-                            g.addColorStop(1, '#b0a99f');
-                        } else {
-                            g.addColorStop(0, '#ffffff');
-                            g.addColorStop(0.7, '#f2efec');
-                            g.addColorStop(1, '#cdc6be');
-                        }
+                        g.addColorStop(0, '#ffffff'); g.addColorStop(0.7, '#f2efec'); g.addColorStop(1, '#cdc6be');
                         ctx.fillStyle = g;
                     }
                     ctx.fill();
@@ -3138,21 +2472,16 @@
                 }
             }
 
-            // 最新手红点
+            // 最新一手标记
             if (moves.length > 0) {
                 const last = moves[moves.length - 1];
-                const lx = pad + last.c * cell;
-                const ly = pad + last.r * cell;
                 ctx.beginPath();
-                ctx.arc(lx, ly, Math.max(3.5, cell * 0.15), 0, Math.PI * 2);
+                ctx.arc(pad + last.c * cell, pad + last.r * cell, Math.max(3.5, cell * 0.15), 0, Math.PI * 2);
                 ctx.fillStyle = '#ff3b6b';
                 ctx.fill();
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 1.2;
-                ctx.stroke();
             }
 
-            // 五子连珠高光
+            // 胜利连线
             if (winLine && winLine.length >= 5) {
                 const p1 = winLine[0];
                 const p2 = winLine[winLine.length - 1];
@@ -3180,22 +2509,12 @@
         }
 
         window.toggleAimMode = function() {
-            if (aimSetting === 'auto') aimSetting = 'on';
-            else if (aimSetting === 'on') aimSetting = 'off';
-            else aimSetting = 'auto';
-
-            const txt = aimSetting === 'auto' ? '自动' : aimSetting === 'on' ? '开启' : '关闭';
-            document.getElementById('aimModeBtn').innerText = `🎯 防误触: ${txt}`;
+            aimSetting = aimSetting === 'auto' ? 'on' : aimSetting === 'on' ? 'off' : 'auto';
+            document.getElementById('aimModeBtn').innerText = `🎯 ${aimSetting === 'auto' ? '自动' : aimSetting === 'on' ? '开启' : '关闭'}`;
             pendingIntersection = null;
             updateConfirmButtonUI();
             drawGomokuBoard();
         };
-
-        function shouldUseTwoStepConfirm() {
-            if (aimSetting === 'on') return true;
-            if (aimSetting === 'off') return false;
-            return isTouchUsed || window.innerWidth < 640;
-        }
 
         function updateConfirmButtonUI() {
             const btn = document.getElementById('confirmMoveBtn');
@@ -3216,40 +2535,74 @@
             placeStoneAt(r, c);
         };
 
-        canvas.addEventListener('touchstart', () => { isTouchUsed = true; }, { passive: true });
+        // 视线广播节流
+        function broadcastLocalCursorFocus(pt) {
+            if (gameMode !== 'online' || !currentRoomCode) return;
+            const now = Date.now();
+            if (now - lastCursorSendTime > 120) {
+                lastCursorSendTime = now;
+                sendRoomPacket('CURSOR_FOCUS', pt ? { r: pt.r, c: pt.c } : null);
+            }
+        }
 
-        canvas.addEventListener('mousemove', (e) => {
-            if (isTouchUsed) return;
+        // 激光笔绘制记录
+        let isPointerDown = false;
+        canvas.parentElement.addEventListener('pointerdown', (e) => {
+            isPointerDown = true;
+            if (isLaserMode) {
+                const rect = fxCanvas.getBoundingClientRect();
+                const p = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+                laserTracks.push({ x: p.x, y: p.y, time: Date.now(), color: '#ff69b4' });
+                localLaserPoints = [p];
+            }
+        });
+
+        window.addEventListener('pointerup', () => {
+            isPointerDown = false;
+            if (isLaserMode && localLaserPoints.length > 0 && gameMode === 'online') {
+                sendRoomPacket('LASER_DRAW', { points: localLaserPoints });
+                localLaserPoints = [];
+            }
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            if (isLaserMode && isPointerDown) {
+                const rect = fxCanvas.getBoundingClientRect();
+                const p = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+                laserTracks.push({ x: p.x, y: p.y, time: Date.now(), color: '#ff69b4' });
+                localLaserPoints.push(p);
+                if (localLaserPoints.length > 12 && gameMode === 'online') {
+                    sendRoomPacket('LASER_DRAW', { points: localLaserPoints });
+                    localLaserPoints = [];
+                }
+                return;
+            }
+
             const pt = getGridPointFromEvent(e.clientX, e.clientY);
             if (pt?.r !== hoverIntersection?.r || pt?.c !== hoverIntersection?.c) {
                 hoverIntersection = pt;
                 drawGomokuBoard();
+                broadcastLocalCursorFocus(pt);
             }
         });
 
         canvas.addEventListener('mouseleave', () => {
             hoverIntersection = null;
             drawGomokuBoard();
+            broadcastLocalCursorFocus(null);
         });
 
         canvas.addEventListener('click', (e) => {
+            if (isLaserMode) return;
             const pt = getGridPointFromEvent(e.clientX, e.clientY);
             if (!pt) return;
 
-            // 未开启 818 时已有棋子直接拦截；开启 818 时若为己方棋子仍拦截，对方棋子允许覆盖
-            if (board[pt.r][pt.c] !== 0) {
-                if (!overrideCheatEnabled || board[pt.r][pt.c] === currentTurn) {
-                    showRomanticToast('这里已经有棋子啦～');
-                    return;
-                }
-            }
-
-            if (gameMode === 'online' && blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0 && currentTurn !== myOnlineColor) {
-                showRomanticToast('⏳ 现在轮到对方落子哟～');
+            if (board[pt.r][pt.c] !== 0 && (!overrideCheatEnabled || board[pt.r][pt.c] === currentTurn)) {
+                showRomanticToast('这里已经有棋子啦～');
                 return;
             }
 
-            if (shouldUseTwoStepConfirm()) {
+            if (aimSetting === 'on' || (aimSetting === 'auto' && window.innerWidth < 640)) {
                 if (pendingIntersection && pendingIntersection.r === pt.r && pendingIntersection.c === pt.c) {
                     confirmPendingStone();
                 } else {
