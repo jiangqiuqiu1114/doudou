@@ -1152,7 +1152,7 @@
                                 <span id="whiteNameLabel">等待加入...</span>
                                 <span class="me-tag" id="whiteMeTag" style="display:none;">我</span>
                             </div>
-                            <div class="player-sub" id="whiteStatusLabel">🟡 等待对方进房...</div>
+                            <div class="player-sub" id="whiteStatusLabel">🟢 在线 · 后手执白</div>
                         </div>
                         <div class="chat-bubble right-side" id="whiteBubble"></div>
                     </div>
@@ -2586,35 +2586,59 @@
             appendChatHistoryItem(color, text, logOptions);
         }
 
-        function refreshGomokuUI() {
-            const blackNameEl = document.getElementById('blackNameLabel');
-            const whiteNameEl = document.getElementById('whiteNameLabel');
-            const bannerEl = document.getElementById('statusBannerText');
-            document.getElementById('moveCountText').innerText = moves.length;
+       function refreshGomokuUI() {
+    const blackNameEl = document.getElementById('blackNameLabel');
+    const whiteNameEl = document.getElementById('whiteNameLabel');
+    const bannerEl = document.getElementById('statusBannerText');
+    const blackSubEl = document.getElementById('blackStatusLabel');
+    const whiteSubEl = document.getElementById('whiteStatusLabel');
+    const blackDot = document.getElementById('blackPresenceDot');
+    const whiteDot = document.getElementById('whitePresenceDot');
 
-            if (gameMode === 'online') {
-                const bothOnline = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-                blackNameEl.innerText = `${blackPlayerInfo?.name || '等待入座'} (黑棋)`;
-                whiteNameEl.innerText = `${whitePlayerInfo?.name || '等待加入'} (白棋)`;
-                document.getElementById('blackMeTag').style.display = (blackPlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
-                document.getElementById('whiteMeTag').style.display = (whitePlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
+    document.getElementById('moveCountText').innerText = moves.length;
 
-                if (winner !== 0) bannerEl.innerText = `🏆 比赛结束！获胜方：${winner === 1 ? blackPlayerInfo?.name : whitePlayerInfo?.name}`;
-                else if (!bothOnline) bannerEl.innerText = `💖 房间 #${currentRoomCode}：等待对方加入相同房号...`;
-                else bannerEl.innerText = currentTurn === myOnlineColor ? '👉 轮到你下棋啦！' : `⏳ 对方 (${getOpponentDisplayName()}) 正在深思熟虑...`;
-            } else if (gameMode === 'ai') {
-                blackNameEl.innerText = `${myName} (黑棋)`;
-                whiteNameEl.innerText = `芽芽 AI (白棋)`;
-                bannerEl.innerText = winner !== 0 ? (winner === 1 ? '🎉 恭喜豆豆获胜！' : '🤖 芽芽 AI 赢啦') : (aiThinking ? '🤖 思考中...' : '👉 轮到你落子');
-            }
+    if (gameMode === 'online') {
+        const bothOnline = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
+        blackNameEl.innerText = `${blackPlayerInfo?.name || '等待入座'} (黑棋)`;
+        whiteNameEl.innerText = `${whitePlayerInfo?.name || '等待加入'} (白棋)`;
+        document.getElementById('blackMeTag').style.display = (blackPlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
+        document.getElementById('whiteMeTag').style.display = (whitePlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
 
-            document.getElementById('blackCard').classList.toggle('active-turn', winner === 0 && currentTurn === 1);
-            document.getElementById('whiteCard').classList.toggle('active-turn', winner === 0 && currentTurn === 2);
+        // 更新在线状态小圆点
+        if (blackDot) blackDot.classList.toggle('online', !!blackPlayerInfo);
+        if (whiteDot) whiteDot.classList.toggle('online', bothOnline);
 
-            updateDynamicPhrasesUI();
-            updateWinRateDisplay();
-            updateMasterCheatRecommendation();
+        // 更新头像下方副标题文本（消除“等待对方进房...”）
+        if (blackSubEl) {
+            blackSubEl.innerText = (currentTurn === 1 && winner === 0) ? '🟢 在线 · ⚡ 正在思考落子' : '🟢 在线 · 先手执黑';
         }
+        if (whiteSubEl) {
+            whiteSubEl.innerText = !bothOnline 
+                ? '🟡 等待对方进房...' 
+                : ((currentTurn === 2 && winner === 0) ? '🟢 在线 · ⚡ 正在思考落子' : '🟢 在线 · 后手执白');
+        }
+
+        if (winner !== 0) bannerEl.innerText = `🏆 比赛结束！获胜方：${winner === 1 ? blackPlayerInfo?.name : whitePlayerInfo?.name}`;
+        else if (!bothOnline) bannerEl.innerText = `💖 房间 #${currentRoomCode}：等待对方加入相同房号...`;
+        else bannerEl.innerText = currentTurn === myOnlineColor ? '👉 轮到你下棋啦！' : `⏳ 对方 (${getOpponentDisplayName()}) 正在深思熟虑...`;
+    } else if (gameMode === 'ai') {
+        blackNameEl.innerText = `${myName} (黑棋)`;
+        whiteNameEl.innerText = `芽芽 AI (白棋)`;
+        if (blackDot) blackDot.classList.add('online');
+        if (whiteDot) whiteDot.classList.add('online');
+        if (blackSubEl) blackSubEl.innerText = currentTurn === 1 && winner === 0 ? '⚡ 正在思考落子' : '先手执黑';
+        if (whiteSubEl) whiteSubEl.innerText = currentTurn === 2 && winner === 0 ? '⚡ 正在思考落子' : '后手执白';
+
+        bannerEl.innerText = winner !== 0 ? (winner === 1 ? '🎉 恭喜豆豆获胜！' : '🤖 芽芽 AI 赢啦') : (aiThinking ? '🤖 思考中...' : '👉 轮到你落子');
+    }
+
+    document.getElementById('blackCard').classList.toggle('active-turn', winner === 0 && currentTurn === 1);
+    document.getElementById('whiteCard').classList.toggle('active-turn', winner === 0 && currentTurn === 2);
+
+    updateDynamicPhrasesUI();
+    updateWinRateDisplay();
+    updateMasterCheatRecommendation();
+}
 
         function showVictoryBanner() {
             const banner = document.getElementById('victoryBanner');
