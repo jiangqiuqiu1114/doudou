@@ -130,8 +130,8 @@
             70% { transform: scale(1); }
         }
 
-        h2 { color: #4a3e3d; margin-bottom: 12px; font-size: 26px; font-weight: 800; }
-        p.subtitle { font-size: 14px; color: #8b7c7a; margin-bottom: 30px; }
+        h2 { color: #4a3e3d; margin-bottom: 12px; font-size: 26px; font-weight: 800; transition: color 0.3s; }
+        p.subtitle { font-size: 14px; color: #8b7c7a; margin-bottom: 30px; transition: color 0.3s; }
 
         .input-group { position: relative; margin-bottom: 24px; }
         input[type="text"] {
@@ -248,6 +248,7 @@
             padding-bottom: 14px;
             border-bottom: 1px solid rgba(234, 225, 223, 0.8);
             margin-bottom: 14px;
+            transition: border-color 0.3s;
         }
 
         .back-btn {
@@ -262,7 +263,9 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            transition: all 0.2s;
         }
+        .back-btn:hover { background: #fff0f2; border-color: #ff9a9f; }
 
         .mode-tabs {
             display: flex;
@@ -270,6 +273,7 @@
             padding: 4px;
             border-radius: 14px;
             gap: 4px;
+            transition: all 0.3s;
         }
         .mode-tab {
             border: none;
@@ -280,6 +284,7 @@
             padding: 6px 12px;
             border-radius: 10px;
             cursor: pointer;
+            transition: all 0.2s;
         }
         .mode-tab.active {
             background: linear-gradient(135deg, #ff9a9f 0%, #f68084 100%);
@@ -353,6 +358,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            transition: color 0.3s;
         }
         .me-tag {
             font-size: 10px;
@@ -362,7 +368,7 @@
             color: #d9536f;
             font-weight: 700;
         }
-        .player-sub { font-size: 11px; color: #968583; margin-top: 2px; }
+        .player-sub { font-size: 11px; color: #968583; margin-top: 2px; transition: color 0.3s; }
 
         /* 胜率栏 */
         .winrate-box {
@@ -376,6 +382,7 @@
             font-size: 11px;
             font-weight: 700;
             margin-bottom: 6px;
+            transition: all 0.3s;
         }
         .winrate-bar {
             flex: 1;
@@ -385,8 +392,8 @@
             overflow: hidden;
             display: flex;
         }
-        .winrate-fill-black { background: #2a2a2a; height: 100%; width: 50%; transition: width 0.4s ease; }
-        .winrate-fill-white { background: #fff; height: 100%; width: 50%; transition: width 0.4s ease; }
+        .winrate-fill-black { background: #2a2a2a; height: 100%; width: 50%; transition: width 0.4s ease, background 0.3s; }
+        .winrate-fill-white { background: #fff; height: 100%; width: 50%; transition: width 0.4s ease, background 0.3s; }
 
         /* 气泡 */
         .chat-bubble {
@@ -428,6 +435,7 @@
             gap: 8px;
             font-size: 12.5px;
             color: #6e5856;
+            transition: all 0.3s;
         }
 
         /* 棋盘主框 */
@@ -446,6 +454,7 @@
             justify-content: center;
             padding: 6px;
             overflow: hidden;
+            transition: all 0.35s ease;
         }
         canvas#gomokuCanvas {
             display: block;
@@ -548,6 +557,7 @@
             border: none;
             box-shadow: 0 4px 12px rgba(255, 154, 159, 0.35);
         }
+        .action-pill.primary:hover { filter: brightness(1.04); transform: translateY(-1px); }
         .action-pill.active-mode {
             background: #ff758c;
             color: #fff;
@@ -564,6 +574,13 @@
             border-radius: 14px;
             padding: 6px 12px;
             margin-top: 8px;
+            transition: all 0.3s;
+        }
+        .throw-item-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #b55368;
+            transition: color 0.3s;
         }
         .throw-item-btn {
             background: #fff;
@@ -572,7 +589,7 @@
             padding: 5px 10px;
             font-size: 15px;
             cursor: pointer;
-            transition: transform 0.15s;
+            transition: all 0.18s;
         }
         .throw-item-btn:hover { transform: scale(1.18); }
 
@@ -584,6 +601,7 @@
             padding: 14px;
             margin-bottom: 12px;
             text-align: left;
+            transition: all 0.3s;
         }
         .side-title {
             font-size: 14px;
@@ -593,6 +611,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: color 0.3s;
+        }
+        .room-code-badge {
+            font-family: monospace;
+            font-size: 12.5px;
+            color: #d9536f;
+            background: #fff0f2;
+            padding: 2px 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(217, 83, 111, 0.2);
+            transition: all 0.3s;
         }
         .role-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .role-btn {
@@ -604,7 +633,9 @@
             font-size: 12.5px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .role-btn:hover { border-color: #ff9a9f; }
         .role-btn.active { border-color: #ff8b94; background: #fff0f2; color: #d65c66; }
 
         .quick-room-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
@@ -617,7 +648,9 @@
             font-size: 12.5px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .couple-room-btn:hover { filter: brightness(1.03); transform: translateY(-1px); }
 
         .online-roster-bar {
             background: rgba(255, 248, 249, 0.95);
@@ -631,6 +664,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 6px;
+            transition: all 0.3s;
         }
 
         .bark-call-btn {
@@ -649,7 +683,9 @@
             justify-content: center;
             gap: 6px;
             margin-top: 8px;
+            transition: all 0.25s;
         }
+        .bark-call-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
 
         /* 聊天箱 */
         .chat-history-box {
@@ -663,6 +699,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            transition: all 0.3s;
         }
         .chat-empty-hint { margin: auto; font-size: 12px; color: #b5a3a1; text-align: center; }
         .chat-log-item { display: flex; flex-direction: column; max-width: 86%; }
@@ -697,9 +734,18 @@
             border-radius: 999px;
             font-size: 11.5px;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .phrase-chip:hover { background: #fff0f2; border-color: #ff9a9f; }
 
         /* 暗号快捷药丸 */
+        .secret-section-title {
+            margin-top: 8px;
+            font-size: 11.5px;
+            color: #856c6a;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
         .secret-badge-group {
             display: flex;
             flex-wrap: wrap;
@@ -714,7 +760,9 @@
             border: 1px dashed #ffa8b8;
             color: #d84562;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .secret-chip:hover { background: #ffe0e8; transform: translateY(-1px); }
 
         /* 吐司弹窗 */
         .toast-box {
@@ -761,24 +809,272 @@
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 关灯护眼样式 */
+        /* ==========================================
+           🌙 关灯护眼样式 (深度柔和暗夜配色)
+           ========================================== */
         body.lights-off {
-            background: linear-gradient(135deg, #0d0e17 0%, #151726 45%, #1c182c 85%, #111924 100%);
-            color: #d8d4e2;
-        }
-        body.lights-off .container, body.lights-off .gomoku-wrapper {
-            background: rgba(22, 24, 36, 0.92);
-            border-color: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, #0b0c14 0%, #131524 45%, #1a1628 85%, #0f1620 100%);
             color: #e2deeb;
         }
-        body.lights-off .board-box {
-            background: linear-gradient(145deg, #b8915c 0%, #9e7844 55%, #876334 100%);
-            border-color: #4f3418;
+        body.lights-off .bubble {
+            background: rgba(255, 160, 190, 0.06);
         }
-        body.lights-off .side-card { background: rgba(29, 31, 46, 0.85); border-color: rgba(255, 255, 255, 0.08); }
-        body.lights-off .item-throw-bar { background: rgba(40, 25, 38, 0.9); border-color: #7a3a4b; }
-        body.lights-off .throw-item-btn { background: #2f2331; border-color: #5c3546; }
-        body.lights-off input[type="text"] { background-color: rgba(18, 20, 32, 0.85); border-color: rgba(255, 255, 255, 0.12); color: #eae6f2; }
+        body.lights-off .music-btn,
+        body.lights-off .light-float-btn {
+            background: rgba(34, 37, 56, 0.78);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #f0ecf8;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+        body.lights-off .container,
+        body.lights-off .gomoku-wrapper {
+            background: rgba(20, 22, 34, 0.94);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            color: #e6e2f0;
+        }
+        body.lights-off h2 { color: #f3effb; }
+        body.lights-off p.subtitle { color: #9c94b0; }
+        body.lights-off .divider-line { color: #7e7794; }
+        body.lights-off .divider-line::before,
+        body.lights-off .divider-line::after {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+        }
+
+        /* 顶部导航与模式切换 */
+        body.lights-off .gomoku-topbar {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+        body.lights-off .mode-tabs {
+            background: rgba(13, 15, 24, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        body.lights-off .mode-tab {
+            color: #9b93b0;
+        }
+        body.lights-off .mode-tab:hover:not(.active) {
+            color: #dcd6ea;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        body.lights-off .mode-tab.active {
+            background: linear-gradient(135deg, #e05378 0%, #c0487d 100%);
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(224, 83, 120, 0.35);
+        }
+
+        /* 次级通用按钮 (.back-btn, .action-pill) */
+        body.lights-off .back-btn,
+        body.lights-off .action-pill {
+            background: rgba(38, 42, 64, 0.88);
+            border-color: rgba(255, 255, 255, 0.11);
+            color: #ddd7ec;
+        }
+        body.lights-off .back-btn:hover,
+        body.lights-off .action-pill:hover {
+            background: rgba(54, 48, 78, 0.95);
+            border-color: rgba(255, 130, 160, 0.45);
+            color: #ffffff;
+        }
+
+        /* 主按钮 (降低刺眼白光，改用深玫瑰暮光渐变) */
+        body.lights-off .action-pill.primary,
+        body.lights-off button#sendBtn,
+        body.lights-off .bark-call-btn {
+            background: linear-gradient(135deg, #e3567b 0%, #bf4b85 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 180, 205, 0.22);
+            box-shadow: 0 5px 16px rgba(215, 70, 115, 0.32);
+        }
+        body.lights-off .action-pill.primary:hover,
+        body.lights-off button#sendBtn:hover:not(:disabled),
+        body.lights-off .bark-call-btn:hover:not(:disabled) {
+            filter: brightness(1.08);
+            box-shadow: 0 6px 20px rgba(227, 86, 123, 0.45);
+        }
+        body.lights-off .action-pill.active-mode {
+            background: linear-gradient(135deg, #e3567b 0%, #bf4b85 100%);
+            border-color: #ff85a6;
+            color: #ffffff;
+        }
+        body.lights-off button#gomokuBtn {
+            background: linear-gradient(135deg, #6e57a5 0%, #b05c9e 100%);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 6px 18px rgba(110, 87, 165, 0.35);
+        }
+        body.lights-off .badge {
+            background: linear-gradient(135deg, #e3567b 0%, #bf4b85 100%);
+            box-shadow: 0 4px 14px rgba(227, 86, 123, 0.35);
+        }
+
+        /* 玩家卡片 */
+        body.lights-off .player-card {
+            background: rgba(30, 33, 50, 0.85);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        body.lights-off .player-card.active-turn {
+            background: linear-gradient(135deg, rgba(52, 34, 54, 0.92) 0%, rgba(36, 35, 56, 0.92) 100%);
+            border-color: #e05c80;
+            box-shadow: 0 6px 18px rgba(224, 92, 128, 0.2);
+        }
+        body.lights-off .player-name { color: #f2eef9; }
+        body.lights-off .player-sub { color: #9c94b0; }
+        body.lights-off .me-tag {
+            background: rgba(235, 90, 130, 0.22);
+            color: #ff9ebb;
+            border: 1px solid rgba(255, 140, 170, 0.3);
+        }
+        body.lights-off .presence-dot { border-color: #1e2132; }
+
+        /* 胜率条与局势条 */
+        body.lights-off .winrate-box {
+            background: rgba(28, 31, 46, 0.85);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #d6d0e5;
+        }
+        body.lights-off .winrate-bar {
+            background: #141622;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        body.lights-off .winrate-fill-black { background: #636b92; }
+        body.lights-off .winrate-fill-white { background: #e2deeb; }
+
+        body.lights-off .status-strip {
+            background: rgba(32, 35, 52, 0.9);
+            border-color: rgba(255, 140, 170, 0.16);
+            color: #e4dff0;
+        }
+
+        /* 棋盘与胜利横幅 */
+        body.lights-off .board-box {
+            background: linear-gradient(145deg, #9c7a4c 0%, #846338 55%, #6e502a 100%);
+            border-color: #462e15;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.55);
+        }
+        body.lights-off .victory-banner {
+            background: rgba(26, 28, 44, 0.96);
+            border-color: #e05c80;
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+        }
+
+        /* 投掷互动条 */
+        body.lights-off .item-throw-bar {
+            background: rgba(34, 28, 44, 0.88);
+            border-color: rgba(235, 110, 150, 0.28);
+        }
+        body.lights-off .throw-item-label { color: #f29bb2; }
+        body.lights-off .throw-item-btn {
+            background: rgba(48, 39, 62, 0.9);
+            border-color: rgba(255, 150, 180, 0.22);
+        }
+        body.lights-off .throw-item-btn:hover {
+            background: rgba(70, 50, 82, 0.95);
+            border-color: rgba(255, 150, 180, 0.5);
+        }
+
+        /* 右侧卡片、身份选择、联机房 */
+        body.lights-off .side-card {
+            background: rgba(27, 30, 45, 0.88);
+            border-color: rgba(255, 255, 255, 0.07);
+        }
+        body.lights-off .side-title { color: #f0ecf8; }
+        body.lights-off .room-code-badge {
+            background: rgba(235, 90, 130, 0.18);
+            color: #ff9ebb;
+            border-color: rgba(255, 130, 165, 0.3);
+        }
+        body.lights-off .role-btn {
+            background: rgba(38, 42, 64, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #cfc8e0;
+        }
+        body.lights-off .role-btn:hover {
+            background: rgba(50, 48, 76, 0.92);
+            border-color: rgba(255, 140, 170, 0.35);
+        }
+        body.lights-off .role-btn.active {
+            background: linear-gradient(135deg, rgba(224, 83, 120, 0.25) 0%, rgba(191, 75, 133, 0.2) 100%);
+            border-color: #e05c80;
+            color: #ffabc2;
+            box-shadow: inset 0 0 12px rgba(224, 92, 128, 0.15);
+        }
+
+        body.lights-off .online-roster-bar {
+            background: rgba(20, 22, 34, 0.78);
+            border-color: rgba(255, 140, 170, 0.25);
+            color: #d6d0e5;
+        }
+        body.lights-off .couple-room-btn {
+            background: linear-gradient(135deg, rgba(62, 38, 58, 0.88) 0%, rgba(46, 33, 56, 0.88) 100%);
+            border-color: rgba(235, 110, 150, 0.32);
+            color: #ff9ebb;
+        }
+        body.lights-off .couple-room-btn:hover {
+            background: linear-gradient(135deg, rgba(82, 46, 74, 0.95) 0%, rgba(62, 42, 74, 0.95) 100%);
+            border-color: rgba(255, 140, 175, 0.55);
+            color: #ffd0df;
+        }
+
+        /* 输入框 */
+        body.lights-off input[type="text"] {
+            background-color: rgba(15, 17, 27, 0.9);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #f0ecf8;
+        }
+        body.lights-off input[type="text"]::placeholder {
+            color: #6e6882;
+        }
+        body.lights-off input[type="text"]:focus {
+            background-color: rgba(18, 20, 32, 0.98);
+            border-color: #e05c80;
+            box-shadow: 0 0 12px rgba(224, 92, 128, 0.25);
+        }
+
+        /* 聊天窗口、快捷语、暗号技能胶囊 */
+        body.lights-off .chat-history-box {
+            background: rgba(16, 18, 28, 0.85);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        body.lights-off .chat-empty-hint { color: #736c88; }
+        body.lights-off .chat-log-meta { color: #88809e; }
+        body.lights-off .chat-log-item.mine .chat-log-bubble {
+            background: linear-gradient(135deg, #d94f75 0%, #b8457e 100%);
+            color: #ffffff;
+        }
+        body.lights-off .chat-log-item.other .chat-log-bubble {
+            background: rgba(42, 46, 68, 0.95);
+            color: #ece8f6;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.lights-off .phrase-chip {
+            background: rgba(38, 42, 64, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #d8d2e8;
+        }
+        body.lights-off .phrase-chip:hover {
+            background: rgba(58, 46, 76, 0.95);
+            border-color: rgba(255, 130, 165, 0.45);
+            color: #ffffff;
+        }
+
+        body.lights-off .secret-section-title { color: #b5adc9; }
+        body.lights-off .secret-chip {
+            background: rgba(56, 33, 52, 0.82);
+            border-color: rgba(240, 110, 150, 0.38);
+            color: #ff9ebb;
+        }
+        body.lights-off .secret-chip:hover {
+            background: rgba(78, 42, 68, 0.95);
+            border-color: rgba(255, 140, 175, 0.65);
+            color: #ffc2d4;
+        }
+
+        body.lights-off .toast-item {
+            background: rgba(30, 33, 50, 0.95);
+            border-color: #e05c80;
+            color: #f2eef9;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -895,8 +1191,8 @@
 
                     <div class="victory-banner" id="victoryBanner">
                         <div style="text-align:left;">
-                            <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#d9536f;">🎉 获胜啦！</div>
-                            <div id="victorySub" style="font-size:11.5px; color:#8b7c7a;">点击再来一局继续对战</div>
+                            <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#ff6b8b;">🎉 获胜啦！</div>
+                            <div id="victorySub" style="font-size:11.5px; opacity:0.8;">点击再来一局继续对战</div>
                         </div>
                         <div style="display:flex; gap:6px;">
                             <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局</button>
@@ -907,7 +1203,7 @@
 
                 <!-- 🎨 实时道具抛掷互动条 -->
                 <div class="item-throw-bar">
-                    <span style="font-size:12px; font-weight:700; color:#b55368;">🎁 投掷互动:</span>
+                    <span class="throw-item-label">🎁 投掷互动:</span>
                     <button class="throw-item-btn" onclick="throwInteractiveItem('💋')" title="飞吻一个">💋</button>
                     <button class="throw-item-btn" onclick="throwInteractiveItem('🍅')" title="丢西红柿">🍅</button>
                     <button class="throw-item-btn" onclick="throwInteractiveItem('🔨')" title="敲敲脑瓜">🔨</button>
@@ -921,7 +1217,7 @@
                         <button class="action-pill" onclick="handleUndo()">↩️ 悔棋一步</button>
                         <button class="action-pill" onclick="handleResign()">🏳️ 认输</button>
                     </div>
-                    <span id="connStatusTag" style="font-size:11.5px; color:#968583; align-self:center;">🌐 联机就绪</span>
+                    <span id="connStatusTag" style="font-size:11.5px; opacity:0.75; align-self:center;">🌐 联机就绪</span>
                 </div>
             </div>
 
@@ -940,7 +1236,7 @@
                 <div class="side-card" id="onlineRoomCard">
                     <div class="side-title">
                         <span>🏠 联机房</span>
-                        <span id="roomCodeBadge" style="font-family:monospace; font-size:12.5px; color:#d9536f; background:#fff0f2; padding:2px 8px; border-radius:8px;">未进房</span>
+                        <span id="roomCodeBadge" class="room-code-badge">未进房</span>
                     </div>
 
                     <div class="online-roster-bar">
@@ -991,7 +1287,7 @@
                     </div>
 
                     <!-- 🔮 暗号快捷彩蛋 -->
-                    <div style="margin-top:8px; font-size:11.5px; color:#856c6a; font-weight:700;">🎁 专属暗号技能 (点击或聊天输入):</div>
+                    <div class="secret-section-title">🎁 专属暗号技能 (点击或聊天输入):</div>
                     <div class="secret-badge-group">
                         <span class="secret-chip" onclick="triggerSecretWord('1114')" title="大师最佳落子指引">💡 1114 (神之一手)</span>
                         <span class="secret-chip" onclick="triggerSecretWord('818')" title="特权：直接覆盖并吃掉对方棋子">⚡ 818 (落子覆盖)</span>
@@ -2361,7 +2657,7 @@
             const { size, pad, cell } = metrics;
             ctx.clearRect(0, 0, size, size);
 
-            ctx.strokeStyle = isLightsOff ? 'rgba(42, 24, 10, 0.72)' : 'rgba(72, 40, 14, 0.78)';
+            ctx.strokeStyle = isLightsOff ? 'rgba(38, 22, 8, 0.75)' : 'rgba(72, 40, 14, 0.78)';
             ctx.lineWidth = 1.1;
             for (let i = 0; i < BOARD_SIZE; i++) {
                 const p = pad + i * cell;
@@ -2369,7 +2665,7 @@
                 ctx.beginPath(); ctx.moveTo(p, pad); ctx.lineTo(p, size - pad); ctx.stroke();
             }
 
-            ctx.fillStyle = isLightsOff ? 'rgba(42, 24, 10, 0.78)' : 'rgba(72, 40, 14, 0.8)';
+            ctx.fillStyle = isLightsOff ? 'rgba(38, 22, 8, 0.82)' : 'rgba(72, 40, 14, 0.8)';
             ctx.font = `600 ${Math.max(9, Math.floor(cell * 0.34))}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2382,7 +2678,7 @@
             for (const [sr, sc] of STAR_COORDS) {
                 ctx.beginPath();
                 ctx.arc(pad + sc * cell, pad + sr * cell, Math.max(3, cell * 0.12), 0, Math.PI * 2);
-                ctx.fillStyle = isLightsOff ? '#2f1b0a' : '#48280e';
+                ctx.fillStyle = isLightsOff ? '#2b1808' : '#48280e';
                 ctx.fill();
             }
 
