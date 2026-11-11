@@ -355,7 +355,7 @@
                 <button class="portal-back-btn" onclick="closeRentalSystem()">← 返回小屋</button>
             </div>
         </div>
-        <iframe id="rentalFrame" src="" style="width:100%; height:100%; border:none; background:#0f172a;"></iframe>
+        <iframe id="rentalFrame" title="回龙观房源" style="display:block; width:100%; flex:1; min-height:0; border:none; background:#f4f6f8;"></iframe>
     </div>
 
     <script>
@@ -454,10 +454,13 @@
         function openRentalSystem() {
             const overlay = document.getElementById('rentalPortalOverlay');
             const frame = document.getElementById('rentalFrame');
-            if (!frame.src || frame.src.endsWith('about:blank') || frame.src === window.location.href) {
-                frame.src = 'code_artifact.html';
-            }
+            // Always compare against the intended page, not the home-page URL.
+            // Empty iframe src and home-page query/hash variants must not skip loading.
+            const rentalUrl = new URL('./code_artifact.html', document.baseURI).href;
             overlay.style.display = 'flex';
+            if (frame.getAttribute('src') !== rentalUrl) {
+                frame.src = rentalUrl;
+            }
         }
 
         function closeRentalSystem() {
@@ -465,7 +468,7 @@
         }
 
         function openIndependentRentalTab() {
-            window.open('code_artifact.html', '_blank');
+            window.open(new URL('./code_artifact.html', document.baseURI).href, '_blank', 'noopener');
         }
 
         function openGomokuPage() {
