@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-11-11T12:08:49.223432+00:00",
+  "generatedAt": "2026-11-11T19:43:08.158767+00:00",
   "sources": [
     {
       "platform": "房天下",
       "sourceUrl": "https://zu.fang.com/house-a012-b01182/",
-      "attemptedAt": "2026-11-11T12:08:40.507594+00:00",
+      "attemptedAt": "2026-11-11T19:42:57.358966+00:00",
       "status": "ok",
-      "count": 159,
+      "count": 155,
       "message": "已获取公开列表；未核验实际可租状态"
     },
     {
       "platform": "我爱我家",
       "sourceUrl": "https://bj.5i5j.com/zufang/subway/ss331/",
-      "attemptedAt": "2026-11-11T12:08:40.507968+00:00",
+      "attemptedAt": "2026-11-11T19:42:57.359426+00:00",
       "status": "partial",
-      "count": 26,
-      "message": "第2页：403 Client Error: Forbidden for url: https://bj.5i5j.com/zufang/subway/ss331/n2/"
+      "count": 57,
+      "message": "第3页：403 Client Error: Forbidden for url: https://bj.5i5j.com/zufang/subway/ss331/n3/"
     },
     {
       "platform": "贝壳",
       "sourceUrl": "https://bj.zu.ke.com/zufang/rs%E5%9B%9E%E9%BE%99%E8%A7%82/",
-      "attemptedAt": "2026-11-11T12:08:40.508188+00:00",
+      "attemptedAt": "2026-11-11T19:42:57.360760+00:00",
       "status": "error",
       "count": 0,
       "message": "第1页：没有可解析的独立详情链接；可能需要登录、验证或解析规则已失效"
@@ -44,7 +44,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -59,7 +59,7 @@
       "priceText": "3000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/jpg/jjyapp-ios/all/2026-07-03/c63fbd7f-e658-423b-ba08-28b38ee16aa8/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -79,7 +79,7 @@
         "独门独卫",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -99,7 +99,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -119,7 +119,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -139,7 +139,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -160,7 +160,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观文华路地铁龙跃苑一区精装主卧带阳台",
@@ -179,7 +179,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -199,7 +199,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -219,7 +219,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -239,7 +239,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -259,7 +259,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -279,7 +279,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -296,7 +296,7 @@
       "tags": [
         "距13号线回龙观站约869米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -316,7 +316,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -333,7 +333,7 @@
       "tags": [
         "距昌平线生命科学园站约502米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -350,7 +350,7 @@
       "tags": [
         "距昌平线生命科学园站约1175米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -385,7 +385,7 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实有钥匙,联排别墅一层带院",
@@ -399,8 +399,8 @@
       "priceText": "15000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_2/1/M16/24/da0df148-7bd4-4569-b68c-43051fbeb3d2/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,一层带院儿,四居室三卫,集中暖气",
@@ -416,8 +416,8 @@
       "tags": [
         "距昌平线生命科学园站约970米。"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实有钥匙,大院儿800平米,五居室",
@@ -433,7 +433,7 @@
       "tags": [
         "距昌平线生命科学园站约1198米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -451,7 +451,7 @@
         "距昌平线生命科学园站约959米。",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -469,7 +469,7 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实华远静林湾别墅,挑高大厅",
@@ -484,7 +484,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_2/1/M15/59/0e81b5f1-4d3e-4a90-a7f5-ea919ec4fe35/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实,有大院。地上三层大四居室,干净整洁",
@@ -498,8 +498,8 @@
       "priceText": "15000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/14/M13/19/246afb1d-80cb-4c2e-87d2-8afed45382af/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实大联排别墅,,四居室三卫",
@@ -529,7 +529,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/open/0/2023_2/8/M23/11/eb215dd5-86ae-4c61-8dcd-8e807ba9f11f/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线 昌平线朱辛庄站 主卧独卫 阳台 紧邻地铁 随谁入住",
@@ -549,7 +549,7 @@
         "周边配套齐"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙泽 回龙观地铁 新龙城 单间 一人住 可做饭洗澡",
@@ -568,7 +568,7 @@
         "全装全配",
         "周边配套齐"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -602,7 +602,7 @@
       "tags": [
         "距昌平线生命科学园站约502米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -617,27 +617,28 @@
       "priceText": "14800",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/17/M9/48/9841e48a-620a-48ff-bfa0-9e98a4a3f960/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "昌平回龙观尚城大两居室 生命科学园租房靠地铁看房随时",
+      "url": "https://zu.fang.com/bj/chuzu/3_512401854_1.htm",
+      "platform": "房天下",
       "facts": "整租 | 2室1厅 | 59㎡ | 朝西北",
       "location": "昌平 -回龙观- 尚城",
+      "estate": "尚城",
+      "rentType": "整租",
       "price": 4700.0,
+      "priceText": "4700",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_10/15/M9/28/d07d7f76-7ad1-40c2-9d0e-79cfa1dd9e79/510x510.jpg?t=1",
       "tags": [
         "距昌平线生命科学园站约1070米。",
         "可注册办公",
         "首次出租",
         "南北通透"
       ],
-      "url": "https://zu.fang.com/bj/chuzu/3_512401854_1.htm",
-      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_10/15/M9/28/d07d7f76-7ad1-40c2-9d0e-79cfa1dd9e79/510x510.jpg?t=1",
-      "platform": "房天下",
-      "fetchedAt": null,
-      "stale": true,
-      "estate": "尚城",
-      "rentType": "整租"
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "领秀慧谷C区(一区) 阳光充足 3室2厅1卫 精装修靠地铁",
@@ -656,8 +657,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,四层,三居室双卫",
@@ -677,7 +678,7 @@
         "全装全配"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "实拍 昌平回龙观尚城两居室 朱辛庄地铁站看房随时",
@@ -716,7 +717,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实大联排别墅,一层带院儿四居室三卫",
@@ -750,7 +751,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线育知路地铁积水潭医院回龙观史各庄家园次卧独卫",
@@ -789,7 +790,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观 业主直租三居 近地铁80米随时看房拎包入住",
@@ -809,7 +810,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "13号线回龙观地铁龙腾苑四区精装次卧",
@@ -828,8 +829,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "0押月付。公积金直付。回龙观。龙跃苑四区。地铁13号线",
@@ -849,7 +850,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租回龙观龙腾苑六区3室2厅",
@@ -868,7 +869,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -908,27 +909,28 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "西三旗育新地铁龙旗广场金隅智造东升科技园龙博苑三区精装次卧",
+      "url": "https://zu.fang.com/bj/chuzu/3_510725756_1.htm",
+      "platform": "房天下",
       "facts": "合租次卧 | 3户合租 | 16㎡ | 朝北",
       "location": "昌平 -回龙观- 龙博苑三区",
+      "estate": "龙博苑三区",
+      "rentType": "合租",
       "price": 1500.0,
+      "priceText": "1500",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/fangapp-android/2026_6/27/M21/47/0b8edfc8-b4f0-4dd9-855b-735577175a26/510x510.jpg?t=1",
       "tags": [
         "距8号线育新站约739米。",
         "周边配套齐",
         "采光好",
         "交通便利"
       ],
-      "url": "https://zu.fang.com/bj/chuzu/3_510725756_1.htm",
-      "image": "https://cdnsfb.soufunimg.com/viewimage/fangapp-android/2026_6/27/M21/47/0b8edfc8-b4f0-4dd9-855b-735577175a26/510x510.jpg?t=1",
-      "platform": "房天下",
-      "fetchedAt": null,
-      "stale": true,
-      "estate": "龙博苑三区",
-      "rentType": "合租次卧"
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号18号线回龙观西大街地铁龙腾苑三区主卧独卫",
@@ -966,7 +968,7 @@
         "独门独卫",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1004,25 +1006,26 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租实拍 生命科学园高端公寓 民水民电押一付一 不收中介",
+      "url": "https://zu.fang.com/bj/chuzu/3_512690388_1.htm",
+      "platform": "房天下",
       "facts": "整租 | 1室1厅 | 36㎡ | 朝南",
       "location": "昌平 -回龙观- 北清云际",
+      "estate": "北清云际",
+      "rentType": "整租",
       "price": 3280.0,
+      "priceText": "3280",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_7/20/M15/48/8cd93ee8-4510-42ce-b15a-b7d7058d1e93/510x510.jpg?t=1",
       "tags": [
         "距昌平线生命科学园站约1056米。",
         "首次出租",
         "南北通透"
       ],
-      "url": "https://zu.fang.com/bj/chuzu/3_512690388_1.htm",
-      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_7/20/M15/48/8cd93ee8-4510-42ce-b15a-b7d7058d1e93/510x510.jpg?t=1",
-      "platform": "房天下",
-      "fetchedAt": null,
-      "stale": true,
-      "estate": "北清云际",
-      "rentType": "整租"
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "昌平回龙观尚城小三居生命科学院地铁站 周边靠地铁看房随时",
@@ -1042,7 +1045,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实,占地700平米炮楼户型,大别墅",
@@ -1059,7 +1062,7 @@
         "距昌平线生命科学园站约1198米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙城叠拼别墅,3+4复式楼",
@@ -1075,7 +1078,7 @@
       "tags": [
         "距昌平线生命科学园站约970米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1095,8 +1098,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "18号线文华路8号线平西府地铁龙锦苑四区精装朝南卧室",
@@ -1115,7 +1118,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1135,7 +1138,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租·龙泽·新龙城四期·1室",
@@ -1150,7 +1153,7 @@
       "image": "https://hwxypic.5i5j.com/images/20261105/fc2e4a2171714be8b90e590b930635f6.jpg",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租·龙泽·龙泽苑西区·2室",
@@ -1164,7 +1167,7 @@
       "priceText": "5999 元/月",
       "image": "https://hwxypic.5i5j.com/images/20220312/191f2df79045488a9673acb71b30a23e.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1180,7 +1183,7 @@
       "image": "https://hwxypic.5i5j.com/images/20220709/c08c0a5c5e4048c487fc5e6eb005240c.jpg",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "合租·回龙观·骊龙园·3室·房间A",
@@ -1194,7 +1197,7 @@
       "priceText": "2750 元/月",
       "image": "https://3dvr-cdn.5i5j.com/outputfiles/01be69ffc44787798e64cfe40a550d9e_19357/wateracturalSurvey/1726876183292.jpg?x-image-process=image/watermark,image_aHVhd2VpLXZyL2NvbW1vbi94eV93YXRlcl9tYXJrZXIucG5n,g_center",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1209,7 +1212,7 @@
       "priceText": "2300 元/月",
       "image": "https://hwxypic.5i5j.com/images/20260425/f6df6568d2df451c8f55c26b05cf4517.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1224,7 +1227,7 @@
       "priceText": "4400 元/月",
       "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/09c5c6a1858182f0e7b88785fbc7f224_65489/wateracturalSurvey/1766114022400.jpg?x-image-process=image/watermark,image_aHVhd2VpLXZyL2NvbW1vbi94eV93YXRlcl9tYXJrZXIucG5n,g_center",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1240,7 +1243,7 @@
       "image": "https://hwxypic.5i5j.com/images/20260904/0262ea633f5a4049a891ba5afb65c24e.jpg",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租·回龙观·万润家园·2室",
@@ -1254,7 +1257,7 @@
       "priceText": "5400 元/月",
       "image": "https://3dvr-cdn.5i5j.com/outputfiles/ed2286cbc4cf3a2aabe8c3a2beda2b3a_30671/wateracturalSurvey/1738900642813.jpg?x-image-process=image/watermark,image_aHVhd2VpLXZyL2NvbW1vbi94eV93YXRlcl9tYXJrZXIucG5n,g_center",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1269,7 +1272,7 @@
       "priceText": "5300 元/月",
       "image": "https://3dvr-cdn.5i5j.com/fupeng_outputfiles/87b1cd7781dd288b4dcdc1eb0239b7a8_10538227/wateracturalSurvey/location_02_1792905657099.jpg?time=1792905697",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1284,7 +1287,7 @@
       "priceText": "5000 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_35adeb4c87e839e43ef885c216192c62_10428655/wateracturalSurvey/1790394041317.jpg?time=1790394211",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1300,7 +1303,7 @@
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_2f58a1dc06334c65424a9b0a09ae3ee8_10526052/wateracturalSurvey/1792640532095.jpg?time=1792806116",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租·龙泽·龙华园西区·2室",
@@ -1314,7 +1317,7 @@
       "priceText": "4700 元/月",
       "image": "https://3dvr-cdn.5i5j.com/fupeng_outputfiles/f5734d335cb98f9b93ac0021161c6efa_10538471/wateracturalSurvey/location_10_1792911938893.jpg?time=1792911975",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1329,7 +1332,7 @@
       "priceText": "3644 元/月",
       "image": "https://hwxypic.5i5j.com/images/20260724/15bf90833797497ca694353c089875e8.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1344,7 +1347,7 @@
       "priceText": "5700 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_a22d79a446d2fbdf5b66252e8e8cf633_10476350/wateracturalSurvey/1791540993563.jpg?time=1791541312",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1359,7 +1362,7 @@
       "priceText": "2812 元/月",
       "image": "https://hwxypic.5i5j.com/images/20240420/21b8074af4ba4f47889f59c19ce56e57.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1374,7 +1377,7 @@
       "priceText": "4900 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_7be32db4dac74ed7a1980bfbdfde90fa_10561121/wateracturalSurvey/1793417065731.jpg?time=1793417204",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1389,7 +1392,7 @@
       "priceText": "5200 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_7620803cc4ca14a813bc4a69758dd7bb_10472300/wateracturalSurvey/1791511355044.jpg?time=1791511586",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1404,7 +1407,7 @@
       "priceText": "4300 元/月",
       "image": "https://hwxypic.5i5j.com/images/20261108/1549c612b06441c290bfc566dba4430d.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1419,7 +1422,7 @@
       "priceText": "3900 元/月",
       "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/4e871c1c67e882c8fa771c589cdb1ddb_431102/wateracturalSurvey/floorPlan.jpg?time=1773370691",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1434,7 +1437,7 @@
       "priceText": "3750 元/月",
       "image": "https://hwxypic.5i5j.com/images/20261104/89ca52aeca764e849462c458a6d8486b.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1449,7 +1452,7 @@
       "priceText": "6200 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_6ba3ec6b97bae4b05516933924ea15b4_10381157/wateracturalSurvey/1789282143873.jpg?time=1789283540",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1464,7 +1467,7 @@
       "priceText": "5800 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_ad6cf0eda5102cb7cedde2c967ac63ec_10558496/wateracturalSurvey/1793345972648.jpg?time=1793346234",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1479,7 +1482,7 @@
       "priceText": "6000 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_7914a4f6a8465ca7bf3459eb9cf0d673_10240663/wateracturalSurvey/1786239247492.jpg?time=1786239772",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1494,7 +1497,7 @@
       "priceText": "5300 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_ce387c0b4d97cb987171ba74e15c4a0c_10596942/wateracturalSurvey/1794196532386.jpg?time=1794196943",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1509,7 +1512,7 @@
       "priceText": "1500 元/月",
       "image": "https://hwxypic.5i5j.com/images/20241107/b2cd13e7ebb64e9e9e70d999f7cb65eb.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1524,7 +1527,7 @@
       "priceText": "1762 元/月",
       "image": "https://hwxypic.5i5j.com/images/20260818/f89b67bd6f5c49b48309e6ed1e8fb1fb.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507968+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     },
     {
@@ -1558,7 +1561,7 @@
         "全装全配",
         "独门独卫"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1573,8 +1576,8 @@
       "priceText": "13000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_8/24/M15/40/daa28220-582a-4295-9704-d1f572bfce81/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,上叠拼别墅有电梯,精装修拎包住",
@@ -1589,7 +1592,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_4/13/M17/45/c1e29548-2a33-4d11-b4bf-015c652ee6d0/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实,大联排别墅,四居室三卫,购物方便",
@@ -1603,7 +1606,7 @@
       "priceText": "16000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/14/M13/16/9f9bce00-4fb4-463d-8e87-1df5a4ba6553/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1621,7 +1624,7 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "领秀慧谷A区纯南一居 民水民电燃 生命科学园地铁 可谈",
@@ -1640,7 +1643,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1661,7 +1664,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "朱辛庄两居!4千5就租上下116平!5米5层高带燃气!随时看",
@@ -1680,7 +1683,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1697,7 +1700,7 @@
       "tags": [
         "距昌平线生命科学园站约970米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1717,8 +1720,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "昌平实拍 朱辛庄 万橡悦府精装三居室 南北通透户型靠地铁",
@@ -1737,8 +1740,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "急急,欧式精装修,独栋别墅,大院儿,",
@@ -1754,8 +1757,8 @@
       "tags": [
         "距昌平线生命科学园站约1175米。"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "昌平朱辛庄 生命科学园 尚城 两居室配套成熟靠地铁看房随时",
@@ -1775,7 +1778,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线平西府回龙观东大街龙锦苑一区精装次卧",
@@ -1794,8 +1797,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观文华路地铁龙跃苑一区精装次卧独卫",
@@ -1814,8 +1817,8 @@
         "独门独卫",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "生命科学园 尚城小区2居室 可谈 包物业取暖随时看房",
@@ -1890,7 +1893,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "免押月付 回龙观整租 南北通透 顶层不临街 可公积金付款",
@@ -1928,8 +1931,8 @@
         "交通便利",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线平西府地铁田园风光雅苑东区次卧",
@@ -1948,7 +1951,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -1987,8 +1990,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号18号线回龙观东大街地铁站和谐家园二区精装次卧",
@@ -2026,7 +2029,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2047,7 +2050,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实,龙城花园高端会所豪华精装修,全齐",
@@ -2061,8 +2064,8 @@
       "priceText": "80000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_3/23/M20/15/75b5ea23-39a4-49ff-9cad-7645d56c9d83/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "急新出园墅联排航天城生命科学园 5居3卫 可长短 可办G",
@@ -2078,7 +2081,7 @@
       "tags": [
         "距昌平线生命科学园站约502米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2158,8 +2161,8 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "复式公寓两居出租 家具家电齐全拎包入住交通方便",
@@ -2193,7 +2196,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2209,7 +2212,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/14/M13/26/6da6911d-07e4-4650-a5f6-55499431bc80/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租|回龙观龙跃苑低层三居 南北通透 免押月付 随时可看",
@@ -2229,7 +2232,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙锦苑二区 精装修 3室1厅1卫",
@@ -2248,7 +2251,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2285,8 +2288,8 @@
       "tags": [
         "距13号线霍营站约574米。"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观西大街 港龙商业中心 琥珀天地 东亚上北鑫座朝南开间",
@@ -2305,8 +2308,8 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "整租回龙观和谐家园一区3室2厅",
@@ -2345,7 +2348,7 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2383,7 +2386,7 @@
         "距8号线育新站约672米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "整租回龙观龙锦苑二区2室1厅",
@@ -2436,8 +2439,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观复式精装两居 业主急租 家具家电齐全拎包入住随时看房",
@@ -2456,7 +2459,7 @@
         "独门独卫"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "昌平回龙观国风美唐综合楼 1室1厅 47㎡ 4300元/月",
@@ -2473,7 +2476,7 @@
         "距13号线霍营站约363米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观 新龙城 带阳台",
@@ -2512,7 +2515,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2551,7 +2554,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2571,7 +2574,7 @@
         "周边配套齐",
         "全装全配"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2588,7 +2591,7 @@
       "tags": [
         "距8号线平西府站约620米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2625,7 +2628,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2662,8 +2665,8 @@
       "tags": [
         "距昌平线生命科学园站约1070米。"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "尚城西南一室户 业主直租随时住",
@@ -2680,7 +2683,7 @@
         "距昌平线生命科学园站约1070米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "北店嘉园 18号线双站 130平大户型三居两卫 精装全屋定制",
@@ -2700,7 +2703,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "13号线回龙观 华联商厦 龙旗广场 回龙观西大街 龙博苑一区",
@@ -2773,8 +2776,8 @@
       "tags": [
         "距18号线回龙观西大街站约52米。"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "整租霍营龙锦苑东一区3室2厅",
@@ -2793,7 +2796,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2852,7 +2855,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2871,7 +2874,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "合租:次卧昌平回龙观和谐家园一区 3室2厅 119㎡ 150",
@@ -2887,7 +2890,7 @@
       "tags": [
         "距8号线回龙观东大街站约600米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -2927,7 +2930,7 @@
         "独门独卫"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "0押月付平西府地铁站800米精装电梯南北通透两居室随时看",
@@ -2966,8 +2969,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号18号线回龙观东大街地铁和谐家园二区精装主卧独卫",
@@ -2987,7 +2990,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "0押月付 公积金支付 回龙观精装大三居,一层带园龙泽 霍营",
@@ -3007,7 +3010,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "昌平回龙观上北鑫座住宅 1室1厅 67.76㎡ 5500",
@@ -3024,7 +3027,7 @@
         "距18号线回龙观西大街站约52米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观 华联商厦 少林武校 龙旗广场 西三旗育新 龙博苑二区",
@@ -3043,8 +3046,8 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线13号线霍营地铁龙跃苑一区三楼三居一卫整租",
@@ -3103,8 +3106,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线育知路地铁积水潭医院云趣园一区精装次卧",
@@ -3123,8 +3126,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,一层带院儿,四居室三卫,集中暖气",
@@ -3140,7 +3143,7 @@
       "tags": [
         "距昌平线生命科学园站约970米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -3220,8 +3223,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号线回龙观霍营地铁龙跃苑四区精装次卧",
@@ -3241,7 +3244,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观地铁口,龙腾苑六区精装修三居室6800",
@@ -3260,8 +3263,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实一层带院儿,地上三层双车位",
@@ -3275,7 +3278,7 @@
       "priceText": "15000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/17/M9/47/fca245d0-c1d6-4dea-84f9-dfeee2733ccf/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -3296,7 +3299,7 @@
         "全装全配"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观复式小两居 地铁站口 公寓 业主全包 随时看房",
@@ -3314,8 +3317,8 @@
         "周边配套齐",
         "可注册办公"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "18号线回龙观西大街地铁龙腾苑三区精装次卧",
@@ -3335,7 +3338,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "昌平线8号线朱辛庄地铁 小沙河华府两居整租 包物业取暖",
@@ -3374,7 +3377,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线平西府地铁龙锦苑一区精装朝南主卧带阳台",
@@ -3393,8 +3396,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观 天龙苑 可靠房源 押一付一",
@@ -3431,8 +3434,8 @@
         "周边配套齐",
         "可注册办公"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号线回龙观霍营 创业小单间",
@@ -3490,8 +3493,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "霍营 育新 回龙观 西三旗 三旗百汇 龙旗广场 东村家园次卧",
@@ -3527,7 +3530,7 @@
       "tags": [
         "距13号线回龙观站约769米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -3545,7 +3548,7 @@
         "距18号线回龙观西大街站约812米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线朱辛庄 住宅两居 紧邻万达商场 业主直租 随时免费看房",
@@ -3563,8 +3566,8 @@
         "周边配套齐",
         "独门独卫"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号线回龙观霍营地铁龙跃苑四区主卧独卫",
@@ -3583,8 +3586,8 @@
         "独门独卫",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线育知路地铁积水潭医院回龙观云趣园一区复式楼上一室一厅",
@@ -3603,7 +3606,7 @@
         "独门独卫",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -3639,7 +3642,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "13号线回龙观地铁新龙城朝西次卧",
@@ -3718,7 +3721,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "13号18号线回龙观西大街地铁龙腾苑三区精装次卧",
@@ -3738,7 +3741,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "813霍营站 南北通透 带衣帽间 三局两卫 龙跃苑东二区",
@@ -3792,8 +3795,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T11:57:24.900319+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "昌平生命科学园地铁站附近尚城 2室1厅2卫 通风好靠地铁",
@@ -3852,8 +3855,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观 霍营 国风美唐 中西医结合医院 龙跃苑东五区精装次卧",
@@ -3872,7 +3875,7 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -3932,8 +3935,8 @@
       "priceText": "5500 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_2bf60259cb19bc62837c85a36b584529_10343369/wateracturalSurvey/1788571325605.jpg?time=1788571590",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·龙泽·龙腾苑六区·4室·房间C",
@@ -3947,8 +3950,8 @@
       "priceText": "1260 元/月",
       "image": "https://amsfile.5i5j.com/images/20211210/01854ca724c94ede84c96b5770c63840.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·首开智慧社·1房间",
@@ -3962,8 +3965,8 @@
       "priceText": "4300 元/月",
       "image": "https://3dvr-cdn.5i5j.com/outputfiles/d97b2ef6c459eee7d873cc2c1ad3358d_186531/wateracturalSurvey/floorPlan.jpg?time=1739089379",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·上北鑫座·1房间",
@@ -3977,8 +3980,8 @@
       "priceText": "3300 元/月",
       "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/1b2a4b5393321fa1997cbb07ca9f62ba_525813/wateracturalSurvey/floorPlan.jpg?time=1781575740",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·龙泽·新龙城五期·3室·房间A",
@@ -4022,8 +4025,8 @@
       "priceText": "4100 元/月",
       "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/547e9e8b839827707cb26ceb0b879c0f_361344/wateracturalSurvey/floorPlan.jpg?time=1762653040",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·回龙观·龙腾苑四区·3室·房间B",
@@ -4037,8 +4040,8 @@
       "priceText": "1700 元/月",
       "image": "https://hwxypic.5i5j.com/images/20260911/cc2dd1de668449bb9807e65f7673d9d2.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·龙泽·龙腾苑六区·3室·房间C",
@@ -4052,8 +4055,8 @@
       "priceText": "1400 元/月",
       "image": "https://hwxypic.5i5j.com/images/20251120/5beee2431a68408c85d98ce1f5e527ea.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·龙泽·龙华园西区·5室·房间C",
@@ -4067,8 +4070,8 @@
       "priceText": "1450 元/月",
       "image": "https://hwxypic.5i5j.com/images/20250316/076c94e2af5c4eeda05b20ed2fe0b413.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·上北鑫座·1房间",
@@ -4082,8 +4085,8 @@
       "priceText": "3500 元/月",
       "image": "https://3dvr-cdn.5i5j.com/outputfiles/038c445583eaa065e56869a83d6a5cd7_178374/wateracturalSurvey/floorPlan.jpg?time=1736220363",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·龙泽·龙华园东区·2室",
@@ -4097,8 +4100,8 @@
       "priceText": "4200 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_8f1485610bbf2209578208821ff47ccf_10422564/wateracturalSurvey/1790213797143.jpg?time=1790214248",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·东亚上北·1房间",
@@ -4112,8 +4115,8 @@
       "priceText": "3800 元/月",
       "image": "https://hwxypic.5i5j.com/images/20250416/78613bc9a40c426a8ee648aa5925a432.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·东亚上北·1房间",
@@ -4127,8 +4130,8 @@
       "priceText": "4800 元/月",
       "image": "https://3dvr-cdn.5i5j.com/outputfiles/a5385b31473175190ff379f461d7648d_87262/wateracturalSurvey/floorPlan.jpg?time=1721472096",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·龙泽·龙华园西区·3室·房间C",
@@ -4142,8 +4145,8 @@
       "priceText": "1650 元/月",
       "image": "https://hwxypic.5i5j.com/images/20230720/d0cf191c32734c4d84f3aface7f633de.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·首开智慧社·2室",
@@ -4157,8 +4160,8 @@
       "priceText": "6200 元/月",
       "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_df1962584b8a68dcce01e3782a04cf28_10573916/wateracturalSurvey/1793686065775.jpg?time=1793686224",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·回龙观·首开智慧社·1房间",
@@ -4172,8 +4175,8 @@
       "priceText": "4200 元/月",
       "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/f59f59cf5d749b5c0601c72abd5ff923_330372/wateracturalSurvey/floorPlan.jpg?time=1757926326",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "合租·龙泽·龙泽苑西区·4室·房间D",
@@ -4187,8 +4190,8 @@
       "priceText": "1700 元/月",
       "image": "https://hwxypic.5i5j.com/images/20261027/c8a67a8220cf403cbe48bebd2cdd2199.jpg",
       "tags": [],
-      "fetchedAt": "2026-11-11T11:57:24.900821+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
     },
     {
       "title": "整租·霍营·泰华龙旗广场住宅小区·1室",
@@ -4338,7 +4341,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/14/M14/20/c19f29b6-2bb7-4038-88bb-24f44b59d413/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "生命科学园地铁,航天城,叠拼小别墅,固定车位,随时入住",
@@ -4354,8 +4357,8 @@
       "tags": [
         "距昌平线生命科学园站约502米。"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,精装修带大院,业主首次出租",
@@ -4369,7 +4372,7 @@
       "priceText": "18000",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/14/M13/21/e9300f4d-5a79-4b7e-8ab0-5b481aa6cee2/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -4386,7 +4389,7 @@
       "tags": [
         "距昌平线生命科学园站约1198米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -4445,7 +4448,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -4466,7 +4469,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观 龙腾苑六区3室1厅 南北通透 临近回龙观站",
@@ -4485,8 +4488,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "新装修独栋别墅,高档家具家电,拎包入住",
@@ -4503,7 +4506,7 @@
         "距昌平线生命科学园站约1198米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线平西府地铁小站公园田园风光雅苑东区次卧",
@@ -4522,7 +4525,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -4542,8 +4545,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线育新地铁龙旗广场东村家园朝南主卧",
@@ -4562,7 +4565,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -4582,7 +4585,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线平西府地铁回龙观东大街龙锦苑一区精装主卧独卫",
@@ -4621,7 +4624,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "实拍!回龙观整租龙跃苑一区小区中间位置4层超大3居安静便宜",
@@ -4641,7 +4644,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线育新 龙旗广场次卧 霍营 三旗百汇 新康园 旗胜家园",
@@ -4660,8 +4663,8 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观 育新 霍营 龙旗广场 三旗百汇 龙博苑主卧独卫带阳台",
@@ -4680,8 +4683,8 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "龙泽 回龙观医院 华联商厦 回龙观 少林武校 新龙城二期次卧",
@@ -4701,7 +4704,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号13号线回龙观霍营地铁龙跃苑三区精装主卧",
@@ -4721,7 +4724,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "实拍!合生汇旁尚城小区!上下116平两居双卫!包物业取暖!",
@@ -4741,7 +4744,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "泰华龙旗广场精装次卧 朝南高层 1600/月",
@@ -4759,7 +4762,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "西三旗育新地铁龙旗广场金隅智造东升科技园龙博苑三区精装主卧",
@@ -4778,8 +4781,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观龙腾苑五区 通风好 南北通透",
@@ -4872,7 +4875,7 @@
         "全装全配"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙锦苑东一区精装南北通透大两居,中间层,看房随时",
@@ -4891,8 +4894,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,有钥匙随时看,可办公接待",
@@ -4926,7 +4929,7 @@
         "距13号线霍营站约574米。",
         "独立卫生间"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -4959,7 +4962,7 @@
         "距13号线霍营站约901米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "13号线回龙观霍营地铁龙跃苑四区精装主卧",
@@ -5018,8 +5021,8 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线育知路地铁积水潭医院回龙观云趣园一区朝南次卧",
@@ -5038,8 +5041,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号18号线回龙观东大街地铁和谐家园二区精装次卧",
@@ -5058,8 +5061,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实,下叠拼一层带院儿,距离走路5",
@@ -5075,7 +5078,7 @@
       "tags": [
         "距昌平线生命科学园站约502米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5095,7 +5098,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线平西府地铁回龙观东大街龙锦苑一区精装次卧",
@@ -5114,8 +5117,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号8号线霍营地铁国风美唐三期精装单人次卧",
@@ -5134,7 +5137,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5154,7 +5157,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "新龙城二期两居室,南北通透近地铁13号线回龙观站",
@@ -5173,8 +5176,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "真实有钥匙,大四居室三卫,集中暖气",
@@ -5190,7 +5193,7 @@
       "tags": [
         "距昌平线生命科学园站约970米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5210,8 +5213,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观丨朱辛庄尚城Loft!精装修两居!随时可以看房",
@@ -5230,8 +5233,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号线回龙观霍营地铁龙跃苑四区精装主卧带阳台",
@@ -5251,7 +5254,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙跃苑一区 中间楼层 南北通透 出租 包物业",
@@ -5270,7 +5273,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5288,7 +5291,7 @@
         "距18号线文华路站约1066米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观复式业主直租两居 随时看房入住",
@@ -5307,8 +5310,8 @@
         "全装全配",
         "独门独卫"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观 13号线 合租单间 落地窗",
@@ -5328,7 +5331,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线朱辛庄旁祥业家园两居 近万达 小米产业园好未来大楼",
@@ -5368,7 +5371,7 @@
         "全装全配"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙锦苑东一区 南北三居二卫 6层 业主",
@@ -5406,7 +5409,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5463,8 +5466,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "出租艺术家的房子",
@@ -5483,8 +5486,8 @@
         "独立卫生间",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T11:58:48.768328+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "合租:次卧昌平回龙观马连店家园 3室1厅 15㎡ 1500元",
@@ -5537,7 +5540,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5557,8 +5560,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号18号线回龙观东大街地铁站和谐家园二区精装主卧",
@@ -5577,7 +5580,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5598,7 +5601,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "昌平回龙观龙锦苑一区89.05平米整租 2室1厅1卫",
@@ -5633,7 +5636,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/17/M9/48/63008094-f050-4790-bbc3-6030b195aaa2/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "地铁旁边的别墅,合生汇对面!一层带院儿",
@@ -5650,7 +5653,7 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实,一层带院儿叠拼别墅,集中暖气包",
@@ -5664,8 +5667,8 @@
       "priceText": "13800",
       "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_6/7/M12/37/0df2717a-7398-4efb-8859-007cb2200ba6/510x510.jpg?t=1",
       "tags": [],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "生命科学园南 可住可轻办 可住多室 一层有南园 能长租 真实",
@@ -5682,7 +5685,7 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实,地铁旁的一层带院儿别墅",
@@ -5698,8 +5701,8 @@
       "tags": [
         "距昌平线生命科学园站约502米。"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观 龙博苑二区 精装两居室 业主 看房随时",
@@ -5718,8 +5721,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "尚城 精装修 2室1厅1卫 家电齐全 37可租 看房随时",
@@ -5739,7 +5742,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "品质公寓智能安防|押一付一|无|班车接驳",
@@ -5771,7 +5774,7 @@
         "独立卫生间",
         "首次出租"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5792,7 +5795,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观地铁新龙城小区有个创业单间出租只要800元",
@@ -5829,7 +5832,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5845,7 +5848,7 @@
       "image": "https://yzwthouse.soufunimg.com/viewimage/fangapp-android/2026_3/3/M23/13/32ca2bf1-1268-4f92-a5ec-6b6f78172e94/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "龙泽 回龙观 整租新龙城四期3室1厅 豪华装修 配套齐全",
@@ -5865,7 +5868,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号13号线回龙观霍营地铁龙跃苑三区精装次卧",
@@ -5884,7 +5887,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -5904,8 +5907,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "昌平回龙观云趣园三区 3室2厅 115㎡ 6800元/月",
@@ -5945,7 +5948,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线平西府地铁回龙观东大街龙锦苑一区精装主卧带阳台",
@@ -5964,8 +5967,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "8号线回龙观东大街地铁和谐家园一区精装次卧",
@@ -5985,7 +5988,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "霍营 育新 回龙观 三旗百汇 龙旗广场 真武庙 龙博苑三区",
@@ -6004,7 +6007,7 @@
         "周边配套齐",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6064,7 +6067,7 @@
         "全装全配"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观精装复式两居近地铁近商场",
@@ -6079,7 +6082,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/jpg/jjyapp-ios/all/2026-11-09/6bfd6db9-f70a-46ed-b897-9e20ec41cbd7/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "昌平公寓拎包入住多条公交双地铁设施配套超齐全",
@@ -6097,8 +6100,8 @@
         "采光好",
         "全装全配"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "13号线回龙观霍营地铁龙跃苑三区精装次卧",
@@ -6117,8 +6120,8 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "育新 三旗百汇 黑马培训 建材城 合租次卧",
@@ -6177,7 +6180,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "真实大联排别墅,紧邻地铁5",
@@ -6194,7 +6197,7 @@
         "距昌平线生命科学园站约502米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "临地铁,近商圈4O可租尚城 电梯房 精装修 2室1厅2卫",
@@ -6213,8 +6216,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "育知路平西府 云趣园一区次卧出租",
@@ -6270,7 +6273,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "朱辛庄地铁小米好未来万达石头科技小沙河华府精装朝南次卧",
@@ -6288,7 +6291,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6308,8 +6311,8 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:00:17.416570+00:00",
-      "stale": true
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
     },
     {
       "title": "回龙观丨朱辛庄尚城小区F户型急租!8号线昌平线旁!通勤海淀",
@@ -6328,7 +6331,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6349,7 +6352,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "朱辛庄地铁小米好未来万达广场小沙河华府精装主卧",
@@ -6367,7 +6370,7 @@
         "采光好",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6386,7 +6389,7 @@
         "独门独卫",
         "采光好"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6407,7 +6410,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "朱辛庄地铁站附近三居业主直租随时看房",
@@ -6423,7 +6426,7 @@
       "tags": [
         "距8号线朱辛庄站约298米。"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6444,7 +6447,7 @@
         "采光好"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "0押月付 公积金支付 回龙观地铁口 龙腾四南北两居 龙泽",
@@ -6464,7 +6467,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观地铁口小三居业主首次出租家具家电齐全,拎包入住",
@@ -6481,7 +6484,7 @@
         "距8号线朱辛庄站约298米。"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观流星花园三区精装两居,南北通透,交通便利,社区成熟",
@@ -6501,7 +6504,7 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "昌平 复式精装三居 家具家电齐全 拎包入住 随时看房",
@@ -6518,7 +6521,7 @@
         "距昌平线生命科学园站约1070米。",
         "交通便利"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6534,7 +6537,7 @@
       "image": "https://cdnsfb.soufunimg.com/viewimage/jpg/jjyapp-ios/all/2026-11-01/a76896af-85b2-4e90-9968-fe09e4b018c9/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "回龙观 云趣园一区 2居室 近8号线育知路地铁 近积水潭医院",
@@ -6553,7 +6556,7 @@
         "首次出租",
         "南北通透"
       ],
-      "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
       "stale": false
     },
     {
@@ -6574,7 +6577,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "合租:主卧昌平昌平区回龙观龙腾苑四区 3室2厅 25㎡ 26",
@@ -6589,7 +6592,7 @@
       "image": "https://yzwthouse.soufunimg.com/viewimage/fangapp-android/2026_3/4/M15/13/373a7573-5e6b-4ab6-9a87-4b287bfe1c4e/510x510.jpg?t=1",
       "tags": [],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "新龙城 3室1卫1厅 85平精装修 1800元/月",
@@ -6607,7 +6610,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号18号线平西府文华路地铁龙锦苑四区朝南次卧带阳台",
@@ -6627,7 +6630,7 @@
         "交通便利"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
-      "stale": false
+      "stale": true
     },
     {
       "title": "8号线,13号线,18号线,回龙观,平西府马连店家园精装两居",
@@ -6646,6 +6649,605 @@
         "南北通透"
       ],
       "fetchedAt": "2026-11-11T12:08:40.507594+00:00",
+      "stale": true
+    },
+    {
+      "title": "好未来,石头,小米,生命科学园站,精装月付尚城小区靠地铁",
+      "url": "https://zu.fang.com/bj/chuzu/3_512529853_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 2室1厅 | 78㎡ | 朝南",
+      "location": "昌平 -回龙观- 尚城",
+      "estate": "尚城",
+      "rentType": "整租",
+      "price": 3900.0,
+      "priceText": "3900",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_10/23/M16/57/366ee2e0-c1bb-4113-bdb6-7f6319171d0c/510x510.jpg?t=1",
+      "tags": [
+        "距昌平线生命科学园站约1070米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "13号线回龙观霍营地铁龙跃苑四区精装次卧",
+      "url": "https://zu.fang.com/bj/chuzu/3_510792162_1.htm",
+      "platform": "房天下",
+      "facts": "合租次卧 | 3户合租 | 16㎡ | 朝北",
+      "location": "昌平 -回龙观- 龙跃苑四区",
+      "estate": "龙跃苑四区",
+      "rentType": "合租",
+      "price": 1500.0,
+      "priceText": "1500",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/fangapp-android/2026_7/1/M21/25/11c7f650-9ea2-420a-b714-a11b693ad061/510x510.jpg?t=1",
+      "tags": [
+        "距18号线文华路站约899米。",
+        "周边配套齐",
+        "采光好",
+        "交通便利"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "回龙观地铁新龙城小区精装三居次卧室出租",
+      "url": "https://zu.fang.com/bj/chuzu/3_486823142_1.htm",
+      "platform": "房天下",
+      "facts": "合租次卧 | 3户合租 | 18㎡ | 朝南",
+      "location": "昌平 -回龙观- 新龙城二期",
+      "estate": "新龙城二期",
+      "rentType": "合租",
+      "price": 1999.0,
+      "priceText": "1999",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/open/0/2026_5/4/M10/45/b9a9ef91-90bc-453d-8910-5b2f1b9d4761/510x510.jpg?t=1",
+      "tags": [
+        "距13号线回龙观站约392米。",
+        "交通便利"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "8号线平西府地铁龙锦苑一区精装朝南主卧",
+      "url": "https://zu.fang.com/bj/chuzu/3_486927640_1.htm",
+      "platform": "房天下",
+      "facts": "合租主卧 | 3户合租 | 20㎡ | 朝南",
+      "location": "昌平 -回龙观- 龙锦苑一区",
+      "estate": "龙锦苑一区",
+      "rentType": "合租",
+      "price": 1700.0,
+      "priceText": "1700",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/fangapp-android/2026_5/29/M20/49/40f9c677-e659-480b-90a6-35438319e671/510x510.jpg?t=1",
+      "tags": [
+        "距8号线平西府站约941米。",
+        "周边配套齐",
+        "交通便利",
+        "采光好"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "朱辛庄地铁 整租朱辛庄领秀慧谷D区 3室2厅 随时可看",
+      "url": "https://zu.fang.com/bj/chuzu/3_512543456_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 3室2厅 | 109㎡ | 朝南北",
+      "location": "昌平 -回龙观- 领秀慧谷D区",
+      "estate": "领秀慧谷D区",
+      "rentType": "整租",
+      "price": 7800.0,
+      "priceText": "7800",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_10/24/M17/48/04cf1f7e-5c64-43a2-98cc-453df5ce7d65/510x510.jpg?t=1",
+      "tags": [
+        "距8号线朱辛庄站约1197米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "13号线回龙观霍营地铁龙跃苑三区精装主卧独卫",
+      "url": "https://zu.fang.com/bj/chuzu/3_512175122_1.htm",
+      "platform": "房天下",
+      "facts": "合租主卧 | 3户合租 | 20㎡ | 朝南",
+      "location": "昌平 -回龙观- 龙跃苑三区",
+      "estate": "龙跃苑三区",
+      "rentType": "合租",
+      "price": 2300.0,
+      "priceText": "2300",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/fangapp-android/2026_9/28/M23/5/016631bb-03d3-483d-95d7-71f11bdfb41a/510x510.jpg?t=1",
+      "tags": [
+        "距13号线霍营站约901米。",
+        "周边配套齐",
+        "独门独卫",
+        "采光好"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "龙锦苑东一区 南北三居二卫 6层 业主",
+      "url": "https://zu.fang.com/bj/chuzu/3_512817355_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 3室2厅 | 125㎡ | 朝南北",
+      "location": "昌平 -回龙观- 龙锦苑东一区",
+      "estate": "龙锦苑东一区",
+      "rentType": "整租",
+      "price": 5800.0,
+      "priceText": "5800",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_10/17/M10/32/9bd611da-2293-4f04-89e2-0c6fcd1eec2f/510x510.jpg?t=1",
+      "tags": [
+        "距8号线回龙观东大街站约1001米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "昌平回龙观领秀慧谷 2室2厅 85㎡ 5800元/月",
+      "url": "https://zu.fang.com/bj/chuzu/1_61406298_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 2室2厅 | 85㎡ | 朝南北",
+      "location": "昌平 -回龙观- 领秀慧谷",
+      "estate": "领秀慧谷",
+      "rentType": "整租",
+      "price": 5800.0,
+      "priceText": "5800",
+      "image": "https://yzwthouse.soufunimg.com/viewimage/fangapp-android/2026_1/7/M10/59/0c05e398-9a14-4509-b8f2-c48de237a3ac/510x510.jpg?t=1",
+      "tags": [
+        "距8号线朱辛庄站约1197米。",
+        "独立卫生间",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "0押月付 公积金支付 回龙观 霍营 西二旗 龙泽 精装开间",
+      "url": "https://zu.fang.com/bj/chuzu/3_512817614_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 1室0厅 | 47㎡ | 朝北",
+      "location": "昌平 -回龙观- 新龙城",
+      "estate": "新龙城",
+      "rentType": "整租",
+      "price": 4200.0,
+      "priceText": "4200",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/23/M12/13/5c5de029-0bf6-479d-a4c0-09b57901dd27/510x510.jpg?t=1",
+      "tags": [
+        "距13号线龙泽站约533米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "8、18号线回龙观东大街,合租次卧",
+      "url": "https://zu.fang.com/bj/chuzu/1_61407295_1.htm",
+      "platform": "房天下",
+      "facts": "合租次卧 | 3户合租 | 12㎡ | 朝南北",
+      "location": "昌平 -回龙观- 龙锦苑东三区",
+      "estate": "龙锦苑东三区",
+      "rentType": "合租",
+      "price": 1500.0,
+      "priceText": "1500",
+      "image": "https://yzwthouse.soufunimg.com/viewimage/fangapp-ios/2026_4/16/M20/51/f4948f14-a0fa-4ad2-a354-6d204f2d0be6/510x510.jpg?t=1",
+      "tags": [
+        "距8号线回龙观东大街站约682米。",
+        "首次出租"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租回龙观首开国风美唐二期3室1厅",
+      "url": "https://zu.fang.com/bj/chuzu/3_512816469_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 3室1厅 | 90㎡ | 朝南",
+      "location": "昌平 -回龙观- 首开国风美唐",
+      "estate": "首开国风美唐",
+      "rentType": "整租",
+      "price": 6648.0,
+      "priceText": "6648",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/23/M12/10/578c6149-9628-4b67-b2ab-b8bd8d1ef26d/510x510.jpg?t=1",
+      "tags": [
+        "距8号线回龙观东大街站约431米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租回龙观龙腾苑三区3室1厅",
+      "url": "https://zu.fang.com/bj/chuzu/3_512814714_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 3室1厅 | 126㎡ | 朝南北",
+      "location": "昌平 -回龙观- 龙腾苑三区",
+      "estate": "龙腾苑三区",
+      "rentType": "整租",
+      "price": 7500.0,
+      "priceText": "7500",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_5/24/M23/24/2a00bb36-a159-4565-aaa9-cb85142dcc86/510x510.jpg?t=1",
+      "tags": [
+        "距18号线回龙观西大街站约265米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "8号线平西府 回龙观 育知路 京都儿童医院 马连店家园次卧",
+      "url": "https://zu.fang.com/bj/chuzu/3_484255537_1.htm",
+      "platform": "房天下",
+      "facts": "合租次卧 | 3户合租 | 16㎡ | 朝南",
+      "location": "昌平 -回龙观- 马连店家园",
+      "estate": "马连店家园",
+      "rentType": "合租",
+      "price": 1100.0,
+      "priceText": "1100",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_5/17/M15/29/ea11a552-54a4-445a-8000-6e3c9dac83bb/510x510.jpg?t=1",
+      "tags": [
+        "交通便利",
+        "周边配套齐",
+        "采光好"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "0押月付 公积金支付 回龙观电梯小洋房 业主出租 龙泽",
+      "url": "https://zu.fang.com/bj/chuzu/3_512812728_1.htm",
+      "platform": "房天下",
+      "facts": "整租 | 2室1厅 | 93㎡ | 朝南",
+      "location": "昌平 -回龙观- 流星花园三区",
+      "estate": "流星花园三区",
+      "rentType": "整租",
+      "price": 6000.0,
+      "priceText": "6000",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2025_11/29/M11/9/9156c670-bfa8-47be-a3c6-a06d8ba42661/510x510.jpg?t=1",
+      "tags": [
+        "距8号线平西府站约1192米。",
+        "可注册办公",
+        "首次出租",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "8号18号线回龙观东大街地铁站和谐家园二区精装次卧",
+      "url": "https://zu.fang.com/bj/chuzu/3_486933873_1.htm",
+      "platform": "房天下",
+      "facts": "合租次卧 | 3户合租 | 15㎡ | 朝北",
+      "location": "昌平 -回龙观- 和谐家园二区",
+      "estate": "和谐家园二区",
+      "rentType": "合租",
+      "price": 1500.0,
+      "priceText": "1500",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/fangapp-android/2026_5/31/M16/17/77848d45-3a44-4383-9e11-b030a7e695f0/510x510.jpg?t=1",
+      "tags": [
+        "距8号线回龙观东大街站约347米。",
+        "周边配套齐",
+        "采光好",
+        "交通便利"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "回龙观霍营 龙泽 新龙城合租次卧",
+      "url": "https://zu.fang.com/bj/chuzu/3_486997484_1.htm",
+      "platform": "房天下",
+      "facts": "合租次卧 | 4户合租 | 11㎡ | 朝南",
+      "location": "昌平 -回龙观- 新龙城二期",
+      "estate": "新龙城二期",
+      "rentType": "合租",
+      "price": 1900.0,
+      "priceText": "1900",
+      "image": "https://cdnsfb.soufunimg.com/viewimage/sfb/houseverfiy/2026_6/17/M9/46/82d6f8b7-0ddb-4ebb-a0a5-dce3dd17f625/510x510.jpg?t=1",
+      "tags": [
+        "距13号线回龙观站约392米。",
+        "交通便利",
+        "周边配套齐",
+        "南北通透"
+      ],
+      "fetchedAt": "2026-11-11T19:42:57.358966+00:00",
+      "stale": false
+    },
+    {
+      "title": "合租·龙泽·龙华园西区·4室·房间A",
+      "url": "https://bj.5i5j.com/zufang/90361792.html",
+      "platform": "我爱我家",
+      "facts": "4  室  1  厅  ·  20㎡  ·  南  ·  高楼层/6层  ·  精装",
+      "location": "龙泽 - 龙华园西区 - 4室",
+      "estate": "龙华园西区",
+      "rentType": "合租",
+      "price": 1924.0,
+      "priceText": "1924 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20240403/6d210c7c36214523806a5d93d2f74055.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "合租·龙泽·新龙城四期·3室·房间A",
+      "url": "https://bj.5i5j.com/zufang/90456736.html",
+      "platform": "我爱我家",
+      "facts": "3  室  1  厅  ·  25㎡  ·  东  ·  低楼层/8层  ·  精装",
+      "location": "龙泽 - 新龙城四期 - 3室",
+      "estate": "新龙城四期",
+      "rentType": "合租",
+      "price": 1940.0,
+      "priceText": "1940 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20261022/fa786ea3351b4816afe10708e51a2c7d.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·新龙城四期·1室",
+      "url": "https://bj.5i5j.com/zufang/90417204.html",
+      "platform": "我爱我家",
+      "facts": "1  室  1  厅  ·  56.9㎡  ·  北  ·  低楼层/20层  ·  精装",
+      "location": "龙泽 - 新龙城四期",
+      "estate": "新龙城四期",
+      "rentType": "整租",
+      "price": 5035.0,
+      "priceText": "5035 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20261108/359e08b041ce41b6b55a4d9eb93e6bb5.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·回龙观·新龙城一期三期·2室",
+      "url": "https://bj.5i5j.com/zufang/505148404.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  101.12㎡  ·  南  ·  中楼层/20层  ·  精装",
+      "location": "回龙观 - 新龙城一期三期",
+      "estate": "新龙城一期三期",
+      "rentType": "整租",
+      "price": 6000.0,
+      "priceText": "6000 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_0f75ffa23ec3b60e6dacf2a5ace08fad_10537699/wateracturalSurvey/1792896372989.jpg?time=1792896825",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "合租·回龙观·骊龙园·3室·房间B",
+      "url": "https://bj.5i5j.com/zufang/90010470.html",
+      "platform": "我爱我家",
+      "facts": "3  室  1  厅  ·  12㎡  ·  北  ·  高楼层/6层  ·  简装",
+      "location": "回龙观 - 骊龙园 - 3室",
+      "estate": "骊龙园",
+      "rentType": "合租",
+      "price": 1800.0,
+      "priceText": "1800 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/outputfiles/01be69ffc44787798e64cfe40a550d9e_19357/wateracturalSurvey/1726876204234.jpg?x-image-process=image/watermark,image_aHVhd2VpLXZyL2NvbW1vbi94eV93YXRlcl9tYXJrZXIucG5n,g_center",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·龙华园东区·2室",
+      "url": "https://bj.5i5j.com/zufang/90277138.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  70.48㎡  ·  南北  ·  低楼层/5层  ·  精装",
+      "location": "龙泽 - 龙华园东区",
+      "estate": "龙华园东区",
+      "rentType": "整租",
+      "price": 4600.0,
+      "priceText": "4600 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/11873f20188f77d59739f728e36a585c_58762/wateracturalSurvey/1761458241765.jpg?x-image-process=image/watermark,image_aHVhd2VpLXZyL2NvbW1vbi94eV93YXRlcl9tYXJrZXIucG5n,g_center",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·回龙观·新龙城一期三期·2室",
+      "url": "https://bj.5i5j.com/zufang/90457784.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  70.39㎡  ·  南  ·  低楼层/20层  ·  精装",
+      "location": "回龙观 - 新龙城一期三期",
+      "estate": "新龙城一期三期",
+      "rentType": "整租",
+      "price": 5035.0,
+      "priceText": "5035 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20261018/de80f28c2cad4e83863d5284d96db4ab.jpeg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·龙华园西区·2室",
+      "url": "https://bj.5i5j.com/zufang/90188718.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  65.94㎡  ·  南北  ·  中楼层/6层  ·  精装",
+      "location": "龙泽 - 龙华园西区",
+      "estate": "龙华园西区",
+      "rentType": "整租",
+      "price": 4493.0,
+      "priceText": "4493 元/月",
+      "image": "https://image.5i5j.com/picture/images/20181003/7c2ea8bda3364edd9972c12847f00956.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "合租·回龙观·新龙城一期三期·3室·房间C",
+      "url": "https://bj.5i5j.com/zufang/90147243.html",
+      "platform": "我爱我家",
+      "facts": "3  室  1  厅  ·  16㎡  ·  北  ·  中楼层/8层  ·  精装",
+      "location": "回龙观 - 新龙城一期三期 - 3室",
+      "estate": "新龙城一期三期",
+      "rentType": "合租",
+      "price": 1943.0,
+      "priceText": "1943 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20261110/b108f50bcf824fc9b06f7ff023551f74.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·龙华园东区·1室",
+      "url": "https://bj.5i5j.com/zufang/505187227.html",
+      "platform": "我爱我家",
+      "facts": "1  室  1  厅  ·  60㎡  ·  南北  ·  低楼层/6层  ·  精装",
+      "location": "龙泽 - 龙华园东区",
+      "estate": "龙华园东区",
+      "rentType": "整租",
+      "price": 4600.0,
+      "priceText": "4600 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_8c380913b630b5add6e41681e1634ecd_10546444/wateracturalSurvey/1793085680565.jpg?time=1793085890",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "合租·回龙观·龙博苑二区·3室·房间C",
+      "url": "https://bj.5i5j.com/zufang/90251990.html",
+      "platform": "我爱我家",
+      "facts": "3  室  1  厅  ·  10㎡  ·  北  ·  低楼层/6层  ·  精装",
+      "location": "回龙观 - 龙博苑二区 - 3室",
+      "estate": "龙博苑二区",
+      "rentType": "合租",
+      "price": 1490.0,
+      "priceText": "1490 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20241214/8357c57cb3584724bbcdb664180952cf.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·新龙城四期·2室",
+      "url": "https://bj.5i5j.com/zufang/505114846.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  90.48㎡  ·  东南  ·  高楼层/20层  ·  精装",
+      "location": "龙泽 - 新龙城四期",
+      "estate": "新龙城四期",
+      "rentType": "整租",
+      "price": 6200.0,
+      "priceText": "6200 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_faaba211f1e8cf15438a90cbbb99712c_10548307/wateracturalSurvey/1793152707833.jpg?time=1793153385",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·回龙观·上北鑫座·1房间",
+      "url": "https://bj.5i5j.com/zufang/90399471.html",
+      "platform": "我爱我家",
+      "facts": "1 房间  · 48.56㎡  ·  北  ·  中楼层/8层  ·  精装",
+      "location": "回龙观 - 上北鑫座",
+      "estate": "上北鑫座",
+      "rentType": "整租",
+      "price": 3400.0,
+      "priceText": "3400 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20250504/d6e18fb49f504abd89ca366458da59a7.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·龙华园东区·2室",
+      "url": "https://bj.5i5j.com/zufang/505205796.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  70.48㎡  ·  南北  ·  中楼层/6层  ·  精装",
+      "location": "龙泽 - 龙华园东区",
+      "estate": "龙华园东区",
+      "rentType": "整租",
+      "price": 5500.0,
+      "priceText": "5500 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_9a3714cf92475fa939fd996d059647da_10579001/wateracturalSurvey/1793786412391.jpg?time=1793786601",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·龙泽·龙华园东区·2室",
+      "url": "https://bj.5i5j.com/zufang/505196118.html",
+      "platform": "我爱我家",
+      "facts": "2  室  1  厅  ·  70.48㎡  ·  南北  ·  高楼层/6层  ·  精装",
+      "location": "龙泽 - 龙华园东区",
+      "estate": "龙华园东区",
+      "rentType": "整租",
+      "price": 4600.0,
+      "priceText": "4600 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/phone_outputfiles/phone_57908b9b15593b1c5b8b4a3626775e8d_10565742/wateracturalSurvey/1793502700194.jpg?time=1793503114",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·回龙观·东亚上北·1房间",
+      "url": "https://bj.5i5j.com/zufang/505145266.html",
+      "platform": "我爱我家",
+      "facts": "1 房间  · 57.54㎡  ·  东  ·  高楼层/16层  ·  精装",
+      "location": "回龙观 - 东亚上北",
+      "estate": "东亚上北",
+      "rentType": "整租",
+      "price": 4300.0,
+      "priceText": "4300 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/outputfiles/b322b20ce1b0935086c450e5e0cd1280_121717/wateracturalSurvey/floorPlan.jpg?time=1727229394",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·回龙观·东亚上北·1房间",
+      "url": "https://bj.5i5j.com/zufang/505179007.html",
+      "platform": "我爱我家",
+      "facts": "1 房间  · 38.43㎡  ·  北  ·  中楼层/21层  ·  精装",
+      "location": "回龙观 - 东亚上北",
+      "estate": "东亚上北",
+      "rentType": "整租",
+      "price": 3900.0,
+      "priceText": "3900 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/zhongqu_outputfiles/22213282efc54e99fc248dea06258522_10092989/wateracturalSurvey/floorPlan.jpg?time=1782915846",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "整租·回龙观·东亚上北·1房间",
+      "url": "https://bj.5i5j.com/zufang/505156491.html",
+      "platform": "我爱我家",
+      "facts": "1 房间  · 58.99㎡  ·  西北  ·  高楼层/18层  ·  精装",
+      "location": "回龙观 - 东亚上北",
+      "estate": "东亚上北",
+      "rentType": "整租",
+      "price": 4600.0,
+      "priceText": "4600 元/月",
+      "image": "https://3dvr-cdn.5i5j.com/outputfiles/d6432f9e9d9da3533892e814725fb66f_18884/wateracturalSurvey/floorPlan.jpg?time=1704001280",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
+      "stale": false
+    },
+    {
+      "title": "合租·回龙观·骊龙园·3室·房间C",
+      "url": "https://bj.5i5j.com/zufang/90057821.html",
+      "platform": "我爱我家",
+      "facts": "3  室  1  厅  ·  10㎡  ·  北  ·  高楼层/6层  ·  简装",
+      "location": "回龙观 - 骊龙园 - 3室",
+      "estate": "骊龙园",
+      "rentType": "合租",
+      "price": 1526.0,
+      "priceText": "1526 元/月",
+      "image": "https://hwxypic.5i5j.com/images/20230222/2548d79ede6043afac7f4c1734693b77.jpg",
+      "tags": [],
+      "fetchedAt": "2026-11-11T19:42:57.359426+00:00",
       "stale": false
     }
   ]
