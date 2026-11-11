@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>doudou & yaya - 浪漫五子棋</title>
-    <!-- 引入 MQTT.js 与 PeerJS 双重免配置跨网联机引擎 -->
+    <title>doudou & yaya - 浪漫小屋</title>
     <script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
     <style>
-        /* 1. 清除浏览器默认边距 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -16,7 +14,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 2. 梦幻渐变动态背景 */
         body {
             display: flex;
             justify-content: center;
@@ -40,7 +37,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 3. 装饰性漂浮泡泡 */
+        /* 漂浮装饰泡泡 */
         .bubble {
             position: fixed;
             border-radius: 50%;
@@ -49,7 +46,6 @@
             animation: floatUpDown 8s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 1;
-            transition: opacity 0.4s ease, background 0.4s ease;
         }
         .bubble:nth-of-type(1) { width: 120px; height: 120px; top: 10%; left: 8%; animation-delay: 0s; }
         .bubble:nth-of-type(2) { width: 80px; height: 80px; bottom: 15%; right: 10%; animation-delay: 2s; }
@@ -61,7 +57,7 @@
             100% { transform: translateY(-30px) scale(1.05); }
         }
 
-        /* 悬浮按钮 */
+        /* 顶部悬浮工具按钮 */
         .music-btn,
         .light-float-btn {
             position: fixed;
@@ -86,11 +82,10 @@
         .music-btn { right: 20px; font-size: 22px; opacity: 0.6; }
         .light-float-btn { right: 74px; }
         .music-btn:hover, .light-float-btn:hover { opacity: 1; transform: scale(1.05); }
-
         .playing { opacity: 1; animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 磨砂玻璃卡片 */
+        /* 核心磨砂玻璃卡片 */
         .container {
             position: relative;
             z-index: 10;
@@ -130,10 +125,10 @@
             70% { transform: scale(1); }
         }
 
-        h2 { color: #4a3e3d; margin-bottom: 12px; font-size: 26px; font-weight: 800; transition: color 0.3s; }
-        p.subtitle { font-size: 14px; color: #8b7c7a; margin-bottom: 30px; transition: color 0.3s; }
+        h2 { color: #4a3e3d; margin-bottom: 12px; font-size: 26px; font-weight: 800; }
+        p.subtitle { font-size: 14px; color: #8b7c7a; margin-bottom: 26px; }
 
-        .input-group { position: relative; margin-bottom: 24px; }
+        .input-group { position: relative; margin-bottom: 20px; }
         input[type="text"] {
             width: 100%;
             padding: 15px 45px 15px 18px;
@@ -144,7 +139,6 @@
             background-color: rgba(255, 255, 255, 0.6);
             transition: all 0.3s ease;
             color: #4a3e3d;
-            user-select: text;
         }
         input[type="text"]:focus {
             border-color: #ff9a9f;
@@ -197,574 +191,47 @@
         }
         .divider-line span { padding: 0 10px; }
 
+        /* 保持一致的唯美渐变按钮 */
         button#gomokuBtn {
             width: 100%;
-            padding: 15px 16px;
+            padding: 14px 16px;
             background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
             color: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.7);
             border-radius: 16px;
-            font-size: 15.5px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(161, 140, 209, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        /* 五子棋主面板 */
-        .gomoku-wrapper {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.75);
-            border-radius: 28px;
-            box-shadow: 0 24px 48px rgba(180, 120, 140, 0.22);
-            width: 95%;
-            max-width: 960px;
-            padding: 20px;
-            color: #4a3e3d;
-            display: none;
-            animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: all 0.35s ease;
-        }
-
-        @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .gomoku-topbar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid rgba(234, 225, 223, 0.8);
-            margin-bottom: 14px;
-            transition: border-color 0.3s;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid #eadad8;
-            color: #6b5a58;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s;
-        }
-        .back-btn:hover { background: #fff0f2; border-color: #ff9a9f; }
-
-        .mode-tabs {
-            display: flex;
-            background: rgba(242, 234, 233, 0.85);
-            padding: 4px;
-            border-radius: 14px;
-            gap: 4px;
-            transition: all 0.3s;
-        }
-        .mode-tab {
-            border: none;
-            background: transparent;
-            color: #8b7c7a;
-            font-size: 12.5px;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .mode-tab.active {
-            background: linear-gradient(135deg, #ff9a9f 0%, #f68084 100%);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(255, 154, 159, 0.35);
-        }
-
-        .gomoku-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            align-items: start;
-        }
-        @media (min-width: 820px) {
-            .gomoku-grid { grid-template-columns: 1.25fr 0.95fr; }
-        }
-
-        .players-bar {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .player-card {
-            background: rgba(255, 255, 255, 0.75);
-            border: 2px solid #efe6e5;
-            border-radius: 18px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            transition: all 0.25s;
-        }
-        .player-card.active-turn {
-            border-color: #ff8b94;
-            background: #fff9fa;
-            box-shadow: 0 6px 16px rgba(255, 139, 148, 0.22);
-        }
-
-        .stone-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            position: relative;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-        }
-        .stone-avatar.black { background: radial-gradient(circle at 30% 30%, #666, #1a1a1a 70%, #050505); }
-        .stone-avatar.white { background: radial-gradient(circle at 30% 30%, #fff, #f0ece9 70%, #ccc5be); }
-        .presence-dot {
-            position: absolute;
-            right: -2px;
-            bottom: -2px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            background: #f59e0b;
-        }
-        .presence-dot.online { background: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
-
-        .player-meta { text-align: left; min-width: 0; flex: 1; }
-        .player-name {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #4a3e3d;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.3s;
-        }
-        .me-tag {
-            font-size: 10px;
-            padding: 1px 5px;
-            border-radius: 6px;
-            background: #ffe0e4;
-            color: #d9536f;
-            font-weight: 700;
-        }
-        .player-sub { font-size: 11px; color: #968583; margin-top: 2px; transition: color 0.3s; }
-
-        /* 胜率栏 */
-        .winrate-box {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid #ebd9d8;
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            transition: all 0.3s;
-        }
-        .winrate-bar {
-            flex: 1;
-            height: 7px;
-            background: #e2ddd9;
-            border-radius: 4px;
-            overflow: hidden;
-            display: flex;
-        }
-        .winrate-fill-black { background: #2a2a2a; height: 100%; width: 50%; transition: width 0.4s ease, background 0.3s; }
-        .winrate-fill-white { background: #fff; height: 100%; width: 50%; transition: width 0.4s ease, background 0.3s; }
-
-        /* 气泡 */
-        .chat-bubble {
-            position: absolute;
-            bottom: -34px;
-            left: 10px;
-            z-index: 30;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            color: #fff;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 14px;
-            border-top-left-radius: 2px;
-            box-shadow: 0 6px 15px rgba(255, 117, 140, 0.35);
-            white-space: nowrap;
-            pointer-events: none;
-            display: none;
-        }
-        .chat-bubble.right-side { left: auto; right: 10px; border-top-left-radius: 14px; border-top-right-radius: 2px; }
-        .chat-bubble.show { display: block; animation: bubblePop 4s ease forwards; }
-        @keyframes bubblePop {
-            0% { opacity: 0; transform: translateY(6px) scale(0.9); }
-            12% { opacity: 1; transform: translateY(0) scale(1.03); }
-            22% { transform: scale(1); }
-            85% { opacity: 1; }
-            100% { opacity: 0; transform: translateY(-5px); }
-        }
-
-        .status-strip {
-            background: rgba(255, 245, 246, 0.9);
-            border: 1px solid #f7d9dc;
-            border-radius: 14px;
-            padding: 8px 14px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            font-size: 12.5px;
-            color: #6e5856;
-            transition: all 0.3s;
-        }
-
-        /* 棋盘主框 */
-        .board-box {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            aspect-ratio: 1 / 1;
-            background: linear-gradient(145deg, #ecc58c 0%, #dcab68 55%, #ce9952 100%);
-            border: 4px solid #8c5828;
-            border-radius: 20px;
-            box-shadow: 0 16px 35px rgba(107, 66, 27, 0.28);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px;
-            overflow: hidden;
-            transition: all 0.35s ease;
-        }
-        canvas#gomokuCanvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-
-        /* 投掷道具飞行与爆炸画布 */
-        canvas#fxCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 22;
-        }
-
-        /* 迷雾区域遮罩 (彩蛋999) */
-        .board-fog {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 225, 235, 0.95) 0%, rgba(240, 195, 215, 0.75) 60%, transparent 100%);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            pointer-events: none;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            box-shadow: 0 0 25px rgba(255, 175, 200, 0.6);
-            animation: pulseFog 3s ease-in-out infinite alternate;
-        }
-        @keyframes pulseFog {
-            0% { transform: scale(0.95); opacity: 0.85; }
-            100% { transform: scale(1.05); opacity: 0.98; }
-        }
-
-        .confirm-move-btn {
-            position: absolute;
-            bottom: 14px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 25;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 8px 18px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: bold;
-            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.5);
-            cursor: pointer;
-            display: none;
-        }
-
-        .victory-banner {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            right: 14px;
-            z-index: 26;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(10px);
-            border: 2px solid #ff9a9f;
-            border-radius: 18px;
-            padding: 12px 16px;
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .board-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .action-pill {
-            border: 1px solid #eadad8;
-            background: rgba(255, 255, 255, 0.85);
-            color: #5e4c4a;
-            padding: 8px 13px;
-            border-radius: 12px;
-            font-size: 12.5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .action-pill:hover { background: #fff0f2; border-color: #ff9a9f; }
-        .action-pill.primary {
-            background: linear-gradient(135deg, #ff9a9f 0%, #fecfef 100%);
-            color: #fff;
-            border: none;
-            box-shadow: 0 4px 12px rgba(255, 154, 159, 0.35);
-        }
-        .action-pill.primary:hover { filter: brightness(1.04); transform: translateY(-1px); }
-        .action-pill.active-mode {
-            background: #ff758c;
-            color: #fff;
-            border-color: #ff758c;
-        }
-
-        /* 🎮 互动道具抛掷排 */
-        .item-throw-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255, 240, 243, 0.85);
-            border: 1px dashed #ffb4c2;
-            border-radius: 14px;
-            padding: 6px 12px;
-            margin-top: 8px;
-            transition: all 0.3s;
-        }
-        .throw-item-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #b55368;
-            transition: color 0.3s;
-        }
-        .throw-item-btn {
-            background: #fff;
-            border: 1px solid #ffd0d8;
-            border-radius: 12px;
-            padding: 5px 10px;
             font-size: 15px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.18s;
-        }
-        .throw-item-btn:hover { transform: scale(1.18); }
-
-        /* 右侧面板 */
-        .side-card {
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid rgba(234, 220, 218, 0.9);
-            border-radius: 20px;
-            padding: 14px;
-            margin-bottom: 12px;
-            text-align: left;
-            transition: all 0.3s;
-        }
-        .side-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #4a3e3d;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: color 0.3s;
-        }
-        .room-code-badge {
-            font-family: monospace;
-            font-size: 12.5px;
-            color: #d9536f;
-            background: #fff0f2;
-            padding: 2px 8px;
-            border-radius: 8px;
-            border: 1px solid rgba(217, 83, 111, 0.2);
-            transition: all 0.3s;
-        }
-        .role-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .role-btn {
-            padding: 8px;
-            border-radius: 12px;
-            border: 1.5px solid #eadad8;
-            background: #fff;
-            color: #6e5d5b;
-            font-size: 12.5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .role-btn:hover { border-color: #ff9a9f; }
-        .role-btn.active { border-color: #ff8b94; background: #fff0f2; color: #d65c66; }
-
-        .quick-room-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-        .couple-room-btn {
-            padding: 9px 10px;
-            border-radius: 12px;
-            border: 1px solid #f5c6cb;
-            background: linear-gradient(135deg, #fff5f6 0%, #ffe3e8 100%);
-            color: #c95560;
-            font-size: 12.5px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .couple-room-btn:hover { filter: brightness(1.03); transform: translateY(-1px); }
-
-        .online-roster-bar {
-            background: rgba(255, 248, 249, 0.95);
-            border: 1px dashed #f5b8c0;
-            border-radius: 12px;
-            padding: 8px 10px;
-            margin-bottom: 10px;
-            font-size: 12px;
-            color: #6b5a58;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            transition: all 0.3s;
-        }
-
-        .bark-call-btn {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 14px;
-            border: none;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.35);
+            box-shadow: 0 6px 18px rgba(161, 140, 209, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            margin-top: 8px;
-            transition: all 0.25s;
+            gap: 8px;
+            transition: all 0.3s;
+            margin-bottom: 10px;
         }
-        .bark-call-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
+        button#gomokuBtn:hover { transform: translateY(-2px); filter: brightness(1.03); }
 
-        /* 聊天箱 */
-        .chat-history-box {
-            margin-top: 10px;
-            background: rgba(255, 250, 251, 0.85);
-            border: 1px solid #f3dce0;
-            border-radius: 14px;
-            height: 140px;
-            overflow-y: auto;
-            padding: 10px 12px;
+        button#rentalPortalBtn {
+            width: 100%;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #48c6ef 0%, #6f86d6 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(111, 134, 214, 0.35);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
         }
-        .chat-empty-hint { margin: auto; font-size: 12px; color: #b5a3a1; text-align: center; }
-        .chat-log-item { display: flex; flex-direction: column; max-width: 86%; }
-        .chat-log-item.mine { align-self: flex-end; align-items: flex-end; }
-        .chat-log-item.other { align-self: flex-start; align-items: flex-start; }
-        .chat-log-meta { font-size: 10.5px; color: #9e8c8a; margin-bottom: 2px; }
-        .chat-log-bubble {
-            padding: 6px 11px;
-            border-radius: 13px;
-            font-size: 12.5px;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-        .chat-log-item.mine .chat-log-bubble {
-            background: linear-gradient(135deg, #ff8598 0%, #ff9eb5 100%);
-            color: #ffffff;
-            border-bottom-right-radius: 3px;
-        }
-        .chat-log-item.other .chat-log-bubble {
-            background: #ffffff;
-            color: #4a3e3d;
-            border: 1px solid #f2dcdf;
-            border-bottom-left-radius: 3px;
-        }
+        button#rentalPortalBtn:hover { transform: translateY(-2px); filter: brightness(1.03); }
 
-        .quick-phrases { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .phrase-chip {
-            border: 1px solid #eadad8;
-            background: #fff;
-            color: #6b5a58;
-            padding: 4px 9px;
-            border-radius: 999px;
-            font-size: 11.5px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .phrase-chip:hover { background: #fff0f2; border-color: #ff9a9f; }
-
-        /* 暗号快捷药丸 */
-        .secret-section-title {
-            margin-top: 8px;
-            font-size: 11.5px;
-            color: #856c6a;
-            font-weight: 700;
-            transition: color 0.3s;
-        }
-        .secret-badge-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 6px;
-        }
-        .secret-chip {
-            font-size: 10.5px;
-            padding: 3px 8px;
-            border-radius: 8px;
-            background: #fff0f3;
-            border: 1px dashed #ffa8b8;
-            color: #d84562;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .secret-chip:hover { background: #ffe0e8; transform: translateY(-1px); }
-
-        /* 吐司弹窗 */
+        /* 吐司通知 */
         .toast-box {
             position: fixed;
             top: 22px;
@@ -788,292 +255,54 @@
             box-shadow: 0 10px 25px rgba(255, 154, 159, 0.35);
         }
 
-        /* 全屏心形飘落容器 (彩蛋520) */
-        .heart-fall-container {
+        /* 全屏房源检索独立调用遮罩层（默认完全隐藏，点击才滑出） */
+        #rentalPortalOverlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 250;
-            overflow: hidden;
+            inset: 0;
+            z-index: 9999;
+            background: #0f172a;
+            display: none;
+            flex-direction: column;
         }
-        .falling-heart {
-            position: absolute;
-            font-size: 22px;
-            animation: fallDown linear forwards;
+        #rentalPortalHeader {
+            background: #090d16;
+            color: #fff;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        @keyframes fallDown {
-            0% { transform: translateY(-30px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        .portal-back-btn {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: #fff;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* ==========================================
-           🌙 关灯护眼样式 (深度柔和暗夜配色)
-           ========================================== */
+        /* 关灯护眼模式 */
         body.lights-off {
             background: linear-gradient(135deg, #0b0c14 0%, #131524 45%, #1a1628 85%, #0f1620 100%);
             color: #e2deeb;
         }
-        body.lights-off .bubble {
-            background: rgba(255, 160, 190, 0.06);
-        }
-        body.lights-off .music-btn,
-        body.lights-off .light-float-btn {
-            background: rgba(34, 37, 56, 0.78);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #f0ecf8;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-        }
-        body.lights-off .container,
-        body.lights-off .gomoku-wrapper {
+        body.lights-off .container {
             background: rgba(20, 22, 34, 0.94);
             border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             color: #e6e2f0;
         }
         body.lights-off h2 { color: #f3effb; }
         body.lights-off p.subtitle { color: #9c94b0; }
-        body.lights-off .divider-line { color: #7e7794; }
-        body.lights-off .divider-line::before,
-        body.lights-off .divider-line::after {
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
-        }
-
-        /* 顶部导航与模式切换 */
-        body.lights-off .gomoku-topbar {
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-        body.lights-off .mode-tabs {
-            background: rgba(13, 15, 24, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-        }
-        body.lights-off .mode-tab {
-            color: #9b93b0;
-        }
-        body.lights-off .mode-tab:hover:not(.active) {
-            color: #dcd6ea;
-            background: rgba(255, 255, 255, 0.04);
-        }
-        body.lights-off .mode-tab.active {
-            background: linear-gradient(135deg, #e05378 0%, #c0487d 100%);
-            color: #ffffff;
-            box-shadow: 0 3px 10px rgba(224, 83, 120, 0.35);
-        }
-
-        /* 次级通用按钮 (.back-btn, .action-pill) */
-        body.lights-off .back-btn,
-        body.lights-off .action-pill {
-            background: rgba(38, 42, 64, 0.88);
-            border-color: rgba(255, 255, 255, 0.11);
-            color: #ddd7ec;
-        }
-        body.lights-off .back-btn:hover,
-        body.lights-off .action-pill:hover {
-            background: rgba(54, 48, 78, 0.95);
-            border-color: rgba(255, 130, 160, 0.45);
-            color: #ffffff;
-        }
-
-        /* 主按钮 (降低刺眼白光，改用深玫瑰暮光渐变) */
-        body.lights-off .action-pill.primary,
-        body.lights-off button#sendBtn,
-        body.lights-off .bark-call-btn {
-            background: linear-gradient(135deg, #e3567b 0%, #bf4b85 100%);
-            color: #ffffff;
-            border: 1px solid rgba(255, 180, 205, 0.22);
-            box-shadow: 0 5px 16px rgba(215, 70, 115, 0.32);
-        }
-        body.lights-off .action-pill.primary:hover,
-        body.lights-off button#sendBtn:hover:not(:disabled),
-        body.lights-off .bark-call-btn:hover:not(:disabled) {
-            filter: brightness(1.08);
-            box-shadow: 0 6px 20px rgba(227, 86, 123, 0.45);
-        }
-        body.lights-off .action-pill.active-mode {
-            background: linear-gradient(135deg, #e3567b 0%, #bf4b85 100%);
-            border-color: #ff85a6;
-            color: #ffffff;
-        }
-        body.lights-off button#gomokuBtn {
-            background: linear-gradient(135deg, #6e57a5 0%, #b05c9e 100%);
-            border-color: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 6px 18px rgba(110, 87, 165, 0.35);
-        }
-        body.lights-off .badge {
-            background: linear-gradient(135deg, #e3567b 0%, #bf4b85 100%);
-            box-shadow: 0 4px 14px rgba(227, 86, 123, 0.35);
-        }
-
-        /* 玩家卡片 */
-        body.lights-off .player-card {
-            background: rgba(30, 33, 50, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-        body.lights-off .player-card.active-turn {
-            background: linear-gradient(135deg, rgba(52, 34, 54, 0.92) 0%, rgba(36, 35, 56, 0.92) 100%);
-            border-color: #e05c80;
-            box-shadow: 0 6px 18px rgba(224, 92, 128, 0.2);
-        }
-        body.lights-off .player-name { color: #f2eef9; }
-        body.lights-off .player-sub { color: #9c94b0; }
-        body.lights-off .me-tag {
-            background: rgba(235, 90, 130, 0.22);
-            color: #ff9ebb;
-            border: 1px solid rgba(255, 140, 170, 0.3);
-        }
-        body.lights-off .presence-dot { border-color: #1e2132; }
-
-        /* 胜率条与局势条 */
-        body.lights-off .winrate-box {
-            background: rgba(28, 31, 46, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-            color: #d6d0e5;
-        }
-        body.lights-off .winrate-bar {
-            background: #141622;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        body.lights-off .winrate-fill-black { background: #636b92; }
-        body.lights-off .winrate-fill-white { background: #e2deeb; }
-
-        body.lights-off .status-strip {
-            background: rgba(32, 35, 52, 0.9);
-            border-color: rgba(255, 140, 170, 0.16);
-            color: #e4dff0;
-        }
-
-        /* 棋盘与胜利横幅 */
-        body.lights-off .board-box {
-            background: linear-gradient(145deg, #9c7a4c 0%, #846338 55%, #6e502a 100%);
-            border-color: #462e15;
-            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.55);
-        }
-        body.lights-off .victory-banner {
-            background: rgba(26, 28, 44, 0.96);
-            border-color: #e05c80;
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
-        }
-
-        /* 投掷互动条 */
-        body.lights-off .item-throw-bar {
-            background: rgba(34, 28, 44, 0.88);
-            border-color: rgba(235, 110, 150, 0.28);
-        }
-        body.lights-off .throw-item-label { color: #f29bb2; }
-        body.lights-off .throw-item-btn {
-            background: rgba(48, 39, 62, 0.9);
-            border-color: rgba(255, 150, 180, 0.22);
-        }
-        body.lights-off .throw-item-btn:hover {
-            background: rgba(70, 50, 82, 0.95);
-            border-color: rgba(255, 150, 180, 0.5);
-        }
-
-        /* 右侧卡片、身份选择、联机房 */
-        body.lights-off .side-card {
-            background: rgba(27, 30, 45, 0.88);
-            border-color: rgba(255, 255, 255, 0.07);
-        }
-        body.lights-off .side-title { color: #f0ecf8; }
-        body.lights-off .room-code-badge {
-            background: rgba(235, 90, 130, 0.18);
-            color: #ff9ebb;
-            border-color: rgba(255, 130, 165, 0.3);
-        }
-        body.lights-off .role-btn {
-            background: rgba(38, 42, 64, 0.85);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #cfc8e0;
-        }
-        body.lights-off .role-btn:hover {
-            background: rgba(50, 48, 76, 0.92);
-            border-color: rgba(255, 140, 170, 0.35);
-        }
-        body.lights-off .role-btn.active {
-            background: linear-gradient(135deg, rgba(224, 83, 120, 0.25) 0%, rgba(191, 75, 133, 0.2) 100%);
-            border-color: #e05c80;
-            color: #ffabc2;
-            box-shadow: inset 0 0 12px rgba(224, 92, 128, 0.15);
-        }
-
-        body.lights-off .online-roster-bar {
-            background: rgba(20, 22, 34, 0.78);
-            border-color: rgba(255, 140, 170, 0.25);
-            color: #d6d0e5;
-        }
-        body.lights-off .couple-room-btn {
-            background: linear-gradient(135deg, rgba(62, 38, 58, 0.88) 0%, rgba(46, 33, 56, 0.88) 100%);
-            border-color: rgba(235, 110, 150, 0.32);
-            color: #ff9ebb;
-        }
-        body.lights-off .couple-room-btn:hover {
-            background: linear-gradient(135deg, rgba(82, 46, 74, 0.95) 0%, rgba(62, 42, 74, 0.95) 100%);
-            border-color: rgba(255, 140, 175, 0.55);
-            color: #ffd0df;
-        }
-
-        /* 输入框 */
         body.lights-off input[type="text"] {
             background-color: rgba(15, 17, 27, 0.9);
             border-color: rgba(255, 255, 255, 0.12);
             color: #f0ecf8;
-        }
-        body.lights-off input[type="text"]::placeholder {
-            color: #6e6882;
-        }
-        body.lights-off input[type="text"]:focus {
-            background-color: rgba(18, 20, 32, 0.98);
-            border-color: #e05c80;
-            box-shadow: 0 0 12px rgba(224, 92, 128, 0.25);
-        }
-
-        /* 聊天窗口、快捷语、暗号技能胶囊 */
-        body.lights-off .chat-history-box {
-            background: rgba(16, 18, 28, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-        body.lights-off .chat-empty-hint { color: #736c88; }
-        body.lights-off .chat-log-meta { color: #88809e; }
-        body.lights-off .chat-log-item.mine .chat-log-bubble {
-            background: linear-gradient(135deg, #d94f75 0%, #b8457e 100%);
-            color: #ffffff;
-        }
-        body.lights-off .chat-log-item.other .chat-log-bubble {
-            background: rgba(42, 46, 68, 0.95);
-            color: #ece8f6;
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        body.lights-off .phrase-chip {
-            background: rgba(38, 42, 64, 0.85);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #d8d2e8;
-        }
-        body.lights-off .phrase-chip:hover {
-            background: rgba(58, 46, 76, 0.95);
-            border-color: rgba(255, 130, 165, 0.45);
-            color: #ffffff;
-        }
-
-        body.lights-off .secret-section-title { color: #b5adc9; }
-        body.lights-off .secret-chip {
-            background: rgba(56, 33, 52, 0.82);
-            border-color: rgba(240, 110, 150, 0.38);
-            color: #ff9ebb;
-        }
-        body.lights-off .secret-chip:hover {
-            background: rgba(78, 42, 68, 0.95);
-            border-color: rgba(255, 140, 175, 0.65);
-            color: #ffc2d4;
-        }
-
-        body.lights-off .toast-item {
-            background: rgba(30, 33, 50, 0.95);
-            border-color: #e05c80;
-            color: #f2eef9;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -1084,11 +313,10 @@
     <div id="lightFloatToggle" class="light-float-btn" onclick="toggleLightsOffMode()" title="关灯/开灯">🌙</div>
     <div id="musicToggle" class="music-btn" title="音乐">🎵</div>
     <div id="toastContainer" class="toast-box"></div>
-    <div id="heartFallZone" class="heart-fall-container"></div>
 
     <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     
-    <!-- 视图 1：留言卡片 -->
+    <!-- 视图 1：唯美留言卡片主界面 -->
     <div class="container" id="messageCardView">
         <div class="badge">豆</div>
         <h2>欢迎豆豆宝宝!</h2>
@@ -1101,214 +329,37 @@
         
         <button id="sendBtn">召唤芽芽</button>
 
-        <div class="divider-line"><span>✨ 或者和芽芽下五子棋 ✨</span></div>
-        <button id="gomokuBtn" type="button">
+        <div class="divider-line"><span>✨ 探索更多浪漫功能 ✨</span></div>
+
+        <!-- 五子棋按钮 -->
+        <button id="gomokuBtn" type="button" onclick="openGomokuPage()">
             <span>♟️</span>
             <span>来一局五子棋</span>
         </button>
+
+        <!-- 房源系统调用按钮：保持一致的圆角与高质感渐变 -->
+        <button id="rentalPortalBtn" type="button" onclick="openRentalSystem()">
+            <span>🏠</span>
+            <span>查看回龙观房源 (实盘直联库)</span>
+        </button>
     </div>
 
-    <!-- 视图 2：五子棋对战屋 -->
-    <div class="gomoku-wrapper" id="gomokuView">
-        <div class="gomoku-topbar">
-            <button class="back-btn" id="backToCardBtn" type="button">
-                <span>←</span><span>返回留言卡片</span>
-            </button>
-
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                <div class="mode-tabs">
-                    <button class="mode-tab active" id="tabOnline" onclick="switchMode('online')">🌐 双人联机</button>
-                    <button class="mode-tab" id="tabAi" onclick="switchMode('ai')">🤖 芽芽AI陪练</button>
-                    <button class="mode-tab" id="tabLocal" onclick="switchMode('local')">👥 同屏双人</button>
-                </div>
-                <button class="action-pill" id="lightInlineBtn" onclick="toggleLightsOffMode()">🌙 关灯</button>
-                <button class="action-pill" id="soundBtn" onclick="toggleSoundEffect()">🔊 音效</button>
+    <!-- 房源检索全屏平滑弹窗：独立加载同级目录下的 code_artifact.html -->
+    <div id="rentalPortalOverlay">
+        <div id="rentalPortalHeader">
+            <div style="font-size:14px; font-weight:bold; display:flex; align-items:center; gap:8px;">
+                <span>🏡 北京回龙观全域租房真实成交底价 & 在租房源检索系统</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="portal-back-btn" onclick="openIndependentRentalTab()">🔗 新标签页打开</button>
+                <button class="portal-back-btn" onclick="closeRentalSystem()">← 返回小屋</button>
             </div>
         </div>
-
-        <div class="gomoku-grid">
-            <div>
-                <div class="players-bar">
-                    <div class="player-card active-turn" id="blackCard">
-                        <div class="stone-avatar black">
-                            <span class="presence-dot online" id="blackPresenceDot"></span>
-                        </div>
-                        <div class="player-meta">
-                            <div class="player-name">
-                                <span id="blackNameLabel">豆豆宝宝 (黑棋)</span>
-                                <span class="me-tag" id="blackMeTag" style="display:none;">我</span>
-                            </div>
-                            <div class="player-sub" id="blackStatusLabel">🟢 在线 · 先手执黑</div>
-                        </div>
-                        <div class="chat-bubble" id="blackBubble"></div>
-                    </div>
-
-                    <div class="player-card" id="whiteCard">
-                        <div class="stone-avatar white">
-                            <span class="presence-dot" id="whitePresenceDot"></span>
-                        </div>
-                        <div class="player-meta">
-                            <div class="player-name">
-                                <span id="whiteNameLabel">等待加入...</span>
-                                <span class="me-tag" id="whiteMeTag" style="display:none;">我</span>
-                            </div>
-                            <div class="player-sub" id="whiteStatusLabel">🟢 在线 · 后手执白</div>
-                        </div>
-                        <div class="chat-bubble right-side" id="whiteBubble"></div>
-                    </div>
-                </div>
-
-                <!-- 胜率预测 -->
-                <div class="winrate-box">
-                    <span id="blackWinRateText" style="min-width:70px;">⚫ 黑胜率 50%</span>
-                    <div class="winrate-bar">
-                        <div class="winrate-fill-black" id="winrateFillBlack"></div>
-                        <div class="winrate-fill-white" id="winrateFillWhite"></div>
-                    </div>
-                    <span id="whiteWinRateText" style="min-width:70px; text-align:right;">⚪ 白胜率 50%</span>
-                </div>
-
-                <!-- 局势条 -->
-                <div class="status-strip">
-                    <span id="statusBannerText" style="font-weight:600;">🌸 正在等待对方进入房间...</span>
-                    <div style="display:flex; align-items:center; gap:6px; font-size:11.5px; flex-shrink:0;">
-                        <span>手数: <strong id="moveCountText">0</strong></span>
-                        <button class="action-pill" style="padding:2px 7px; font-size:11px;" onclick="toggleAimMode()" id="aimModeBtn">🎯 自动</button>
-                    </div>
-                </div>
-
-                <!-- 棋盘主容器 (支持激光笔、落子准星、迷雾、投掷道具) -->
-                <div class="board-box" id="boardBox">
-                    <canvas id="gomokuCanvas"></canvas>
-                    <canvas id="fxCanvas"></canvas>
-
-                    <!-- 动态迷雾 (暗号999) -->
-                    <div id="boardFogLayer" class="board-fog" style="display:none;">☁️</div>
-
-                    <button class="confirm-move-btn" id="confirmMoveBtn" onclick="confirmPendingStone()">
-                        ✅ 确认落子 (<span id="confirmCoordText">H8</span>)
-                    </button>
-
-                    <div class="victory-banner" id="victoryBanner">
-                        <div style="text-align:left;">
-                            <div id="victoryTitle" style="font-weight:800; font-size:15px; color:#ff6b8b;">🎉 获胜啦！</div>
-                            <div id="victorySub" style="font-size:11.5px; opacity:0.8;">点击再来一局继续对战</div>
-                        </div>
-                        <div style="display:flex; gap:6px;">
-                            <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局</button>
-                            <button class="action-pill" onclick="hideVictoryBanner()">✕</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 🎨 实时道具抛掷互动条 -->
-                <div class="item-throw-bar">
-                    <span class="throw-item-label">🎁 投掷互动:</span>
-                    <button class="throw-item-btn" onclick="throwInteractiveItem('💋')" title="飞吻一个">💋</button>
-                    <button class="throw-item-btn" onclick="throwInteractiveItem('🍅')" title="丢西红柿">🍅</button>
-                    <button class="throw-item-btn" onclick="throwInteractiveItem('🔨')" title="敲敲脑瓜">🔨</button>
-                    <button class="throw-item-btn" onclick="throwInteractiveItem('🎆')" title="放浪漫烟花">🎆</button>
-                    <button class="action-pill" id="laserPenBtn" style="padding:4px 9px; font-size:11px;" onclick="toggleLaserPenMode()">🖊️ 激光笔: 关</button>
-                </div>
-
-                <div class="board-actions">
-                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button class="action-pill primary" onclick="handleRestartMatch()">🔄 再来一局 (换先)</button>
-                        <button class="action-pill" onclick="handleUndo()">↩️ 悔棋一步</button>
-                        <button class="action-pill" onclick="handleResign()">🏳️ 认输</button>
-                    </div>
-                    <span id="connStatusTag" style="font-size:11.5px; opacity:0.75; align-self:center;">🌐 联机就绪</span>
-                </div>
-            </div>
-
-            <!-- 右侧操作栏 -->
-            <div>
-                <div class="side-card">
-                    <div class="side-title">
-                        <span>💑 选择我的身份</span>
-                    </div>
-                    <div class="role-switch">
-                        <button class="role-btn active" id="roleDoudouBtn" onclick="selectIdentity('豆豆宝宝', true)">👧 豆豆宝宝</button>
-                        <button class="role-btn" id="roleYayaBtn" onclick="selectIdentity('芽芽', true)">👦 芽芽</button>
-                    </div>
-                </div>
-
-                <div class="side-card" id="onlineRoomCard">
-                    <div class="side-title">
-                        <span>🏠 联机房</span>
-                        <span id="roomCodeBadge" class="room-code-badge">未进房</span>
-                    </div>
-
-                    <div class="online-roster-bar">
-                        <span id="roomRosterText">🟡 正在进房...</span>
-                        <button class="action-pill" style="padding:4px 9px; font-size:11.5px;" onclick="handleSwapColors()">🔃 换黑白棋</button>
-                    </div>
-
-                    <div class="quick-room-btns">
-                        <button class="couple-room-btn" onclick="joinCoupleRoom('5200')">💖 5200 房</button>
-                        <button class="couple-room-btn" onclick="joinCoupleRoom('1314')">✨ 1314 房</button>
-                    </div>
-
-                    <div style="display:flex; gap:6px; margin-bottom:8px;">
-                        <input type="text" id="customRoomInput" maxlength="8" placeholder="自定义房号" style="padding:9px 12px; font-size:13px; border-radius:12px;">
-                        <button class="action-pill" onclick="joinCustomRoomInput()">进房</button>
-                    </div>
-
-                    <button class="bark-call-btn" id="notifyYayaBtn" onclick="notifyYayaToPlay()">
-                        <span>🔔</span><span id="notifyBtnText">一键喊对方进房下棋</span>
-                    </button>
-                </div>
-
-                <div class="side-card" id="aiSettingCard" style="display:none;">
-                    <div class="side-title"><span>🤖 芽芽分身 AI 陪练</span></div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
-                        <button class="role-btn" id="aiEasyBtn" onclick="setAiLevel('easy')">🌱 放水</button>
-                        <button class="role-btn active" id="aiMedBtn" onclick="setAiLevel('medium')">🌸 切磋</button>
-                        <button class="role-btn" id="aiHardBtn" onclick="setAiLevel('hard')">🔥 棋圣</button>
-                    </div>
-                </div>
-
-                <div class="side-card">
-                    <div class="side-title">
-                        <span>💬 甜蜜互动与专属暗号</span>
-                        <button class="action-pill" style="padding:2px 6px; font-size:11px;" onclick="clearChatHistoryBox()">🧹 清空</button>
-                    </div>
-
-                    <div class="chat-history-box" id="chatHistoryBox">
-                        <div class="chat-empty-hint" id="chatEmptyHint">💌 互动悄悄话会在这里显示～</div>
-                    </div>
-
-                    <!-- 动态快捷语 -->
-                    <div class="quick-phrases">
-                        <button class="phrase-chip" id="dynamicHurryChip" onclick="sendDynamicHurry()">🌸 快点下～</button>
-                        <button class="phrase-chip" id="dynamicYieldChip" onclick="sendDynamicYield()">🥺 让我一步</button>
-                        <button class="phrase-chip" onclick="sendCoupleChat('✨ 这步下得好绝！')">✨ 绝杀！</button>
-                        <button class="phrase-chip" onclick="sendCoupleChat('❤️ 耍赖不算，悔棋嘛')">❤️ 耍赖不算</button>
-                    </div>
-
-                    <!-- 🔮 暗号快捷彩蛋 -->
-                    <div class="secret-section-title">🎁 专属暗号技能 (点击或聊天输入):</div>
-                    <div class="secret-badge-group">
-                        <span class="secret-chip" onclick="triggerSecretWord('1114')" title="大师最佳落子指引">💡 1114 (神之一手)</span>
-                        <span class="secret-chip" onclick="triggerSecretWord('818')" title="特权：直接覆盖并吃掉对方棋子">⚡ 818 (落子覆盖)</span>
-                        <span class="secret-chip" onclick="triggerSecretWord('520')" title="触发全屏浪漫爱心雨">💖 520 (爱心雨)</span>
-                        <span class="secret-chip" onclick="triggerSecretWord('999')" title="云朵遮蔽棋盘中心">☁️ 999 (迷雾弹)</span>
-                        <span class="secret-chip" onclick="triggerSecretWord('666')" title="强行移走对方最新一颗棋子">🌪️ 666 (乾坤大挪移)</span>
-                    </div>
-
-                    <div style="display:flex; gap:6px; margin-top:10px;">
-                        <input type="text" id="chatTextInput" maxlength="36" placeholder="发一句话或输入暗号..." style="padding:9px 12px; font-size:12.5px; border-radius:12px;" onkeydown="if(event.key==='Enter') sendCustomChatInput()">
-                        <button class="action-pill primary" onclick="sendCustomChatInput()">发送</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <iframe id="rentalFrame" src="" style="width:100%; height:100%; border:none; background:#0f172a;"></iframe>
     </div>
 
     <script>
-        // ==========================================
-        // 0. 通用提示函数
-        // ==========================================
+        // 1. 吐司消息
         function showRomanticToast(msg) {
             const container = document.getElementById('toastContainer');
             const div = document.createElement('div');
@@ -1322,35 +373,22 @@
             }, 2600);
         }
 
-        // ==========================================
-        // 🌙 关灯护眼模式
-        // ==========================================
+        // 2. 关灯模式
         let isLightsOff = localStorage.getItem('doudou_lights_off') === '1';
-
         function applyLightsOffUI() {
             document.body.classList.toggle('lights-off', isLightsOff);
-            const floatBtn = document.getElementById('lightFloatToggle');
-            const inlineBtn = document.getElementById('lightInlineBtn');
-            if (floatBtn) floatBtn.innerText = isLightsOff ? '☀️' : '🌙';
-            if (inlineBtn) inlineBtn.innerText = isLightsOff ? '☀️ 开灯' : '🌙 关灯';
-            if (typeof drawGomokuBoard === 'function') drawGomokuBoard();
+            document.getElementById('lightFloatToggle').innerText = isLightsOff ? '☀️' : '🌙';
         }
-
-        window.toggleLightsOffMode = function(e) {
-            if (e && e.stopPropagation) e.stopPropagation();
+        function toggleLightsOffMode() {
             isLightsOff = !isLightsOff;
             localStorage.setItem('doudou_lights_off', isLightsOff ? '1' : '0');
             applyLightsOffUI();
-            showRomanticToast(isLightsOff ? '🌙 已开启护眼模式' : '☀️ 已恢复浪漫模式');
-        };
+        }
 
-        // ==========================================
-        // 🎵 背景音乐与音效控制
-        // ==========================================
+        // 3. 音乐播放
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
         let isMusicPlaying = false;
-
         function togglePlay() {
             if (isMusicPlaying) {
                 bgMusic.pause();
@@ -1361,230 +399,30 @@
             }
             isMusicPlaying = !isMusicPlaying;
         }
-
-        musicToggle.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
+        musicToggle.addEventListener('click', togglePlay);
         document.body.addEventListener('click', () => { if (!isMusicPlaying) togglePlay(); }, { once: true });
 
-        let soundEnabled = true;
-        let audioCtx = null;
-
-        function getAudioContext() {
-            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            if (!audioCtx && AudioContextClass) audioCtx = new AudioContextClass();
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            return audioCtx;
-        }
-
-        function playStoneTap(isBlack = true) {
-            if (!soundEnabled) return;
-            try {
-                const ctx = getAudioContext();
-                if (!ctx) return;
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(isBlack ? 700 : 850, now);
-                osc.frequency.exponentialRampToValueAtTime(150, now + 0.06);
-                gain.gain.setValueAtTime(0.35, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.065);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.07);
-            } catch (e) {}
-        }
-
-        function playItemSfx(type) {
-            if (!soundEnabled) return;
-            try {
-                const ctx = getAudioContext();
-                if (!ctx) return;
-                const now = ctx.currentTime;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                if (type === '💋') { // 亲亲啾咪音
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(600, now);
-                    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.12);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
-                } else if (type === '🔨') { // 木鱼重击音
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(260, now);
-                    osc.frequency.exponentialRampToValueAtTime(80, now + 0.1);
-                    gain.gain.setValueAtTime(0.4, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
-                } else { // 弹跳破裂音
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(450, now);
-                    osc.frequency.exponentialRampToValueAtTime(900, now + 0.15);
-                    gain.gain.setValueAtTime(0.25, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
-                }
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + 0.18);
-            } catch (e) {}
-        }
-
-        function playVictoryMelody() {
-            if (!soundEnabled) return;
-            try {
-                const ctx = getAudioContext();
-                if (!ctx) return;
-                const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((f, idx) => {
-                    const t = ctx.currentTime + idx * 0.09;
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(f, t);
-                    gain.gain.setValueAtTime(0.22, t);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(t);
-                    osc.stop(t + 0.36);
-                });
-            } catch (e) {}
-        }
-
-        window.toggleSoundEffect = function() {
-            soundEnabled = !soundEnabled;
-            document.getElementById('soundBtn').innerText = soundEnabled ? '🔊 音效' : '🔇 静音';
-            showRomanticToast(soundEnabled ? '🔊 已开启音效' : '🔇 已静音');
-        };
-
-        // ==========================================
-        // Bark 推送服务
-        // ==========================================
+		// 4. 输入框清除与召唤 Bark
+        const messageInput = document.getElementById('messageInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const sendBtn = document.getElementById('sendBtn');
         const BARK_ENDPOINT = 'https://api.day.app/t7Ay4FrKptb7NrhMw5xBG7';
 
+        // 4.1 打开页面自动推送访问记录
         function logPageVisit() {
             const logData = new URLSearchParams();
             logData.append('title', '👀 豆豆宝宝来啦');
             logData.append('body', '豆豆宝宝刚刚打开或刷新了网页！');
             logData.append('group', 'log');
             logData.append('isArchive', '1');
-            fetch(BARK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: logData }).catch(() => {});
+
+            fetch(BARK_ENDPOINT, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
+                body: logData 
+            }).catch(() => {});
         }
         window.addEventListener('load', logPageVisit);
-
-        // ==========================================
-        // 🕵️ 核心暗号与道具技能系统 (1114 / 818 / 520 / 999 / 666)
-        // ==========================================
-        let masterCheatEnabled = false;       // 1114: 大师推荐落点
-        let overrideCheatEnabled = false;     // 818: 覆盖对方棋子
-        let fogActive = false;                // 999: 迷雾障眼法
-        let masterRecommendedMove = null;
-
-        function triggerSecretWord(code) {
-            if (code === '1114') {
-                masterCheatEnabled = !masterCheatEnabled;
-                showRomanticToast(masterCheatEnabled ? '💡 大师神之一手已开启！虚线圆圈即为天选落点' : '💡 已关闭大师指引');
-                updateMasterCheatRecommendation();
-                drawGomokuBoard();
-                return true;
-            }
-            if (code === '818') {
-                overrideCheatEnabled = !overrideCheatEnabled;
-                showRomanticToast(overrideCheatEnabled ? '⚡ 霸道特权模式生效：点击可直接覆盖并吃掉对方棋子！' : '⚡ 已关闭覆盖落子特权');
-                return true;
-            }
-            if (code === '520') {
-                triggerFallingHeartsEffect();
-                showRomanticToast('💖 触发浪漫爱心雨！全世界都是爱你的形状');
-                if (gameMode === 'online') sendRoomPacket('SECRET_EFFECT', { type: '520' });
-                return true;
-            }
-            if (code === '999') {
-                toggleBoardFogLayer();
-                if (gameMode === 'online') sendRoomPacket('SECRET_EFFECT', { type: '999' });
-                return true;
-            }
-            if (code === '666') {
-                performShiftMove();
-                if (gameMode === 'online') sendRoomPacket('SECRET_EFFECT', { type: '666' });
-                return true;
-            }
-            return false;
-        }
-
-        // 520 爱心雨
-        function triggerFallingHeartsEffect() {
-            const container = document.getElementById('heartFallZone');
-            const hearts = ['💖', '💕', '🌸', '✨', '🍬', '❤️'];
-            for (let i = 0; i < 38; i++) {
-                setTimeout(() => {
-                    const el = document.createElement('div');
-                    el.className = 'falling-heart';
-                    el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
-                    el.style.left = Math.random() * 96 + 'vw';
-                    el.style.animationDuration = (2.2 + Math.random() * 2) + 's';
-                    el.style.fontSize = (18 + Math.random() * 18) + 'px';
-                    container.appendChild(el);
-                    setTimeout(() => el.remove(), 4200);
-                }, i * 65);
-            }
-        }
-
-        // 999 迷雾层
-        function toggleBoardFogLayer() {
-            fogActive = !fogActive;
-            const fog = document.getElementById('boardFogLayer');
-            if (fogActive) {
-                const boxRect = canvas.getBoundingClientRect();
-                const fogRadius = boxRect.width * 0.42;
-                fog.style.width = fogRadius + 'px';
-                fog.style.height = fogRadius + 'px';
-                fog.style.left = (boxRect.width - fogRadius) / 2 + 'px';
-                fog.style.top = (boxRect.height - fogRadius) / 2 + 'px';
-                fog.style.display = 'flex';
-                showRomanticToast('☁️ 召唤迷雾！棋盘中央已被云朵遮蔽');
-            } else {
-                fog.style.display = 'none';
-                showRomanticToast('☀️ 迷雾消散，棋盘已清晰');
-            }
-        }
-
-        // 666 乾坤大挪移 (强行把对方最后一颗子推向邻近空格)
-        function performShiftMove() {
-            if (moves.length === 0) {
-                showRomanticToast('棋盘上还没有棋子可以移走哟～');
-                return;
-            }
-            const last = moves[moves.length - 1];
-            const dirs = [[0,1], [1,0], [0,-1], [-1,0], [1,1], [-1,-1]];
-            let shifted = false;
-            for (const [dr, dc] of dirs) {
-                const nr = last.r + dr, nc = last.c + dc;
-                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) {
-                    board[last.r][last.c] = 0;
-                    board[nr][nc] = last.p;
-                    last.r = nr;
-                    last.c = nc;
-                    shifted = true;
-                    break;
-                }
-            }
-            if (shifted) {
-                showRomanticToast('🌪️ 发动乾坤大挪移！最后一颗棋子被震歪了一格！');
-                drawGomokuBoard();
-                if (gameMode === 'online') broadcastRoomState();
-            } else {
-                showRomanticToast('周围没有空位挪动啦～');
-            }
-        }
-
-        // ==========================================
-        // 留言卡片与召唤
-        // ==========================================
-        const messageInput = document.getElementById('messageInput');
-        const clearBtn = document.getElementById('clearBtn');
-        const sendBtn = document.getElementById('sendBtn');
 
         messageInput.addEventListener('input', () => { clearBtn.style.display = messageInput.value.length > 0 ? 'block' : 'none'; });
         clearBtn.addEventListener('click', () => { messageInput.value = ''; clearBtn.style.display = 'none'; messageInput.focus(); });
@@ -1592,16 +430,8 @@
         sendBtn.addEventListener('click', () => {
             const val = messageInput.value.trim();
             if (!val) { showRomanticToast('💌 请先输入想说的话呀！'); return; }
-
-            if (triggerSecretWord(val)) {
-                messageInput.value = '';
-                clearBtn.style.display = 'none';
-                return;
-            }
-
             sendBtn.disabled = true;
             sendBtn.innerText = '发送中...';
-
             const data = new URLSearchParams();
             data.append('title', 'doudou 网页留言');
             data.append('body', val);
@@ -1618,1334 +448,31 @@
             .finally(() => { sendBtn.disabled = false; sendBtn.innerText = '召唤芽芽'; });
         });
 
-        // ==========================================
-        // 视图切换
-        // ==========================================
-        const messageCardView = document.getElementById('messageCardView');
-        const gomokuView = document.getElementById('gomokuView');
-        const gomokuBtn = document.getElementById('gomokuBtn');
-        const backToCardBtn = document.getElementById('backToCardBtn');
+        // 5. 房源系统独立调用逻辑 (加载同级目录的 code_artifact.html)
 
-        function openGomokuRoom(defaultRoom = '5200') {
-            messageCardView.style.display = 'none';
-            gomokuView.style.display = 'block';
-            setTimeout(() => {
-                resizeBoardCanvas();
-                resizeFxCanvas();
-                if (!currentRoomCode && gameMode === 'online') {
-                    joinCoupleRoom(defaultRoom);
-                }
-            }, 30);
+        // 5. 房源系统独立调用逻辑 (加载同级目录的 code_artifact.html)
+        function openRentalSystem() {
+            const overlay = document.getElementById('rentalPortalOverlay');
+            const frame = document.getElementById('rentalFrame');
+            if (!frame.src || frame.src.endsWith('about:blank') || frame.src === window.location.href) {
+                frame.src = 'code_artifact.html';
+            }
+            overlay.style.display = 'flex';
         }
 
-        gomokuBtn.addEventListener('click', () => openGomokuRoom('5200'));
-        backToCardBtn.addEventListener('click', () => {
-            gomokuView.style.display = 'none';
-            messageCardView.style.display = 'block';
-        });
-
-        window.notifyYayaToPlay = function() {
-            const btn = document.getElementById('notifyYayaBtn');
-            const roomCode = currentRoomCode || '5200';
-            const pageUrl = window.location.origin + window.location.pathname + '?room=' + roomCode;
-            const targetName = myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
-
-            btn.disabled = true;
-            btn.innerHTML = `<span>⏳</span><span>正在呼叫${targetName}...</span>`;
-
-            const payload = new URLSearchParams();
-            payload.append('title', `♟️ ${myName}喊你下五子棋啦！`);
-            payload.append('body', `${myName}已经在【${roomCode} 房间】摆好棋盘等你啦，点击直接进房对战 ❤️`);
-            payload.append('group', 'gomoku');
-            payload.append('isArchive', '1');
-            payload.append('url', pageUrl);
-
-            fetch(BARK_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: payload })
-            .then(() => showRomanticToast(`🔔 已向${targetName}发送进房召唤！`))
-            .catch(() => showRomanticToast('呼叫失败，请检查网络'))
-            .finally(() => {
-                setTimeout(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = `<span>🔔</span><span>一键喊${targetName}进房下棋</span>`;
-                }, 2000);
-            });
-        };
-
-        // ==========================================
-        // 棋盘数据与联机架构
-        // ==========================================
-        const BOARD_SIZE = 15;
-        const COL_LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
-        const STAR_COORDS = [[3,3],[3,11],[7,7],[11,3],[11,11]];
-
-        let gameMode = 'online';
-        let myName = '豆豆宝宝';
-        let userManuallyPickedRole = false;
-        let myClientId = sessionStorage.getItem('doudou_gomoku_cid') || ('u_' + Math.random().toString(36).slice(2, 10));
-        sessionStorage.setItem('doudou_gomoku_cid', myClientId);
-        let myJoinedAt = Date.now();
-
-        let board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-        let moves = [];
-        let currentTurn = 1;
-        let winner = 0;
-        let winLine = [];
-        let winReason = '';
-        let stateVersion = 0;
-        let isSoloPracticeMoves = false;
-
-        let currentRoomCode = '';
-        let myOnlineColor = 1;
-        let blackPlayerInfo = { id: myClientId, name: myName };
-        let whitePlayerInfo = null;
-        let remotePeers = new Map();
-        let seenPacketIds = new Set();
-        let packetSeq = 0;
-
-        let mqttClient = null;
-        let mqttTopic = '';
-        let localBroadcast = null;
-        let peerInstance = null;
-        let peerConns = [];
-        let heartbeatTimer = null;
-
-        let aiLevel = 'medium';
-        let aiThinking = false;
-
-        let hoverIntersection = null;
-        let pendingIntersection = null;
-        let aimSetting = 'auto';
-        let isTouchUsed = false;
-
-        // 👁️ 实时视线追踪与激光笔笔迹数据
-        let remoteCursor = null;       // 对方当前凝视坐标 { r, c, name }
-        let isLaserMode = false;       // 激光笔涂鸦开关
-        let localLaserPoints = [];
-        let laserTracks = [];          // 渲染轨迹 [{ x, y, time, color }]
-        let lastCursorSendTime = 0;
-
-        // ==========================================
-        // 胜率计算
-        // ==========================================
-        function calculateCurrentWinRates() {
-            if (winner === 1) return { black: 100, white: 0 };
-            if (winner === 2) return { black: 0, white: 100 };
-            if (winner === 3) return { black: 50, white: 50 };
-            if (moves.length === 0) return { black: 50, white: 50 };
-
-            let bScore = 0, wScore = 0;
-            for (let r = 0; r < BOARD_SIZE; r++) {
-                for (let c = 0; c < BOARD_SIZE; c++) {
-                    if (board[r][c] === 0) continue;
-                    const color = board[r][c];
-                    const dirs = [[0,1], [1,0], [1,1], [1,-1]];
-                    for (const [dr, dc] of dirs) {
-                        let cnt = 1, open = 0;
-                        let nr = r + dr, nc = c + dc;
-                        while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr += dr; nc += dc; }
-                        if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
-                        nr = r - dr; nc = c - dc;
-                        while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { cnt++; nr -= dr; nc -= dc; }
-                        if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === 0) open++;
-
-                        let pt = 0;
-                        if (cnt >= 5) pt = 200000;
-                        else if (cnt === 4) pt = open === 2 ? 25000 : open === 1 ? 4000 : 0;
-                        else if (cnt === 3) pt = open === 2 ? 3500 : open === 1 ? 500 : 0;
-                        else if (cnt === 2) pt = open === 2 ? 400 : 50;
-
-                        if (color === 1) bScore += pt; else wScore += pt;
-                    }
-                }
-            }
-            bScore += currentTurn === 1 ? 300 : 0;
-            wScore += currentTurn === 2 ? 300 : 0;
-            const diff = bScore - wScore;
-            let blackPct = Math.round(50 + 50 * (Math.tanh(diff / 5000)));
-            blackPct = Math.max(1, Math.min(99, blackPct));
-            return { black: blackPct, white: 100 - blackPct };
+        function closeRentalSystem() {
+            document.getElementById('rentalPortalOverlay').style.display = 'none';
         }
 
-        function updateWinRateDisplay() {
-            const rates = calculateCurrentWinRates();
-            document.getElementById('blackWinRateText').innerText = `⚫ 黑胜率 ${rates.black}%`;
-            document.getElementById('whiteWinRateText').innerText = `⚪ 白胜率 ${rates.white}%`;
-            document.getElementById('winrateFillBlack').style.width = `${rates.black}%`;
-            document.getElementById('winrateFillWhite').style.width = `${rates.white}%`;
+        function openIndependentRentalTab() {
+            window.open('code_artifact.html', '_blank');
         }
 
-        function updateDynamicPhrasesUI() {
-            const oppName = getOpponentDisplayName();
-            document.getElementById('dynamicHurryChip').innerText = `🌸 ${oppName}快点下～`;
-            document.getElementById('dynamicYieldChip').innerText = `🥺 让${myName}一步嘛`;
-            document.getElementById('notifyBtnText').innerText = `一键喊${oppName}进房下棋`;
+        function openGomokuPage() {
+            showRomanticToast('♟️ 正在前往浪漫五子棋对局室...');
         }
 
-        function getOpponentDisplayName() {
-            if (gameMode === 'online') {
-                if (whitePlayerInfo && blackPlayerInfo) return myOnlineColor === 1 ? whitePlayerInfo.name : blackPlayerInfo.name;
-                return myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
-            } else if (gameMode === 'ai') return '芽芽 AI';
-            return currentTurn === 1 ? '芽芽' : '豆豆宝宝';
-        }
-
-        window.sendDynamicHurry = () => sendCoupleChat(`🌸 ${getOpponentDisplayName()}快点下呀～`);
-        window.sendDynamicYield = () => sendCoupleChat(`🥺 让${myName}一步嘛！`);
-
-        // 大师算力与推荐落点
-        function isMyTurnToMove() {
-            if (winner !== 0) return false;
-            if (gameMode === 'online') return blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0 ? currentTurn === myOnlineColor : true;
-            if (gameMode === 'ai') return currentTurn === 1 && !aiThinking;
-            return true;
-        }
-
-        function updateMasterCheatRecommendation() {
-            if (!masterCheatEnabled || !isMyTurnToMove()) {
-                masterRecommendedMove = null;
-                return;
-            }
-            masterRecommendedMove = computeGrandmasterBestMove(currentTurn);
-        }
-
-        function getLinePatternScore(r, c, dr, dc, color) {
-            const opp = color === 1 ? 2 : 1;
-            const line = new Array(9);
-            line[4] = 1;
-            for (let step = 1; step <= 4; step++) {
-                const nr1 = r + dr * step, nc1 = c + dc * step;
-                if (nr1 < 0 || nr1 >= BOARD_SIZE || nc1 < 0 || nc1 >= BOARD_SIZE) line[4 + step] = 2;
-                else if (board[nr1][nc1] === color) line[4 + step] = 1;
-                else if (board[nr1][nc1] === opp) line[4 + step] = 2;
-                else line[4 + step] = 0;
-
-                const nr2 = r - dr * step, nc2 = c - dc * step;
-                if (nr2 < 0 || nr2 >= BOARD_SIZE || nc2 < 0 || nc2 >= BOARD_SIZE) line[4 - step] = 2;
-                else if (board[nr2][nc2] === color) line[4 - step] = 1;
-                else if (board[nr2][nc2] === opp) line[4 - step] = 2;
-                else line[4 - step] = 0;
-            }
-
-            let left = 4, right = 4;
-            while (left > 0 && line[left - 1] === 1) left--;
-            while (right < 8 && line[right + 1] === 1) right++;
-            const count = right - left + 1;
-            if (count >= 5) return { type: 'FIVE', score: 10000000 };
-
-            const leftOpen = left > 0 && line[left - 1] === 0;
-            const rightOpen = right < 8 && line[right + 1] === 0;
-            if (count === 4) return (leftOpen && rightOpen) ? { type: 'OPEN_FOUR', score: 1000000 } : (leftOpen || rightOpen) ? { type: 'HALF_FOUR', score: 120000 } : { type: 'DEAD', score: 0 };
-            if (count === 3) return (leftOpen && rightOpen) ? { type: 'OPEN_THREE', score: 95000 } : (leftOpen || rightOpen) ? { type: 'HALF_THREE', score: 6000 } : { type: 'DEAD', score: 0 };
-            if (count === 2) return (leftOpen && rightOpen) ? { type: 'OPEN_TWO', score: 4500 } : { type: 'DEAD', score: 0 };
-            return { type: 'SINGLE', score: 150 };
-        }
-
-        function evaluateMasterPoint(r, c, color) {
-            const dirs = [[0,1], [1,0], [1,1], [1,-1]];
-            let total = 0, five = 0, oFour = 0, hFour = 0, oThree = 0;
-            for (const [dr, dc] of dirs) {
-                const res = getLinePatternScore(r, c, dr, dc, color);
-                total += res.score;
-                if (res.type === 'FIVE') five++;
-                else if (res.type === 'OPEN_FOUR') oFour++;
-                else if (res.type === 'HALF_FOUR') hFour++;
-                else if (res.type === 'OPEN_THREE') oThree++;
-            }
-            if (five > 0) return 50000000;
-            if (oFour > 0 || hFour >= 2) return 5000000 + total;
-            if (hFour >= 1 && oThree >= 1) return 3500000 + total;
-            if (oThree >= 2) return 1800000 + total;
-            return total;
-        }
-
-        function computeGrandmasterBestMove(myColor) {
-            if (moves.length === 0) return { r: 7, c: 7 };
-            const oppColor = myColor === 1 ? 2 : 1;
-            const candidates = [];
-            for (let r = 0; r < BOARD_SIZE; r++) {
-                for (let c = 0; c < BOARD_SIZE; c++) {
-                    if (board[r][c] !== 0) continue;
-                    let hasNeighbor = false;
-                    for (let dr = -2; dr <= 2 && !hasNeighbor; dr++) {
-                        for (let dc = -2; dc <= 2 && !hasNeighbor; dc++) {
-                            const nr = r + dr, nc = c + dc;
-                            if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] !== 0) hasNeighbor = true;
-                        }
-                    }
-                    if (!hasNeighbor) continue;
-                    const atk = evaluateMasterPoint(r, c, myColor);
-                    const def = evaluateMasterPoint(r, c, oppColor);
-                    const center = (14 - (Math.abs(r - 7) + Math.abs(c - 7))) * 25;
-                    let combined = atk >= 50000000 ? 1000000000 : def >= 50000000 ? 500000000 : atk * 1.15 + def * 1.05 + center;
-                    candidates.push({ r, c, score: combined });
-                }
-            }
-            if (candidates.length === 0) return { r: 7, c: 7 };
-            candidates.sort((a, b) => b.score - a.score);
-            return { r: candidates[0].r, c: candidates[0].c };
-        }
-
-        // ==========================================
-        // 身份与房间控制
-        // ==========================================
-        window.selectIdentity = function(name, isManual = false) {
-            myName = name;
-            if (isManual) userManuallyPickedRole = true;
-            document.getElementById('roleDoudouBtn').classList.toggle('active', name === '豆豆宝宝');
-            document.getElementById('roleYayaBtn').classList.toggle('active', name === '芽芽');
-            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) blackPlayerInfo.name = myName;
-            if (whitePlayerInfo && whitePlayerInfo.id === myClientId) whitePlayerInfo.name = myName;
-            if (gameMode === 'online' && currentRoomCode) {
-                sendRoomPacket('ROLE_UPDATE', { name: myName });
-                broadcastRoomState();
-            }
-            refreshGomokuUI();
-            if (isManual) showRomanticToast(`✨ 当前身份：${myName}`);
-        };
-
-        window.joinCoupleRoom = function(roomCode) {
-            if (gameMode !== 'online') switchMode('online');
-            const cleanCode = String(roomCode).trim().toUpperCase();
-            if (!cleanCode) return;
-            if (currentRoomCode && currentRoomCode !== cleanCode) sendRoomPacket('LEAVE', {});
-
-            currentRoomCode = cleanCode;
-            myJoinedAt = Date.now();
-            remotePeers.clear();
-            myOnlineColor = 1;
-            blackPlayerInfo = { id: myClientId, name: myName };
-            whitePlayerInfo = null;
-
-            document.getElementById('roomCodeBadge').innerText = `房间 #${cleanCode}`;
-            document.getElementById('customRoomInput').value = cleanCode;
-
-            resetBoardData();
-            setupMultiChannelRoom(cleanCode);
-            showRomanticToast(`💖 进入【${cleanCode}】专属房间！`);
-        };
-
-        window.joinCustomRoomInput = function() {
-            const val = document.getElementById('customRoomInput').value.trim();
-            if (val) joinCoupleRoom(val);
-        };
-
-        function setupMultiChannelRoom(roomCode) {
-            document.getElementById('connStatusTag').innerText = `⏳ 连接 #${roomCode}...`;
-            if (localBroadcast) { try { localBroadcast.close(); } catch (e) {} }
-            if (typeof BroadcastChannel !== 'undefined') {
-                localBroadcast = new BroadcastChannel('doudou_gomoku_v3_' + roomCode);
-                localBroadcast.onmessage = (ev) => handleIncomingPacket(ev.data);
-            }
-            setupMqttChannel(roomCode);
-            setupPeerJsChannel(roomCode);
-
-            if (heartbeatTimer) clearInterval(heartbeatTimer);
-            announceHello();
-            setTimeout(announceHello, 400);
-            setTimeout(announceHello, 1200);
-
-            heartbeatTimer = setInterval(() => {
-                if (gameMode !== 'online' || !currentRoomCode) return;
-                sendRoomPacket('HEARTBEAT', { blackPlayer: blackPlayerInfo, whitePlayer: whitePlayerInfo });
-                pruneOfflinePeers();
-            }, 2500);
-        }
-
-        function setupMqttChannel(roomCode) {
-            if (typeof mqtt === 'undefined') return;
-            const newTopic = `doudou_yaya_gomoku_v3/room_${roomCode}`;
-            mqttTopic = newTopic;
-            if (mqttClient) { try { mqttClient.end(true); } catch (e) {} }
-
-            mqttClient = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
-                clientId: 'doudou_' + myClientId + '_' + Math.random().toString(16).slice(2, 6),
-                clean: true,
-                connectTimeout: 5000,
-                reconnectPeriod: 2000
-            });
-
-            mqttClient.on('connect', () => {
-                if (!currentRoomCode) return;
-                mqttClient.subscribe(mqttTopic, { qos: 0 }, () => {
-                    updateConnectionBadge();
-                    announceHello();
-                });
-            });
-
-            mqttClient.on('message', (topic, message) => {
-                if (topic !== mqttTopic) return;
-                try { handleIncomingPacket(JSON.parse(message.toString())); } catch (e) {}
-            });
-        }
-
-        function setupPeerJsChannel(roomCode) {
-            if (typeof Peer === 'undefined') return;
-            if (peerInstance) { try { peerInstance.destroy(); } catch (e) {} peerInstance = null; }
-            peerConns = [];
-
-            const slot1Id = `doudou-v3-${roomCode}-s1`;
-            const slot2Id = `doudou-v3-${roomCode}-s2`;
-
-            const p1 = new Peer(slot1Id);
-            p1.on('open', () => {
-                peerInstance = p1;
-                updateConnectionBadge();
-                p1.on('connection', bindPeerConn);
-            });
-
-            p1.on('error', (err) => {
-                if (err.type === 'unavailable-id') {
-                    const p2 = new Peer(slot2Id);
-                    p2.on('open', () => {
-                        peerInstance = p2;
-                        updateConnectionBadge();
-                        p2.on('connection', bindPeerConn);
-                        bindPeerConn(p2.connect(slot1Id, { reliable: true }));
-                    });
-                }
-            });
-        }
-
-        function bindPeerConn(conn) {
-            if (!conn) return;
-            peerConns.push(conn);
-            conn.on('open', () => { updateConnectionBadge(); announceHello(); });
-            conn.on('data', (data) => handleIncomingPacket(data));
-        }
-
-        function sendRoomPacket(type, payload = {}) {
-            if (!currentRoomCode) return;
-            const pkt = {
-                msgId: `${myClientId}_${++packetSeq}_${Date.now()}`,
-                roomCode: currentRoomCode,
-                senderId: myClientId,
-                senderName: myName,
-                joinedAt: myJoinedAt,
-                type,
-                payload,
-                ts: Date.now()
-            };
-            seenPacketIds.add(pkt.msgId);
-
-            if (localBroadcast) { try { localBroadcast.postMessage(pkt); } catch (e) {} }
-            if (mqttClient && mqttClient.connected && mqttTopic) {
-                try { mqttClient.publish(mqttTopic, JSON.stringify(pkt), { qos: 0 }); } catch (e) {}
-            }
-            peerConns.forEach(c => { if (c && c.open) { try { c.send(pkt); } catch (e) {} } });
-        }
-
-        function announceHello() {
-            if (gameMode !== 'online' || !currentRoomCode) return;
-            sendRoomPacket('HELLO', { hasMoves: moves.length > 0 && !isSoloPracticeMoves, stateVersion });
-        }
-
-        function handleIncomingPacket(pkt) {
-            if (!pkt || typeof pkt !== 'object' || pkt.roomCode !== currentRoomCode || pkt.senderId === myClientId) return;
-            if (pkt.msgId && seenPacketIds.has(pkt.msgId)) return;
-            if (pkt.msgId) {
-                seenPacketIds.add(pkt.msgId);
-                if (seenPacketIds.size > 600) seenPacketIds.delete(seenPacketIds.values().next().value);
-            }
-
-            const isNewPeer = !remotePeers.has(pkt.senderId);
-            remotePeers.set(pkt.senderId, {
-                id: pkt.senderId,
-                name: pkt.senderName || '对方',
-                joinedAt: pkt.joinedAt || pkt.ts || Date.now(),
-                lastSeen: Date.now()
-            });
-
-            if (pkt.type === 'LEAVE') {
-                remotePeers.delete(pkt.senderId);
-                if (whitePlayerInfo && whitePlayerInfo.id === pkt.senderId) whitePlayerInfo = null;
-                showRomanticToast(`👋 对方离开了房间`);
-                updateConnectionBadge();
-                refreshGomokuUI();
-                drawGomokuBoard();
-                return;
-            }
-
-            // 👁️ 视线追踪同步
-            if (pkt.type === 'CURSOR_FOCUS') {
-                remoteCursor = pkt.payload ? { r: pkt.payload.r, c: pkt.payload.c, name: pkt.senderName } : null;
-                drawGomokuBoard();
-                return;
-            }
-
-            // 🖊️ 激光笔笔迹同步
-            if (pkt.type === 'LASER_DRAW') {
-                if (pkt.payload && Array.isArray(pkt.payload.points)) {
-                    pkt.payload.points.forEach(pt => {
-                        laserTracks.push({ x: pt.x, y: pt.y, time: Date.now(), color: '#ff69b4' });
-                    });
-                }
-                return;
-            }
-
-            // 🎁 道具飞掷同步
-            if (pkt.type === 'THROW_ITEM') {
-                receiveThrownItem(pkt.payload.item, pkt.senderName);
-                return;
-            }
-
-            // 🔮 彩蛋技能同步 (520 / 999 / 666)
-            if (pkt.type === 'SECRET_EFFECT') {
-                const effectType = pkt.payload.type;
-                if (effectType === '520') {
-                    triggerFallingHeartsEffect();
-                    showRomanticToast(`💖 ${pkt.senderName} 触发了全屏爱心雨！`);
-                } else if (effectType === '999') {
-                    toggleBoardFogLayer();
-                    showRomanticToast(`☁️ ${pkt.senderName} 释放了迷雾弹！`);
-                } else if (effectType === '666') {
-                    performShiftMove();
-                    showRomanticToast(`🌪️ ${pkt.senderName} 发动了乾坤大挪移！`);
-                }
-                return;
-            }
-
-            if (pkt.type === 'ROLE_UPDATE') {
-                const newRemoteName = pkt.payload?.name || pkt.senderName;
-                if (blackPlayerInfo && blackPlayerInfo.id === pkt.senderId) blackPlayerInfo.name = newRemoteName;
-                if (whitePlayerInfo && whitePlayerInfo.id === pkt.senderId) whitePlayerInfo.name = newRemoteName;
-                refreshGomokuUI();
-                return;
-            }
-
-            if (pkt.type === 'CHAT_MSG') {
-                const msgText = String(pkt.payload?.text || '').trim();
-                const msgColor = pkt.payload.color || 2;
-                showChatBubbleOnCard(msgColor, msgText, { senderName: pkt.senderName, isMine: false });
-                return;
-            }
-
-            if (isNewPeer || pkt.type === 'HELLO') onPeerJoinedOrHello(pkt, isNewPeer);
-            if (pkt.type === 'WELCOME_SYNC' || pkt.type === 'SYNC_STATE') applyIncomingState(pkt.payload);
-        }
-
-        function onPeerJoinedOrHello(pkt, isNewPeer) {
-            const remoteId = pkt.senderId;
-            let remoteName = pkt.senderName || '对方';
-            const remoteJoinedAt = pkt.joinedAt || Date.now();
-            const iAmEarlier = (myJoinedAt < remoteJoinedAt) || (myJoinedAt === remoteJoinedAt && myClientId < remoteId);
-
-            if (myName === remoteName) {
-                if (!iAmEarlier && !userManuallyPickedRole) {
-                    myName = remoteName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
-                    document.getElementById('roleDoudouBtn').classList.toggle('active', myName === '豆豆宝宝');
-                    document.getElementById('roleYayaBtn').classList.toggle('active', myName === '芽芽');
-                } else {
-                    remoteName = myName === '豆豆宝宝' ? '芽芽' : '豆豆宝宝';
-                }
-            }
-
-            if (iAmEarlier) {
-                myOnlineColor = 1;
-                blackPlayerInfo = { id: myClientId, name: myName };
-                whitePlayerInfo = { id: remoteId, name: remoteName };
-            } else {
-                myOnlineColor = 2;
-                blackPlayerInfo = { id: remoteId, name: remoteName };
-                whitePlayerInfo = { id: myClientId, name: myName };
-            }
-
-            if (isNewPeer) showRomanticToast(`🎉 ${remoteName} 已进房连线！开始甜蜜切磋吧`);
-            if (iAmEarlier || pkt.type === 'HELLO') {
-                stateVersion++;
-                sendRoomPacket('WELCOME_SYNC', buildStatePayload());
-            }
-            updateConnectionBadge();
-            refreshGomokuUI();
-            drawGomokuBoard();
-        }
-
-        function pruneOfflinePeers() {
-            const now = Date.now();
-            let changed = false;
-            for (const [pid, info] of remotePeers.entries()) {
-                if (now - info.lastSeen > 9000) {
-                    remotePeers.delete(pid);
-                    if (whitePlayerInfo && whitePlayerInfo.id === pid) whitePlayerInfo = null;
-                    changed = true;
-                }
-            }
-            if (changed) { updateConnectionBadge(); refreshGomokuUI(); drawGomokuBoard(); }
-        }
-
-        function updateConnectionBadge() {
-            const connTag = document.getElementById('connStatusTag');
-            const rosterEl = document.getElementById('roomRosterText');
-            const isBothOnline = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-
-            if (isBothOnline) {
-                connTag.innerText = `🟢 双方已实时连线 (#${currentRoomCode}房)`;
-                rosterEl.innerHTML = `🟢 <strong>2/2 双方已连线</strong> (${blackPlayerInfo.name} vs ${whitePlayerInfo.name})`;
-            } else {
-                connTag.innerText = `🟢 #${currentRoomCode || '5200'}房 (1/2人 · 等待进房)`;
-                rosterEl.innerHTML = `🟡 <strong>1/2 在线</strong>：等待对方进入房间...`;
-            }
-        }
-
-        function buildStatePayload() {
-            return {
-                stateVersion, blackPlayer: blackPlayerInfo, whitePlayer: whitePlayerInfo,
-                moves, turn: currentTurn, winner, winReason, winLine
-            };
-        }
-
-        function broadcastRoomState() {
-            if (gameMode !== 'online' || !currentRoomCode) return;
-            stateVersion++;
-            sendRoomPacket('SYNC_STATE', buildStatePayload());
-        }
-
-        function applyIncomingState(state) {
-            if (!state) return;
-            const prevMoveLen = moves.length;
-            const prevWinner = winner;
-
-            if (state.stateVersion && state.stateVersion > stateVersion) stateVersion = state.stateVersion;
-            if (state.blackPlayer) blackPlayerInfo = state.blackPlayer;
-            if (state.whitePlayer !== undefined) whitePlayerInfo = state.whitePlayer;
-
-            if (blackPlayerInfo && blackPlayerInfo.id === myClientId) myOnlineColor = 1;
-            else if (whitePlayerInfo && whitePlayerInfo.id === myClientId) myOnlineColor = 2;
-
-            moves = state.moves || [];
-            board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-            moves.forEach(m => { if (m.r >= 0 && m.r < BOARD_SIZE && m.c >= 0 && m.c < BOARD_SIZE) board[m.r][m.c] = m.p; });
-
-            currentTurn = state.turn || 1;
-            winner = state.winner || 0;
-            winReason = state.winReason || '';
-            winLine = state.winLine || [];
-
-            if (moves.length > prevMoveLen) playStoneTap(moves[moves.length - 1].p === 1);
-            if (winner !== 0 && prevWinner === 0) { playVictoryMelody(); showVictoryBanner(); }
-            else if (winner === 0) hideVictoryBanner();
-
-            updateConnectionBadge();
-            refreshGomokuUI();
-            drawGomokuBoard();
-        }
-
-        // ==========================================
-        // 下棋逻辑与 818 覆盖
-        // ==========================================
-        function resetBoardData() {
-            board = Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE).fill(0));
-            moves = [];
-            currentTurn = 1;
-            winner = 0;
-            winLine = [];
-            winReason = '';
-            aiThinking = false;
-            pendingIntersection = null;
-            remoteCursor = null;
-            updateConfirmButtonUI();
-            hideVictoryBanner();
-            updateConnectionBadge();
-            refreshGomokuUI();
-            drawGomokuBoard();
-        }
-
-        function checkFiveInARow(r, c, color) {
-            const dirs = [[0,1], [1,0], [1,1], [1,-1]];
-            for (const [dr, dc] of dirs) {
-                const line = [[r, c]];
-                let nr = r + dr, nc = c + dc;
-                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { line.push([nr, nc]); nr += dr; nc += dc; }
-                nr = r - dr; nc = c - dc;
-                while (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE && board[nr][nc] === color) { line.unshift([nr, nc]); nr -= dr; nc -= dc; }
-                if (line.length >= 5) return line;
-            }
-            return null;
-        }
-
-        function placeStoneAt(r, c) {
-            if (winner !== 0) { showRomanticToast('本局已结束，请点击「再来一局」🌸'); return; }
-
-            const currentOccupant = board[r][c];
-            if (currentOccupant !== 0) {
-                if (overrideCheatEnabled && currentOccupant !== currentTurn) {
-                    showRomanticToast('⚡ 触发818特权！强制覆盖并吃掉对方棋子！');
-                } else {
-                    showRomanticToast('这里已经有棋子啦～');
-                    return;
-                }
-            }
-
-            if (gameMode === 'online') {
-                const bothSeated = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-                if (bothSeated && currentTurn !== myOnlineColor) { showRomanticToast('⏳ 轮到对方落子哟～'); return; }
-            } else if (gameMode === 'ai' && (aiThinking || currentTurn !== 1)) return;
-
-            const stoneColor = currentTurn;
-            board[r][c] = stoneColor;
-            moves = moves.filter(m => !(m.r === r && m.c === c));
-            moves.push({ r, c, p: stoneColor });
-            playStoneTap(stoneColor === 1);
-
-            const winPts = checkFiveInARow(r, c, stoneColor);
-            if (winPts) {
-                winner = stoneColor;
-                winLine = winPts;
-                winReason = 'five';
-                playVictoryMelody();
-                showVictoryBanner();
-            } else if (moves.length >= BOARD_SIZE * BOARD_SIZE) {
-                winner = 3;
-                showVictoryBanner();
-            } else {
-                currentTurn = stoneColor === 1 ? 2 : 1;
-            }
-
-            refreshGomokuUI();
-            drawGomokuBoard();
-
-            if (gameMode === 'online') broadcastRoomState();
-            else if (gameMode === 'ai' && winner === 0 && currentTurn === 2) {
-                aiThinking = true;
-                refreshGomokuUI();
-                setTimeout(runYayaAiMove, 350);
-            }
-        }
-
-        window.handleSwapColors = function() {
-            if (gameMode !== 'online' || !blackPlayerInfo || !whitePlayerInfo) return;
-            const temp = blackPlayerInfo;
-            blackPlayerInfo = whitePlayerInfo;
-            whitePlayerInfo = temp;
-            myOnlineColor = myOnlineColor === 1 ? 2 : 1;
-            resetBoardData();
-            broadcastRoomState();
-            showRomanticToast(`🔃 已换棋！由 ${blackPlayerInfo.name} 执黑先行`);
-        };
-
-        function runYayaAiMove() {
-            if (winner !== 0 || gameMode !== 'ai') { aiThinking = false; return; }
-            const move = (aiLevel === 'hard') ? computeGrandmasterBestMove(2) : computeGrandmasterBestMove(2);
-            aiThinking = false;
-            placeStoneAt(move.r, move.c);
-        }
-
-        window.switchMode = function(mode) {
-            gameMode = mode;
-            document.getElementById('tabOnline').classList.toggle('active', mode === 'online');
-            document.getElementById('tabAi').classList.toggle('active', mode === 'ai');
-            document.getElementById('tabLocal').classList.toggle('active', mode === 'local');
-            document.getElementById('onlineRoomCard').style.display = mode === 'online' ? 'block' : 'none';
-            document.getElementById('aiSettingCard').style.display = mode === 'ai' ? 'block' : 'none';
-            resetBoardData();
-        };
-
-        window.setAiLevel = function(lvl) {
-            aiLevel = lvl;
-            document.getElementById('aiEasyBtn').classList.toggle('active', lvl === 'easy');
-            document.getElementById('aiMedBtn').classList.toggle('active', lvl === 'medium');
-            document.getElementById('aiHardBtn').classList.toggle('active', lvl === 'hard');
-            resetBoardData();
-            showRomanticToast('🤖 已切换 AI 难度');
-        };
-
-        window.handleRestartMatch = function() {
-            if (gameMode === 'online' && blackPlayerInfo && whitePlayerInfo) {
-                const temp = blackPlayerInfo;
-                blackPlayerInfo = whitePlayerInfo;
-                whitePlayerInfo = temp;
-                myOnlineColor = myOnlineColor === 1 ? 2 : 1;
-            }
-            resetBoardData();
-            if (gameMode === 'online') broadcastRoomState();
-            showRomanticToast('🔄 新对局开始！');
-        };
-
-        window.handleUndo = function() {
-            if (moves.length === 0 || winner !== 0) return;
-            const steps = (gameMode === 'ai' && moves.length >= 2) ? 2 : 1;
-            for (let i = 0; i < steps; i++) {
-                const p = moves.pop();
-                if (p) board[p.r][p.c] = 0;
-            }
-            currentTurn = moves.length % 2 === 0 ? 1 : 2;
-            refreshGomokuUI();
-            drawGomokuBoard();
-            if (gameMode === 'online') { broadcastRoomState(); sendCoupleChat('↩️ 耍赖悔一步棋嘛～'); }
-        };
-
-        window.handleResign = function() {
-            if (moves.length === 0 || winner !== 0) return;
-            winner = (gameMode === 'online' ? myOnlineColor : currentTurn) === 1 ? 2 : 1;
-            winReason = 'resign';
-            playVictoryMelody();
-            showVictoryBanner();
-            refreshGomokuUI();
-            drawGomokuBoard();
-            if (gameMode === 'online') broadcastRoomState();
-        };
-
-        // ==========================================
-        // 实时互动：抛掷道具与激光笔
-        // ==========================================
-        window.toggleLaserPenMode = function() {
-            isLaserMode = !isLaserMode;
-            const btn = document.getElementById('laserPenBtn');
-            btn.classList.toggle('active-mode', isLaserMode);
-            btn.innerText = isLaserMode ? '🖊️ 激光笔: 开' : '🖊️ 激光笔: 关';
-            showRomanticToast(isLaserMode ? '🖊️ 激光笔模式已开：按住棋盘拖动可画荧光轨迹' : '🖊️ 激光笔已关闭');
-        };
-
-        // 投掷道具
-        window.throwInteractiveItem = function(itemEmoji) {
-            playItemSfx(itemEmoji);
-            spawnFlyingItemAnimation(itemEmoji, true);
-            showRomanticToast(`向对方发射了 ${itemEmoji}`);
-            if (gameMode === 'online') {
-                sendRoomPacket('THROW_ITEM', { item: itemEmoji });
-            }
-        };
-
-        function receiveThrownItem(itemEmoji, fromName) {
-            playItemSfx(itemEmoji);
-            spawnFlyingItemAnimation(itemEmoji, false);
-            showRomanticToast(`收到来自 ${fromName} 的 ${itemEmoji}`);
-        }
-
-        // 飞行动画与粒子特效 (Canvas Fx)
-        const fxCanvas = document.getElementById('fxCanvas');
-        const fxCtx = fxCanvas.getContext('2d');
-        let activeFxObjects = [];
-
-        function resizeFxCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            fxCanvas.width = rect.width;
-            fxCanvas.height = rect.height;
-        }
-
-        function spawnFlyingItemAnimation(emoji, isMine) {
-            const w = fxCanvas.width, h = fxCanvas.height;
-            const startX = isMine ? w * 0.15 : w * 0.85;
-            const startY = h * 0.85;
-            const targetX = isMine ? w * 0.85 : w * 0.15;
-            const targetY = h * 0.25;
-
-            activeFxObjects.push({
-                type: 'missile',
-                emoji,
-                startX, startY, targetX, targetY,
-                progress: 0,
-                speed: 0.028
-            });
-        }
-
-        function spawnItemExplosionParticles(x, y, emoji) {
-            for (let i = 0; i < 18; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const spd = 2 + Math.random() * 4;
-                activeFxObjects.push({
-                    type: 'particle',
-                    emoji,
-                    x, y,
-                    vx: Math.cos(angle) * spd,
-                    vy: Math.sin(angle) * spd,
-                    alpha: 1,
-                    size: 16 + Math.random() * 10
-                });
-            }
-        }
-
-        function renderFxFrame() {
-            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
-            const now = Date.now();
-
-            // 1. 渲染激光笔衰减轨迹
-            laserTracks = laserTracks.filter(pt => now - pt.time < 2200);
-            if (laserTracks.length > 1) {
-                fxCtx.save();
-                fxCtx.lineCap = 'round';
-                fxCtx.lineJoin = 'round';
-                for (let i = 1; i < laserTracks.length; i++) {
-                    const p1 = laserTracks[i - 1];
-                    const p2 = laserTracks[i];
-                    const age = now - p2.time;
-                    const opacity = Math.max(0, 1 - age / 2200);
-                    fxCtx.beginPath();
-                    fxCtx.moveTo(p1.x, p1.y);
-                    fxCtx.lineTo(p2.x, p2.y);
-                    fxCtx.strokeStyle = `rgba(255, 75, 140, ${opacity * 0.85})`;
-                    fxCtx.lineWidth = 5 * opacity;
-                    fxCtx.shadowColor = '#ff2a75';
-                    fxCtx.shadowBlur = 10;
-                    fxCtx.stroke();
-                }
-                fxCtx.restore();
-            }
-
-            // 2. 渲染投掷道具弹道与爆炸
-            for (let i = activeFxObjects.length - 1; i >= 0; i--) {
-                const obj = activeFxObjects[i];
-                if (obj.type === 'missile') {
-                    obj.progress += obj.speed;
-                    const curX = obj.startX + (obj.targetX - obj.startX) * obj.progress;
-                    const arcH = Math.sin(obj.progress * Math.PI) * 120;
-                    const curY = obj.startY + (obj.targetY - obj.startY) * obj.progress - arcH;
-
-                    fxCtx.font = '32px sans-serif';
-                    fxCtx.textAlign = 'center';
-                    fxCtx.textBaseline = 'middle';
-                    fxCtx.fillText(obj.emoji, curX, curY);
-
-                    if (obj.progress >= 1) {
-                        spawnItemExplosionParticles(obj.targetX, obj.targetY, obj.emoji);
-                        activeFxObjects.splice(i, 1);
-                    }
-                } else if (obj.type === 'particle') {
-                    obj.x += obj.vx;
-                    obj.y += obj.vy;
-                    obj.vy += 0.12; // 重力
-                    obj.alpha -= 0.024;
-
-                    fxCtx.save();
-                    fxCtx.globalAlpha = Math.max(0, obj.alpha);
-                    fxCtx.font = `${obj.size}px sans-serif`;
-                    fxCtx.textAlign = 'center';
-                    fxCtx.fillText(obj.emoji, obj.x, obj.y);
-                    fxCtx.restore();
-
-                    if (obj.alpha <= 0) activeFxObjects.splice(i, 1);
-                }
-            }
-
-            requestAnimationFrame(renderFxFrame);
-        }
-        requestAnimationFrame(renderFxFrame);
-
-        // ==========================================
-        // 聊天与气泡
-        // ==========================================
-        function appendChatHistoryItem(color, text, options = {}) {
-            const box = document.getElementById('chatHistoryBox');
-            if (!box) return;
-            const emptyHint = document.getElementById('chatEmptyHint');
-            if (emptyHint) emptyHint.style.display = 'none';
-
-            let senderName = options.senderName || (gameMode === 'online' ? (color === 1 ? blackPlayerInfo?.name : whitePlayerInfo?.name) : myName);
-            const isMine = options.isMine !== undefined ? options.isMine : (gameMode === 'online' ? color === myOnlineColor : true);
-            const now = new Date();
-            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-            const item = document.createElement('div');
-            item.className = `chat-log-item ${isMine ? 'mine' : 'other'}`;
-            item.innerHTML = `
-                <div class="chat-log-meta">${color === 1 ? '⚫' : '⚪'} ${senderName} · ${timeStr}</div>
-                <div class="chat-log-bubble">${text}</div>
-            `;
-            box.appendChild(item);
-            box.scrollTop = box.scrollHeight;
-        }
-
-        window.clearChatHistoryBox = function() {
-            const box = document.getElementById('chatHistoryBox');
-            box.innerHTML = '<div class="chat-empty-hint" id="chatEmptyHint">💌 互动悄悄话会在这里显示～</div>';
-        };
-
-        window.sendCoupleChat = function(text) {
-            const clean = String(text || '').trim();
-            if (!clean) return;
-
-            if (triggerSecretWord(clean)) return;
-
-            const myCardColor = gameMode === 'online' ? myOnlineColor : (gameMode === 'local' ? currentTurn : 1);
-            showChatBubbleOnCard(myCardColor, clean, { senderName: myName, isMine: true });
-
-            if (gameMode === 'online') sendRoomPacket('CHAT_MSG', { color: myCardColor, text: clean });
-            else if (gameMode === 'ai') {
-                setTimeout(() => {
-                    const replies = ['😘 下得真棒！', '🌸 永远让着豆豆～', '✨ 这一步好神！'];
-                    showChatBubbleOnCard(2, replies[Math.floor(Math.random() * replies.length)], { senderName: '芽芽 AI', isMine: false });
-                }, 650);
-            }
-        };
-
-        window.sendCustomChatInput = function() {
-            const inp = document.getElementById('chatTextInput');
-            const val = inp.value.trim();
-            if (!val) return;
-            inp.value = '';
-            sendCoupleChat(val);
-        };
-
-        function showChatBubbleOnCard(color, text, logOptions = {}) {
-            const el = document.getElementById(color === 1 ? 'blackBubble' : 'whiteBubble');
-            if (el) {
-                el.innerText = text;
-                el.classList.remove('show');
-                void el.offsetWidth;
-                el.classList.add('show');
-            }
-            appendChatHistoryItem(color, text, logOptions);
-        }
-
-       function refreshGomokuUI() {
-    const blackNameEl = document.getElementById('blackNameLabel');
-    const whiteNameEl = document.getElementById('whiteNameLabel');
-    const bannerEl = document.getElementById('statusBannerText');
-    const blackSubEl = document.getElementById('blackStatusLabel');
-    const whiteSubEl = document.getElementById('whiteStatusLabel');
-    const blackDot = document.getElementById('blackPresenceDot');
-    const whiteDot = document.getElementById('whitePresenceDot');
-
-    document.getElementById('moveCountText').innerText = moves.length;
-
-    if (gameMode === 'online') {
-        const bothOnline = blackPlayerInfo && whitePlayerInfo && remotePeers.size > 0;
-        blackNameEl.innerText = `${blackPlayerInfo?.name || '等待入座'} (黑棋)`;
-        whiteNameEl.innerText = `${whitePlayerInfo?.name || '等待加入'} (白棋)`;
-        document.getElementById('blackMeTag').style.display = (blackPlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
-        document.getElementById('whiteMeTag').style.display = (whitePlayerInfo?.id === myClientId) ? 'inline-block' : 'none';
-
-        // 更新在线状态小圆点
-        if (blackDot) blackDot.classList.toggle('online', !!blackPlayerInfo);
-        if (whiteDot) whiteDot.classList.toggle('online', bothOnline);
-
-        // 更新头像下方副标题文本（消除“等待对方进房...”）
-        if (blackSubEl) {
-            blackSubEl.innerText = (currentTurn === 1 && winner === 0) ? '🟢 在线 · ⚡ 正在思考落子' : '🟢 在线 · 先手执黑';
-        }
-        if (whiteSubEl) {
-            whiteSubEl.innerText = !bothOnline 
-                ? '🟡 等待对方进房...' 
-                : ((currentTurn === 2 && winner === 0) ? '🟢 在线 · ⚡ 正在思考落子' : '🟢 在线 · 后手执白');
-        }
-
-        if (winner !== 0) bannerEl.innerText = `🏆 比赛结束！获胜方：${winner === 1 ? blackPlayerInfo?.name : whitePlayerInfo?.name}`;
-        else if (!bothOnline) bannerEl.innerText = `💖 房间 #${currentRoomCode}：等待对方加入相同房号...`;
-        else bannerEl.innerText = currentTurn === myOnlineColor ? '👉 轮到你下棋啦！' : `⏳ 对方 (${getOpponentDisplayName()}) 正在深思熟虑...`;
-    } else if (gameMode === 'ai') {
-        blackNameEl.innerText = `${myName} (黑棋)`;
-        whiteNameEl.innerText = `芽芽 AI (白棋)`;
-        if (blackDot) blackDot.classList.add('online');
-        if (whiteDot) whiteDot.classList.add('online');
-        if (blackSubEl) blackSubEl.innerText = currentTurn === 1 && winner === 0 ? '⚡ 正在思考落子' : '先手执黑';
-        if (whiteSubEl) whiteSubEl.innerText = currentTurn === 2 && winner === 0 ? '⚡ 正在思考落子' : '后手执白';
-
-        bannerEl.innerText = winner !== 0 ? (winner === 1 ? '🎉 恭喜豆豆获胜！' : '🤖 芽芽 AI 赢啦') : (aiThinking ? '🤖 思考中...' : '👉 轮到你落子');
-    }
-
-    document.getElementById('blackCard').classList.toggle('active-turn', winner === 0 && currentTurn === 1);
-    document.getElementById('whiteCard').classList.toggle('active-turn', winner === 0 && currentTurn === 2);
-
-    updateDynamicPhrasesUI();
-    updateWinRateDisplay();
-    updateMasterCheatRecommendation();
-}
-
-        function showVictoryBanner() {
-            const banner = document.getElementById('victoryBanner');
-            const title = document.getElementById('victoryTitle');
-            const bName = document.getElementById('blackNameLabel').innerText;
-            const wName = document.getElementById('whiteNameLabel').innerText;
-            title.innerText = winner === 3 ? '🤝 棋逢对手，本局平局！' : `🎉 ${winner === 1 ? bName : wName} 获胜啦！`;
-            banner.style.display = 'flex';
-        }
-
-        window.hideVictoryBanner = () => document.getElementById('victoryBanner').style.display = 'none';
-
-        // ==========================================
-        // 棋盘渲染与视线光标 (Canvas)
-        // ==========================================
-        const canvas = document.getElementById('gomokuCanvas');
-        const ctx = canvas.getContext('2d');
-        let metrics = { size: 420, pad: 28, cell: 26 };
-
-        function resizeBoardCanvas() {
-            const box = canvas.parentElement.getBoundingClientRect();
-            if (box.width < 50) return;
-            const dpr = window.devicePixelRatio || 1;
-            const cssSize = Math.floor(Math.min(box.width, box.height) - 10);
-
-            canvas.style.width = cssSize + 'px';
-            canvas.style.height = cssSize + 'px';
-            canvas.width = Math.floor(cssSize * dpr);
-            canvas.height = Math.floor(cssSize * dpr);
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-            const pad = Math.max(22, Math.floor(cssSize * 0.068));
-            const cell = (cssSize - pad * 2) / (BOARD_SIZE - 1);
-            metrics = { size: cssSize, pad, cell };
-            drawGomokuBoard();
-        }
-        window.addEventListener('resize', () => { resizeBoardCanvas(); resizeFxCanvas(); });
-
-        function drawGomokuBoard() {
-            const { size, pad, cell } = metrics;
-            ctx.clearRect(0, 0, size, size);
-
-            ctx.strokeStyle = isLightsOff ? 'rgba(38, 22, 8, 0.75)' : 'rgba(72, 40, 14, 0.78)';
-            ctx.lineWidth = 1.1;
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                const p = pad + i * cell;
-                ctx.beginPath(); ctx.moveTo(pad, p); ctx.lineTo(size - pad, p); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(p, pad); ctx.lineTo(p, size - pad); ctx.stroke();
-            }
-
-            ctx.fillStyle = isLightsOff ? 'rgba(38, 22, 8, 0.82)' : 'rgba(72, 40, 14, 0.8)';
-            ctx.font = `600 ${Math.max(9, Math.floor(cell * 0.34))}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                const pos = pad + i * cell;
-                ctx.fillText(COL_LETTERS[i], pos, pad * 0.42);
-                ctx.fillText(String(BOARD_SIZE - i), pad * 0.42, pos);
-            }
-
-            for (const [sr, sc] of STAR_COORDS) {
-                ctx.beginPath();
-                ctx.arc(pad + sc * cell, pad + sr * cell, Math.max(3, cell * 0.12), 0, Math.PI * 2);
-                ctx.fillStyle = isLightsOff ? '#2b1808' : '#48280e';
-                ctx.fill();
-            }
-
-            // 💡 1114 大师落点提示
-            if (masterCheatEnabled && masterRecommendedMove && winner === 0) {
-                const { r: mr, c: mc } = masterRecommendedMove;
-                if (board[mr][mc] === 0) {
-                    const mx = pad + mc * cell;
-                    const my = pad + mr * cell;
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(mx, my, cell * 0.44, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 105, 180, 0.28)';
-                    ctx.fill();
-                    ctx.setLineDash([4, 3]);
-                    ctx.strokeStyle = '#ff3366';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                    ctx.restore();
-                }
-            }
-
-            // 👁️ 对方视线盯梢同步 (粉色猫爪准星 + 浮动提示)
-            if (remoteCursor && winner === 0) {
-                const rx = pad + remoteCursor.c * cell;
-                const ry = pad + remoteCursor.r * cell;
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(rx, ry, cell * 0.48, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(255, 64, 129, 0.75)';
-                ctx.lineWidth = 2.4;
-                ctx.stroke();
-
-                // 视线标签
-                ctx.font = '10.5px sans-serif';
-                ctx.fillStyle = '#ff2a75';
-                ctx.fillText(`👀 ${remoteCursor.name}正在看`, rx, ry - cell * 0.6);
-                ctx.restore();
-            }
-
-            // 本地落子预览准星
-            const aim = pendingIntersection || hoverIntersection;
-            if (aim && winner === 0 && (board[aim.r][aim.c] === 0 || (overrideCheatEnabled && board[aim.r][aim.c] !== currentTurn))) {
-                const ax = pad + aim.c * cell;
-                const ay = pad + aim.r * cell;
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(ax, ay, cell * 0.44, 0, Math.PI * 2);
-                ctx.fillStyle = currentTurn === 1 ? 'rgba(20,20,20,0.35)' : 'rgba(255,255,255,0.55)';
-                ctx.fill();
-                if (pendingIntersection) {
-                    ctx.strokeStyle = '#ff4d79';
-                    ctx.lineWidth = 2.2;
-                    ctx.stroke();
-                }
-                ctx.restore();
-            }
-
-            // 绘制棋子
-            const rStone = cell * 0.45;
-            for (let r = 0; r < BOARD_SIZE; r++) {
-                for (let c = 0; c < BOARD_SIZE; c++) {
-                    const v = board[r][c];
-                    if (v === 0) continue;
-                    const cx = pad + c * cell;
-                    const cy = pad + r * cell;
-
-                    ctx.save();
-                    ctx.shadowColor = 'rgba(0, 0, 0, 0.38)';
-                    ctx.shadowBlur = rStone * 0.4;
-                    ctx.shadowOffsetX = rStone * 0.1;
-                    ctx.shadowOffsetY = rStone * 0.15;
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, rStone, 0, Math.PI * 2);
-
-                    if (v === 1) {
-                        const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
-                        g.addColorStop(0, '#666'); g.addColorStop(0.3, '#262626'); g.addColorStop(1, '#080808');
-                        ctx.fillStyle = g;
-                    } else {
-                        const g = ctx.createRadialGradient(cx - rStone * 0.3, cy - rStone * 0.3, rStone * 0.08, cx, cy, rStone);
-                        g.addColorStop(0, '#ffffff'); g.addColorStop(0.7, '#f2efec'); g.addColorStop(1, '#cdc6be');
-                        ctx.fillStyle = g;
-                    }
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-
-            // 最新一手标记
-            if (moves.length > 0) {
-                const last = moves[moves.length - 1];
-                ctx.beginPath();
-                ctx.arc(pad + last.c * cell, pad + last.r * cell, Math.max(3.5, cell * 0.15), 0, Math.PI * 2);
-                ctx.fillStyle = '#ff3b6b';
-                ctx.fill();
-            }
-
-            // 胜利连线
-            if (winLine && winLine.length >= 5) {
-                const p1 = winLine[0];
-                const p2 = winLine[winLine.length - 1];
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(pad + p1[1] * cell, pad + p1[0] * cell);
-                ctx.lineTo(pad + p2[1] * cell, pad + p2[0] * cell);
-                ctx.strokeStyle = 'rgba(255, 77, 121, 0.88)';
-                ctx.lineWidth = Math.max(4, cell * 0.16);
-                ctx.lineCap = 'round';
-                ctx.stroke();
-                ctx.restore();
-            }
-        }
-
-        function getGridPointFromEvent(clientX, clientY) {
-            const rect = canvas.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-            const { pad, cell } = metrics;
-            const c = Math.round((x - pad) / cell);
-            const r = Math.round((y - pad) / cell);
-            if (r < 0 || r >= BOARD_SIZE || c < 0 || c >= BOARD_SIZE) return null;
-            return { r, c };
-        }
-
-        window.toggleAimMode = function() {
-            aimSetting = aimSetting === 'auto' ? 'on' : aimSetting === 'on' ? 'off' : 'auto';
-            document.getElementById('aimModeBtn').innerText = `🎯 ${aimSetting === 'auto' ? '自动' : aimSetting === 'on' ? '开启' : '关闭'}`;
-            pendingIntersection = null;
-            updateConfirmButtonUI();
-            drawGomokuBoard();
-        };
-
-        function updateConfirmButtonUI() {
-            const btn = document.getElementById('confirmMoveBtn');
-            const span = document.getElementById('confirmCoordText');
-            if (pendingIntersection && winner === 0) {
-                span.innerText = `${COL_LETTERS[pendingIntersection.c]}${BOARD_SIZE - pendingIntersection.r}`;
-                btn.style.display = 'block';
-            } else {
-                btn.style.display = 'none';
-            }
-        }
-
-        window.confirmPendingStone = function() {
-            if (!pendingIntersection) return;
-            const { r, c } = pendingIntersection;
-            pendingIntersection = null;
-            updateConfirmButtonUI();
-            placeStoneAt(r, c);
-        };
-
-        // 视线广播节流
-        function broadcastLocalCursorFocus(pt) {
-            if (gameMode !== 'online' || !currentRoomCode) return;
-            const now = Date.now();
-            if (now - lastCursorSendTime > 120) {
-                lastCursorSendTime = now;
-                sendRoomPacket('CURSOR_FOCUS', pt ? { r: pt.r, c: pt.c } : null);
-            }
-        }
-
-        // 激光笔绘制记录
-        let isPointerDown = false;
-        canvas.parentElement.addEventListener('pointerdown', (e) => {
-            isPointerDown = true;
-            if (isLaserMode) {
-                const rect = fxCanvas.getBoundingClientRect();
-                const p = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-                laserTracks.push({ x: p.x, y: p.y, time: Date.now(), color: '#ff69b4' });
-                localLaserPoints = [p];
-            }
-        });
-
-        window.addEventListener('pointerup', () => {
-            isPointerDown = false;
-            if (isLaserMode && localLaserPoints.length > 0 && gameMode === 'online') {
-                sendRoomPacket('LASER_DRAW', { points: localLaserPoints });
-                localLaserPoints = [];
-            }
-        });
-
-        canvas.addEventListener('pointermove', (e) => {
-            if (isLaserMode && isPointerDown) {
-                const rect = fxCanvas.getBoundingClientRect();
-                const p = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-                laserTracks.push({ x: p.x, y: p.y, time: Date.now(), color: '#ff69b4' });
-                localLaserPoints.push(p);
-                if (localLaserPoints.length > 12 && gameMode === 'online') {
-                    sendRoomPacket('LASER_DRAW', { points: localLaserPoints });
-                    localLaserPoints = [];
-                }
-                return;
-            }
-
-            const pt = getGridPointFromEvent(e.clientX, e.clientY);
-            if (pt?.r !== hoverIntersection?.r || pt?.c !== hoverIntersection?.c) {
-                hoverIntersection = pt;
-                drawGomokuBoard();
-                broadcastLocalCursorFocus(pt);
-            }
-        });
-
-        canvas.addEventListener('mouseleave', () => {
-            hoverIntersection = null;
-            drawGomokuBoard();
-            broadcastLocalCursorFocus(null);
-        });
-
-        canvas.addEventListener('click', (e) => {
-            if (isLaserMode) return;
-            const pt = getGridPointFromEvent(e.clientX, e.clientY);
-            if (!pt) return;
-
-            if (board[pt.r][pt.c] !== 0 && (!overrideCheatEnabled || board[pt.r][pt.c] === currentTurn)) {
-                showRomanticToast('这里已经有棋子啦～');
-                return;
-            }
-
-            if (aimSetting === 'on' || (aimSetting === 'auto' && window.innerWidth < 640)) {
-                if (pendingIntersection && pendingIntersection.r === pt.r && pendingIntersection.c === pt.c) {
-                    confirmPendingStone();
-                } else {
-                    pendingIntersection = pt;
-                    updateConfirmButtonUI();
-                    drawGomokuBoard();
-                }
-            } else {
-                placeStoneAt(pt.r, pt.c);
-            }
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            applyLightsOffUI();
-            updateDynamicPhrasesUI();
-            updateWinRateDisplay();
-            const params = new URLSearchParams(window.location.search);
-            const roomParam = params.get('room');
-            if (roomParam) {
-                selectIdentity('芽芽', true);
-                openGomokuRoom(roomParam);
-            }
-        });
+        window.addEventListener('DOMContentLoaded', applyLightsOffUI);
     </script>
 </body>
 </html>
