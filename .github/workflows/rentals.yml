@@ -1,0 +1,64 @@
+name: Update rentals and deploy Pages
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rental-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      pages: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests
+      - name: Collect public listings
+        run: python scripts/collect.py --pages 3
+      - name: Save data for the next run
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/listings.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update rental data'
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - name: Prepare site with existing home page and assets
+        run: |
+          mkdir -p _site
+          rsync -a --exclude='.git/' --exclude='.github/' --exclude='_site/' --exclude='scripts/' --exclude='tests/' --exclude='__pycache__/' --exclude='requirements.txt' --exclude='DEPLOY.md' ./ _site/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
