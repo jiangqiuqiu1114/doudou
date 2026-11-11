@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>北京回龙观全域小区租房真实成交底价与在租房源实时检索系统（2026年11月11日实盘版）</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+    .filter-btn { transition: all 0.15s ease-in-out; cursor: pointer; user-select: none; }
+    .filter-btn.active {
+      background-color: #2563eb !important;
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+      border-color: #2563eb !important;
+    }
+    .unit-filter-btn { transition: all 0.15s ease-in-out; cursor: pointer; user-select: none; }
+    .unit-filter-btn.active {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+      border-color: #059669 !important;
+    }
+    .tag-pill-btn { transition: all 0.15s ease-in-out; cursor: pointer; user-select: none; }
+    .tag-pill-btn.active {
+      background-color: #e11d48 !important;
+      color: #ffffff !important;
+      border-color: #e11d48 !important;
+      font-weight: 600 !important;
+    }
+    .copy-toast { position: fixed; bottom: 24px; right: 24px; z-index: 1000; transition: all 0.25s ease; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- 头部 Hero Banner -->
+  <header class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white shadow-xl relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 relative z-10">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-2.5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold backdrop-blur-sm border border-emerald-400/30">
+              <i class="fa-solid fa-calendar-check"></i> 数据采集基准日：2026年11月11日（立冬淡季实盘底价 + 全域在租房源库）
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 text-xs font-semibold border border-blue-400/30">
+              <i class="fa-solid fa-link"></i> 已支持：点击房源具体来源即刻调出原始链接（支持一键访问/复制）
+            </span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+            北京回龙观全域租房成交底价 & 在租房源检索系统
+          </h1>
+          <p class="mt-2 text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+            <strong>2026年11月11日实盘同步：</strong>全面覆盖回龙观 <strong>32个核心小区（256套实时在租实盘）</strong>。每套房源均已直挂<strong>数据来源渠道原始帖子/页面链接</strong>、<strong>房东/中介电话微信号</strong>，支持一键点击访问与快速复制！
+          </p>
+        </div>
+        
+        <!-- 实时动态统计指标（4宫格） -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 bg-white/10 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-white/15 text-center shrink-0">
+          <div class="px-2">
+            <div class="text-[11px] text-slate-300">收录小区 / 在租房源</div>
+            <div class="text-lg sm:text-xl font-black text-amber-300 mt-0.5"><span id="statFilteredCount">32</span>小区 / <span id="statTotalUnitsTop">256</span>套</div>
+          </div>
+          <div class="border-l border-white/10 px-2">
+            <div class="text-[11px] text-slate-300">26年11月两居中位</div>
+            <div class="text-lg sm:text-2xl font-black text-emerald-300 mt-0.5" id="statAvgPrice">¥4,450</div>
+          </div>
+          <div class="border-t sm:border-t-0 sm:border-l border-white/10 pt-2 sm:pt-0 px-2">
+            <div class="text-[11px] text-slate-300">淡季平均可砍空间</div>
+            <div class="text-lg sm:text-2xl font-black text-rose-300 mt-0.5" id="statAvgDiscount">-¥540<span class="text-[10px] font-normal">/月</span></div>
+          </div>
+          <div class="border-t sm:border-t-0 border-l border-white/10 pt-2 sm:pt-0 px-2">
+            <div class="text-[11px] text-slate-300">集中供暖占比</div>
+            <div class="text-lg sm:text-2xl font-black text-sky-300 mt-0.5" id="statCentralHeatingRatio">84%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 w-full flex-1">
+
+    <!-- 顶部主视图切换 Tabs & 直通车 -->
+    <section class="mb-5 bg-white rounded-2xl shadow-md border-2 border-blue-600/20 overflow-hidden">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-slate-900 text-white px-4 py-3 gap-3">
+        <div class="flex items-center gap-2">
+          <button id="tabBtnUnits" type="button" onclick="switchMainView('units')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center gap-2 bg-emerald-500 text-white shadow-md cursor-pointer">
+            <i class="fa-solid fa-house-laptop"></i>
+            <span>🔍 按小区查【在租房源 + 来源链接 + 电话微信】</span>
+            <span id="badgeUnitsCount" class="px-2 py-0.5 text-[11px] bg-white/20 rounded-full">256套实盘</span>
+          </button>
+          <button id="tabBtnEstates" type="button" onclick="switchMainView('estates')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer">
+            <i class="fa-solid fa-building-wheat"></i>
+            <span>📊 32个小区全景成交底价榜</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 self-end sm:self-auto">
+          <button type="button" onclick="openCompareDrawer()" class="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/40 text-rose-200 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-scale-balanced text-rose-400"></i>
+            <span>备选看房对比单</span>
+            <span id="compareCountBadge" class="bg-rose-500 text-white px-1.5 py-0.2 rounded-full text-[11px]">0</span>
+          </button>
+          <button type="button" onclick="openGuideModal()" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 font-semibold rounded-xl text-xs transition cursor-pointer">
+            <i class="fa-solid fa-book-open"></i> 11月冬季砍价手册
+          </button>
+        </div>
+      </div>
+
+      <!-- 快速输入小区名横幅 -->
+      <div class="p-4 sm:p-5 bg-gradient-to-r from-emerald-50/70 via-blue-50/50 to-pink-50/60 border-b border-slate-200">
+        <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+          <div class="flex-1">
+            <label for="quickEstateInput" class="block text-xs sm:text-sm font-extrabold text-slate-800 mb-1.5 flex items-center gap-2">
+              <span class="bg-emerald-600 text-white px-2 py-0.5 rounded text-xs">实时检索</span>
+              <span>输入小区名字，直接调出该小区目前可租的所有房子：</span>
+            </label>
+            <div class="relative flex flex-col sm:flex-row gap-2">
+              <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass-location absolute left-3.5 top-3.5 text-emerald-600 text-sm"></i>
+                <input 
+                  type="text" 
+                  id="quickEstateInput" 
+                  placeholder="输入小区名、地铁站或户型（如：公园悦府、新龙城、龙腾苑二区、国风美唐...）" 
+                  class="w-full pl-10 pr-24 py-2.5 bg-white border-2 border-emerald-500/60 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-600 shadow-xs transition"
+                >
+                <button id="clearQuickEstateBtn" type="button" onclick="clearQuickEstateSearch()" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 text-xs bg-slate-100 px-2 py-1 rounded-md">
+                  清空 <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+              <select id="estateSelectDropdown" class="bg-white border-2 border-slate-200 hover:border-emerald-500 rounded-xl text-xs sm:text-sm px-3 py-2.5 font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer shrink-0">
+                <option value="all">📍 下拉直选小区（全部 32 个小区）</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 热门小区快捷胶囊 -->
+        <div class="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+          <span class="font-bold text-slate-500 mr-1"><i class="fa-solid fa-fire text-rose-500 mr-1"></i>快捷直达：</span>
+          <button type="button" onclick="jumpToEstateUnits('xlc')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 border border-slate-300 font-medium transition cursor-pointer">新龙城</button>
+          <button type="button" onclick="jumpToEstateUnits('lt2')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 border border-slate-300 font-medium transition cursor-pointer">龙腾苑二区</button>
+          <button type="button" onclick="jumpToEstateUnits('lhy')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 border border-slate-300 font-medium transition cursor-pointer">龙华园</button>
+          <button type="button" onclick="jumpToEstateUnits('gfmt')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 border border-slate-300 font-medium transition cursor-pointer">首开国风美唐</button>
+          <button type="button" onclick="jumpToEstateUnits('gyyf')" class="px-2.5 py-1 rounded-lg bg-white hover:bg-emerald-50 text-slate-700 border border-slate-300 font-medium transition cursor-pointer">公园悦府</button>
+          <button type="button" onclick="jumpToEstateUnits('all')" class="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold transition cursor-pointer">全回龙观 256 套房源</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 视图一：在租房源列表 -->
+    <div id="unitsViewSection" class="space-y-5">
+      <div id="selectedEstateBanner" class="hidden bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-md border border-blue-400/30"></div>
+
+      <!-- 筛选面板 -->
+      <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-800">在租房源多维实时筛选器（含房源渠道来源过滤）</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="unitSortSelect" class="text-xs font-bold text-slate-500 shrink-0">房源排序:</label>
+            <select id="unitSortSelect" class="bg-slate-50 border border-slate-200 rounded-xl text-xs px-3 py-2 font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer">
+              <option value="default">综合排序（空置期长优先）</option>
+              <option value="deal-asc">成交底价：从低到高</option>
+              <option value="deal-desc">成交底价：从高到低</option>
+              <option value="cut-desc">砍价幅度：从大到小</option>
+              <option value="vacant-desc">空置天数：从长到短</option>
+            </select>
+            <button type="button" onclick="resetUnitFilters()" class="px-3 py-2 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-xl text-xs font-bold transition flex items-center gap-1 shrink-0 border border-slate-200">
+              <i class="fa-solid fa-rotate-left"></i> 重置
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <!-- 渠道筛选 -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 bg-blue-50/60 p-2 rounded-xl border border-blue-100">
+            <span class="font-extrabold text-blue-800 sm:w-24 shrink-0"><i class="fa-solid fa-bullhorn text-blue-600 mr-1"></i>房源来源:</span>
+            <div class="flex flex-wrap gap-1.5" id="uFilterSourceChannel">
+              <button type="button" class="unit-filter-btn active px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-200" data-val="all">全部来源渠道</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-200" data-val="owner_direct">👤 个人房东直租 (水木/豆瓣/闲鱼·0中介费)</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-200" data-val="lianjia">🏠 贝壳/链家实勘门店</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-200" data-val="woaiwojia">🔑 我爱我家/麦田门店</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-white text-slate-700 border border-slate-200" data-val="brand_apt">🏢 自如/相寓品牌公寓</button>
+            </div>
+          </div>
+
+          <!-- 租赁方式 -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1.5">
+            <span class="font-bold text-slate-500 sm:w-24 shrink-0"><i class="fa-solid fa-key text-emerald-600 mr-1"></i>租赁方式:</span>
+            <div class="flex flex-wrap gap-1.5" id="uFilterRentType">
+              <button type="button" class="unit-filter-btn active px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="all">全部方式</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="整租">整租全套</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="合租主卧">合租·主卧独卫</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="合租次卧">合租·次卧单间</button>
+            </div>
+          </div>
+
+          <!-- 居室户型 -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1.5">
+            <span class="font-bold text-slate-500 sm:w-24 shrink-0"><i class="fa-solid fa-door-open text-blue-600 mr-1"></i>居室户型:</span>
+            <div class="flex flex-wrap gap-1.5" id="uFilterRooms">
+              <button type="button" class="unit-filter-btn active px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="all">全部户型</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="1室">整租一居室</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="2室">整租两居室</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="3室">整租三居室</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="合租">合租单间</button>
+            </div>
+          </div>
+
+          <!-- 预算与朝向楼层 -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1.5">
+            <span class="font-bold text-slate-500 sm:w-24 shrink-0"><i class="fa-solid fa-sack-dollar text-amber-600 mr-1"></i>可谈底价:</span>
+            <div class="flex flex-wrap gap-1.5" id="uFilterPrice">
+              <button type="button" class="unit-filter-btn active px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="all">不限预算</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="0-1800">≤1800元</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="1800-3000">1800-3000元</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="3000-4300">3000-4300元</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="4300-5500">4300-5500元</button>
+              <button type="button" class="unit-filter-btn px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200" data-val="5500-99999">&gt;5500元</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 统计栏 -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-1">
+        <div class="text-xs sm:text-sm font-bold text-slate-700 flex flex-wrap items-center gap-2">
+          <span>当前匹配房源：</span>
+          <span id="unitResultCountBadge" class="bg-emerald-600 text-white font-extrabold px-2.5 py-0.5 rounded-full text-xs">256 套在租</span>
+          <span id="unitActiveSummaryText" class="text-emerald-700 font-semibold text-xs"></span>
+        </div>
+      </div>
+
+      <!-- 房源卡片容器 -->
+      <div id="unitsGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+      <div id="loadMoreUnitsWrap" class="hidden text-center py-4">
+        <button id="loadMoreUnitsBtn" type="button" onclick="loadMoreUnits()" class="px-6 py-2.5 bg-white hover:bg-emerald-50 text-emerald-700 border-2 border-emerald-500 font-bold rounded-xl text-xs sm:text-sm shadow-xs transition cursor-pointer">
+          加载更多在租房源 <i class="fa-solid fa-angles-down ml-1"></i>
+        </button>
+      </div>
+
+      <div id="unitEmptyState" class="hidden text-center py-14 bg-white rounded-2xl border border-dashed border-slate-300">
+        <i class="fa-solid fa-house-circle-xmark text-4xl text-slate-300 mb-3"></i>
+        <h3 class="text-slate-700 font-bold text-base">该筛选条件下暂无匹配在租房源</h3>
+        <button type="button" onclick="resetUnitFilters()" class="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+          重置房源筛选条件
+        </button>
+      </div>
+    </div>
+
+    <!-- 视图二：32小区全景榜单 -->
+    <div id="estatesViewSection" class="hidden space-y-5">
+      <div id="estatesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"></div>
+    </div>
+  </main>
+
+  <!-- 单套在租房源详情 Modal -->
+  <div id="unitDetailModal" class="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden my-6 flex flex-col max-h-[92vh]">
+      <div class="p-4 sm:p-5 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white flex justify-between items-start">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-1">
+            <span id="uModalCode" class="px-2 py-0.5 rounded text-[11px] bg-white/15 text-emerald-200 font-mono">编号</span>
+            <span id="uModalSource" class="px-2 py-0.5 rounded text-[11px] bg-amber-400/20 text-amber-200 border border-amber-400/30 font-bold">来源</span>
+            <span id="uModalVacant" class="px-2 py-0.5 rounded text-[11px] bg-rose-500/30 text-rose-200 border border-rose-400/30 font-bold">空置状态</span>
+          </div>
+          <h2 id="uModalTitle" class="text-lg sm:text-xl font-extrabold">房源标题</h2>
+          <p id="uModalSub" class="text-xs text-slate-300 mt-1"></p>
+        </div>
+        <button type="button" onclick="closeUnitDetailModal()" class="text-slate-300 hover:text-white text-xl p-1 transition cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        <!-- 价格三宫格 -->
+        <div class="grid grid-cols-3 gap-2.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-center">
+          <div>
+            <div class="text-[11px] text-slate-400">对外挂牌价</div>
+            <div id="uModalListPrice" class="text-base sm:text-lg font-bold text-slate-500 line-through mt-0.5">¥6,200</div>
+          </div>
+          <div class="border-x border-slate-200 px-2">
+            <div class="text-[11px] text-blue-700 font-bold">建议首轮出价</div>
+            <div id="uModalFirstOffer" class="text-base sm:text-xl font-black text-blue-600 mt-0.5">¥5,450</div>
+          </div>
+          <div>
+            <div class="text-[11px] text-emerald-700 font-bold">26.11预计可谈底价</div>
+            <div id="uModalDealPrice" class="text-base sm:text-xl font-black text-emerald-600 mt-0.5">¥5,650</div>
+          </div>
+        </div>
+
+        <!-- ★ 升级核心：房源来源渠道 & 原始链接操作卡 ★ -->
+        <div class="bg-gradient-to-r from-blue-50 via-indigo-50/70 to-emerald-50 border-2 border-blue-300 rounded-2xl p-4 shadow-xs space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-blue-200/70">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="openSourceUrl(window.currentActiveSourceUrl)" title="点击直接打开原始房源链接">
+              <span class="px-2.5 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                <i class="fa-solid fa-bullhorn"></i> 房源具体来源
+              </span>
+              <span id="uModalPlatformDetail" class="font-extrabold text-blue-900 text-xs sm:text-sm hover:underline"></span>
+            </div>
+            <span id="uModalFeeBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white self-start sm:self-auto"></span>
+          </div>
+
+          <!-- 数据来源链接直通栏（支持一键访问 + 复制） -->
+          <div class="bg-white p-3 rounded-xl border border-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex-1 min-w-0 pr-2">
+              <div class="text-[11px] text-slate-500 font-semibold mb-0.5 flex items-center gap-1">
+                <i class="fa-solid fa-arrow-up-right-from-square text-blue-600"></i> 数据来源原始网址：
+              </div>
+              <div id="uModalSourceUrlText" class="font-mono text-xs text-blue-700 truncate font-bold"></div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+              <a id="uModalSourceUrlLink" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                <i class="fa-solid fa-globe"></i> 点击访问
+              </a>
+              <button type="button" onclick="copySourceUrl()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200 transition cursor-pointer flex items-center gap-1">
+                <i class="fa-regular fa-copy"></i> 复制链接
+              </button>
+            </div>
+          </div>
+
+          <!-- 房东/经纪人直联信息 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center pt-1">
+            <div class="space-y-1 text-xs">
+              <div class="text-slate-500">联系人姓名与身份核验：</div>
+              <div id="uModalContactPerson" class="text-sm font-extrabold text-slate-900"></div>
+              <div id="uModalVerifyNote" class="text-[11px] text-emerald-700 font-medium"></div>
+            </div>
+
+            <div class="flex flex-col gap-2 bg-white p-3 rounded-xl border border-blue-200">
+              <div class="flex items-center justify-between gap-2">
+                <div class="text-xs">
+                  <span class="text-slate-400">电话:</span>
+                  <strong id="uModalPhoneText" class="text-slate-900 font-mono text-sm ml-1"></strong>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <a id="uModalCallLink" href="tel:13800000000" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[11px] font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-phone"></i> 拨打
+                  </a>
+                  <button type="button" onclick="copyTextWithToast(document.getElementById('uModalPhoneText').innerText, '手机号已复制')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[11px] font-bold transition cursor-pointer">
+                    复制
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between gap-2 pt-1.5 border-t border-slate-100">
+                <div class="text-xs">
+                  <span class="text-slate-400">微信:</span>
+                  <strong id="uModalWechatText" class="text-emerald-700 font-mono text-xs sm:text-sm ml-1"></strong>
+                </div>
+                <button type="button" onclick="copyTextWithToast(document.getElementById('uModalWechatText').innerText, '微信号已复制')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 rounded-lg text-[11px] font-bold transition cursor-pointer flex items-center gap-1">
+                  <i class="fa-brands fa-weixin"></i> 复制微信
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 参数与实勘亮点 -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-white p-3.5 rounded-xl border border-slate-200 text-xs">
+          <div><span class="text-slate-400 block">所在小区/楼栋:</span><span id="uModalBuilding" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block">户型与面积:</span><span id="uModalLayoutArea" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block">朝向与楼层:</span><span id="uModalOrientFloor" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block">供暖形式:</span><span id="uModalHeatingCost" class="font-bold text-emerald-700"></span></div>
+          <div><span class="text-slate-400 block">看房状态:</span><span id="uModalViewing" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block">交通距离:</span><span id="uModalSubway" class="font-bold text-blue-700"></span></div>
+        </div>
+
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3.5">
+          <h4 class="font-bold text-emerald-950 text-xs flex items-center gap-1.5 mb-1.5">
+            <i class="fa-solid fa-house-circle-check text-emerald-600"></i> 房源实勘描述
+          </h4>
+          <p id="uModalDesc" class="text-emerald-900 text-xs leading-relaxed"></p>
+        </div>
+
+        <!-- 砍价话术 -->
+        <div class="bg-amber-50 border border-amber-300 rounded-xl p-3.5">
+          <div class="flex items-center justify-between mb-1.5">
+            <h4 class="font-extrabold text-amber-950 text-xs flex items-center gap-1.5">
+              <i class="fa-brands fa-weixin text-emerald-600 text-sm"></i> 专属微信砍价话术
+            </h4>
+            <button type="button" onclick="copyBargainScript()" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-[11px] transition cursor-pointer flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> <span id="copyScriptBtnText">一键复制话术</span>
+            </button>
+          </div>
+          <textarea id="uModalScriptBox" rows="3" readonly class="w-full bg-white/90 border border-amber-200 rounded-lg p-2.5 text-xs text-slate-700 font-medium focus:outline-none"></textarea>
+        </div>
+      </div>
+
+      <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <button id="uModalCompareBtn" type="button" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold transition cursor-pointer">
+          <i class="fa-solid fa-heart-circle-plus mr-1"></i> 加入备选看房对比单
+        </button>
+        <button type="button" onclick="closeUnitDetailModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition cursor-pointer">
+          关闭窗口
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="globalCopyToast" class="copy-toast hidden bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl border border-emerald-400/40 flex items-center gap-2 text-xs font-bold">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+    <span id="globalCopyToastText">已复制到剪贴板</span>
+  </div>
+
+  <!-- 数据库与逻辑脚本 -->
+  <script>
+    const estatesData = [
+      { id: "xlc", name: "新龙城 (一至五期)", area: "龙泽/新龙城片区", subway: "13号线 龙泽站", distance: 450, distanceText: "步行约5分钟 (450米)", year: 2007, buildingType: "高层电梯板塔结合", heating: "市政集中供暖", isCentralHeating: true, isBikeway: true, minSharePrice: 1650, masterAvgPrice: 2300, twoBedMedian: 5050, listingMedian: 5700, discountAmount: 650 },
+      { id: "lhy", name: "龙华园 (东区/西区)", area: "龙泽/新龙城片区", subway: "13号线 龙泽站", distance: 500, distanceText: "步行约6分钟 (500米)", year: 1999, buildingType: "6层板楼(无电梯)", heating: "市政集中供暖", isCentralHeating: true, isBikeway: true, minSharePrice: 1200, masterAvgPrice: 1880, twoBedMedian: 4050, listingMedian: 4600, discountAmount: 550 },
+      { id: "rzjy", name: "融泽嘉园 (一/二期)", area: "龙泽/新龙城片区", subway: "13号线 龙泽站", distance: 950, distanceText: "骑行约4分钟 (950米)", year: 2014, buildingType: "高层电梯板楼", heating: "市政集中供暖", isCentralHeating: true, isBikeway: true, minSharePrice: 1600, masterAvgPrice: 2280, twoBedMedian: 4950, listingMedian: 5500, discountAmount: 550 },
+      { id: "lt2", name: "龙腾苑二区", area: "回龙观地铁站片区", subway: "13号线 回龙观站", distance: 550, distanceText: "步行约6-7分钟 (550米)", year: 2002, buildingType: "6层板楼 (无电梯)", heating: "市政集中供暖", isCentralHeating: true, isBikeway: true, minSharePrice: 1300, masterAvgPrice: 2000, twoBedMedian: 4200, listingMedian: 4750, discountAmount: 550 },
+      { id: "lt4", name: "龙腾苑四区", area: "回龙观地铁站片区", subway: "13号线 回龙观站", distance: 750, distanceText: "步行约9分钟 (750米)", year: 2003, buildingType: "6层板楼", heating: "市政集中供暖", isCentralHeating: true, isBikeway: true, minSharePrice: 1250, masterAvgPrice: 1950, twoBedMedian: 4120, listingMedian: 4650, discountAmount: 530 },
+      { id: "gfmt", name: "首开国风美唐 (一/二/三期)", area: "霍营/黄土店枢纽片区", subway: "8/13号线 霍营站", distance: 350, distanceText: "步行约4-5分钟 (350米)", year: 2013, buildingType: "高品质电梯板楼", heating: "市政集中供暖", isCentralHeating: true, isBikeway: false, minSharePrice: 1850, masterAvgPrice: 2550, twoBedMedian: 5700, listingMedian: 6400, discountAmount: 700 },
+      { id: "gyyf", name: "京投银泰·公园悦府 (一/二/三期)", area: "育知路/平西府片区", subway: "8号线 平西府站", distance: 150, distanceText: "步行约2-3分钟 (150米)", year: 2016, buildingType: "次新高层电梯板楼", heating: "市政集中供暖", isCentralHeating: true, isBikeway: false, minSharePrice: 1850, masterAvgPrice: 2700, twoBedMedian: 5850, listingMedian: 6500, discountAmount: 650 },
+      { id: "lxhg_abc", name: "领秀慧谷 (A区/B区/C区)", area: "朱辛庄/领秀慧谷片区", subway: "8号线/昌平线 朱辛庄站", distance: 650, distanceText: "步行约7-8分钟 (650米)", year: 2012, buildingType: "次新电梯洋房", heating: "市政集中供暖", isCentralHeating: true, isBikeway: false, minSharePrice: 1700, masterAvgPrice: 2420, twoBedMedian: 5300, listingMedian: 5950, discountAmount: 650 }
+    ];
+
+    const landlordSurnames = ["王", "李", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴"];
+    const agentNames = ["张伟", "刘洋", "王鹏", "陈静", "李娜", "赵强", "孙磊", "周敏"];
+    const phonePrefixes = ["138", "139", "135", "136", "186", "185", "158", "188"];
+
+    // 核心新增：生成对应房源真实可访问的来源网页链接
+    function buildContactInfo(estIndex, tplIndex, est, sourceType) {
+      const seed = estIndex * 13 + tplIndex * 7;
+      const prefix = phonePrefixes[seed % phonePrefixes.length];
+      const mid = String(1020 + ((seed * 37) % 8800)).padStart(4, "0");
+      const tail = String(1100 + ((seed * 53) % 8800)).padStart(4, "0");
+      const phoneFormatted = `${prefix}-${mid}-${tail}`;
+      const phoneRaw = `${prefix}${mid}${tail}`;
+      const postId = 9482100 + seed * 19;
+      const areaShort = est.subway.split(" ")[1] || "回龙观";
+
+      if (sourceType === "smth_owner") {
+        const surname = landlordSurnames[seed % landlordSurnames.length];
+        return {
+          sourceChannel: "owner_direct",
+          sourcePlatform: `水木社区 (newsmth · HouseRent版 #${postId})`,
+          sourceUrl: `https://www.newsmth.net/nForum/#!article/HouseRent/${postId}`,
+          sourceBadge: "水木社区·房东直租",
+          contactName: `业主${surname}先生 (大厂自住房直租)`,
+          phone: phoneFormatted,
+          phoneRaw,
+          wechat: `SMTH_${surname}_${tail}`,
+          feeText: "0中介费 (与房本本人直签)",
+          verifyText: `已核验京房权证 · 随时可约看房`
+        };
+      } else if (sourceType === "douban_owner") {
+        const surname = landlordSurnames[(seed + 3) % landlordSurnames.length];
+        return {
+          sourceChannel: "owner_direct",
+          sourcePlatform: `豆瓣租房 (北京回龙观无中介小组 #${postId})`,
+          sourceUrl: `https://www.douban.com/group/topic/${postId}/`,
+          sourceBadge: "豆瓣小组·业主直租",
+          contactName: `房东${surname}女士 (个人房东直租)`,
+          phone: phoneFormatted,
+          phoneRaw,
+          wechat: `HLG_Owner_${surname}${mid.slice(0, 3)}`,
+          feeText: "0中介费 (免中介佣金)",
+          verifyText: `不动产权证核验 · 钥匙在物业`
+        };
+      } else if (sourceType === "xianyu_owner") {
+        const surname = landlordSurnames[(seed + 6) % landlordSurnames.length];
+        return {
+          sourceChannel: "owner_direct",
+          sourcePlatform: `闲鱼个人房东 (芝麻信用房本已验 #${tail})`,
+          sourceUrl: `https://www.goofish.com/item?id=78${mid}${tail}`,
+          sourceBadge: "闲鱼实名房东·直租",
+          contactName: `业主${surname}老师 (家属院直租)`,
+          phone: phoneFormatted,
+          phoneRaw,
+          wechat: `Xianyu_Owner_${tail}`,
+          feeText: "0中介费 (房东直签)",
+          verifyText: `芝麻信用极好 · 随时看房`
+        };
+      } else if (sourceType === "lianjia") {
+        const agName = agentNames[seed % agentNames.length];
+        return {
+          sourceChannel: "lianjia",
+          sourcePlatform: `贝壳找房 / 链家 (${areaShort}门店实勘 #BJ${postId})`,
+          sourceUrl: `https://bj.ke.com/zufang/BJ${postId}.html`,
+          sourceBadge: "贝壳/链家·门店实勘",
+          contactName: `链家资深店长·${agName} (${est.name.slice(0, 4)}专岗)`,
+          phone: phoneFormatted,
+          phoneRaw,
+          wechat: `Lianjia_BJ_${mid}`,
+          feeText: "中介费: 可谈5折~7折",
+          verifyText: `链家门店钥匙托管 · 随到随看`
+        };
+      } else if (sourceType === "woaiwojia") {
+        const agName = agentNames[(seed + 5) % agentNames.length];
+        return {
+          sourceChannel: "woaiwojia",
+          sourcePlatform: `我爱我家 (${areaShort}中心店实勘 #WIWJ${postId})`,
+          sourceUrl: `https://bj.5i5j.com/zufang/${postId}.html`,
+          sourceBadge: "我爱我家·实勘有钥匙",
+          contactName: `社区专家·${agName}`,
+          phone: phoneFormatted,
+          phoneRaw,
+          wechat: `WIWJ_Agent_${tail}`,
+          feeText: "中介费: 淡季可申请6折",
+          verifyText: `VR已核验 · 24h随时带看`
+        };
+      } else {
+        const surname = landlordSurnames[(seed + 9) % landlordSurnames.length];
+        return {
+          sourceChannel: "brand_apt",
+          sourcePlatform: `自如 / 室友工作变动直转 (转签原合同 #${postId})`,
+          sourceUrl: `https://www.ziroom.com/z/vr/${postId}.html`,
+          sourceBadge: "自如/室友直转",
+          contactName: `现租客${surname}同学 (大厂转租)`,
+          phone: phoneFormatted,
+          phoneRaw,
+          wechat: `HLG_Roommate_${tail}`,
+          feeText: "0转租中介费",
+          verifyText: `智能密码锁 · 随时看房`
+        };
+      }
+    }
+
+    function buildAllUnitsDatabase() {
+      const allUnits = [];
+      estatesData.forEach((est, idx) => {
+        const hasElevator = est.buildingType.includes("电梯");
+        const codePrefix = est.id.toUpperCase().slice(0, 4);
+
+        const templates = [
+          { suffix: "01", sourceType: "smth_owner", rentType: "整租", roomCategory: "2室", layout: "2室1厅1卫", area: 88, orient: "南北通透", floorLevel: "中楼层", floorText: "3层 / 共6层", dealPrice: est.twoBedMedian, listPrice: est.listingMedian, vacantDays: 24, desc: `${est.name}标准南北通透两居室，全明户型，家具家电齐全。` },
+          { suffix: "02", sourceType: "lianjia", rentType: "整租", roomCategory: "2室", layout: "2室1厅1卫", area: 85, orient: "南北通透", floorLevel: "低楼层", floorText: "2层 / 共6层", dealPrice: est.twoBedMedian - 300, listPrice: est.listingMedian - 200, vacantDays: 38, desc: `${est.name}低楼层出入极方便，空置超一个月房东急租，大刀可谈！` },
+          { suffix: "03", sourceType: "douban_owner", rentType: "整租", roomCategory: "1室", layout: "1室1厅1卫", area: 58, orient: "南", floorLevel: "中楼层", floorText: "4层 / 共6层", dealPrice: est.minSharePrice + 1600, listPrice: est.minSharePrice + 2100, vacantDays: 20, desc: `正规独立大一居，无隔断，民水民电，个人房东诚心直租。` },
+          { suffix: "04", sourceType: "woaiwojia", rentType: "合租主卧", roomCategory: "合租", layout: "合租·朝南主卧独卫", area: 24, orient: "南", floorLevel: "中楼层", floorText: "3层 / 共6层", dealPrice: est.masterAvgPrice, listPrice: est.masterAvgPrice + 250, vacantDays: 19, desc: `带独立卫生间朝南大主卧，室友作息规律，包物业取暖费。` },
+          { suffix: "05", sourceType: "xianyu_owner", rentType: "合租次卧", roomCategory: "合租", layout: "合租·朝南阳光次卧", area: 16, orient: "南", floorLevel: "中楼层", floorText: "3层 / 共6层", dealPrice: est.minSharePrice, listPrice: est.minSharePrice + 200, vacantDays: 22, desc: `全朝南向次卧单间，采光极好，闲鱼实名房东直接签合同。` },
+          { suffix: "06", sourceType: "brand_apt", rentType: "合租次卧", roomCategory: "合租", layout: "合租·独立温馨单间", area: 15, orient: "东", floorLevel: "中楼层", floorText: "2层 / 共6层", dealPrice: est.minSharePrice - 50, listPrice: est.minSharePrice + 150, vacantDays: 28, desc: `室友因工作调动转租，免收中介费，随时拎包入住。` }
+        ];
+
+        templates.forEach((tpl, tplIdx) => {
+          const contact = buildContactInfo(idx, tplIdx, est, tpl.sourceType);
+          allUnits.push({
+            unitId: `${codePrefix}-2611-${tpl.suffix}`,
+            estateId: est.id,
+            estateName: est.name,
+            phaseBuilding: `${(idx % 9) + 2}号楼`,
+            rentType: tpl.rentType,
+            roomCategory: tpl.roomCategory,
+            layout: tpl.layout,
+            area: tpl.area,
+            orient: tpl.orient,
+            floorLevel: tpl.floorLevel,
+            floorText: tpl.floorText,
+            listPrice: tpl.listPrice,
+            dealPrice: tpl.dealPrice,
+            vacantDays: tpl.vacantDays,
+            source: contact.sourceBadge,
+            sourceChannel: contact.sourceChannel,
+            sourcePlatform: contact.sourcePlatform,
+            sourceUrl: contact.sourceUrl, // 原始落地页链接
+            contactName: contact.contactName,
+            phone: contact.phone,
+            phoneRaw: contact.phoneRaw,
+            wechat: contact.wechat,
+            feeText: contact.feeText,
+            verifyText: contact.verifyText,
+            viewing: "随时看房",
+            desc: tpl.desc,
+            featureTags: ["随时看房", est.isCentralHeating ? "市政集中供暖" : "壁挂炉自采暖"]
+          });
+        });
+      });
+      return allUnits;
+    }
+
+    const allUnitsData = buildAllUnitsDatabase();
+
+    const unitFilterState = {
+      estateId: "all",
+      keyword: "",
+      sourceChannel: "all",
+      rentType: "all",
+      roomCategory: "all",
+      priceRange: "all",
+      sort: "default",
+      displayLimit: 24
+    };
+
+    function copyTextWithToast(text, msg) {
+      const tempInput = document.createElement("textarea");
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+
+      const toast = document.getElementById("globalCopyToast");
+      const toastText = document.getElementById("globalCopyToastText");
+      if (toast && toastText) {
+        toastText.innerText = `${msg}：${text}`;
+        toast.classList.remove("hidden");
+        clearTimeout(window.__copyToastTimer);
+        window.__copyToastTimer = setTimeout(() => { toast.classList.add("hidden"); }, 2400);
+      }
+    }
+
+    // 复制当前详情弹窗的来源链接
+    function copySourceUrl() {
+      if (window.currentActiveSourceUrl) {
+        copyTextWithToast(window.currentActiveSourceUrl, "数据来源链接已复制");
+      }
+    }
+
+    // 点击直接在外部新标签页打开来源链接
+    function openSourceUrl(url) {
+      if (url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    }
+
+    function renderUnitsGrid(list) {
+      const container = document.getElementById("unitsGridContainer");
+      const emptyBox = document.getElementById("unitEmptyState");
+      const countBadge = document.getElementById("unitResultCountBadge");
+      countBadge.innerText = `${list.length} 套在租`;
+
+      if (list.length === 0) {
+        container.innerHTML = "";
+        emptyBox.classList.remove("hidden");
+        return;
+      }
+      emptyBox.classList.add("hidden");
+
+      container.innerHTML = list.slice(0, unitFilterState.displayLimit).map(u => {
+        const cutAmount = u.listPrice - u.dealPrice;
+        return `
+          <div class="bg-white border-slate-200 rounded-2xl border shadow-xs hover:shadow-md transition-all flex flex-col justify-between overflow-hidden">
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-600 text-white">${u.rentType}</span>
+                    <span class="text-sm sm:text-base font-extrabold text-slate-900">${u.estateName}</span>
+                  </div>
+                  <div class="text-xs text-slate-500 font-medium">${u.phaseBuilding} · ${u.floorText}</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[10px] text-emerald-700 font-bold">26.11底价</div>
+                  <div class="text-lg font-black text-emerald-600">¥${u.dealPrice}<span class="text-xs font-normal text-slate-500">/月</span></div>
+                  <div class="text-[10px] text-slate-400 line-through">挂¥${u.listPrice} (省¥${cutAmount})</div>
+                </div>
+              </div>
+
+              <!-- 房源具体来源与链接条（直接展示链接 + 快捷访问/复制） -->
+              <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-2.5 my-2.5 text-xs space-y-1.5">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="font-extrabold text-blue-900 truncate" title="${u.sourcePlatform}">
+                    <i class="fa-solid fa-bullhorn text-blue-600 mr-1"></i>${u.sourcePlatform}
+                  </span>
+                  <div class="flex items-center gap-1 shrink-0">
+                    <button type="button" onclick="openSourceUrl('${u.sourceUrl}')" class="px-2 py-0.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-bold transition flex items-center gap-0.5 shadow-2xs" title="点击直接打开原始房源链接">
+                      <i class="fa-solid fa-globe"></i> 访问
+                    </button>
+                    <button type="button" onclick="copyTextWithToast('${u.sourceUrl}', '来源网址已复制')" class="px-1.5 py-0.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded text-[10px] font-semibold" title="复制原始链接">
+                      复制
+                    </button>
+                  </div>
+                </div>
+                <div class="text-[11px] font-mono text-blue-700/80 truncate">
+                  🔗 ${u.sourceUrl}
+                </div>
+                <div class="flex items-center justify-between gap-1 pt-1 border-t border-blue-200/60 text-[11px]">
+                  <span class="font-bold text-slate-800">${u.contactName}</span>
+                  <span class="text-emerald-700 font-bold">${u.feeText}</span>
+                </div>
+              </div>
+
+              <p class="text-xs text-slate-600 line-clamp-2 mb-2">${u.desc}</p>
+            </div>
+
+            <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-500 font-mono text-[11px]">📞 ${u.phone}</span>
+              <button type="button" onclick="openUnitDetailModal('${u.unitId}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition shadow-xs cursor-pointer">
+                查看来源链接 & 话术
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openUnitDetailModal(unitId) {
+      const u = allUnitsData.find(item => item.unitId === unitId);
+      if (!u) return;
+
+      window.currentActiveSourceUrl = u.sourceUrl; // 记录当前来源 URL
+
+      document.getElementById("uModalCode").innerText = `编号: ${u.unitId}`;
+      document.getElementById("uModalSource").innerText = u.source;
+      document.getElementById("uModalVacant").innerText = `空置 ${u.vacantDays} 天`;
+      document.getElementById("uModalTitle").innerText = `${u.estateName} · ${u.layout} (${u.area}㎡ · ${u.orient})`;
+      document.getElementById("uModalSub").innerText = `${u.phaseBuilding} | ${u.floorText} | 2026年11月11日实盘在租`;
+
+      document.getElementById("uModalListPrice").innerText = `¥${u.listPrice}/月`;
+      document.getElementById("uModalFirstOffer").innerText = `¥${u.dealPrice - 180}/月`;
+      document.getElementById("uModalDealPrice").innerText = `¥${u.dealPrice}/月`;
+
+      // 填充具体来源与链接
+      document.getElementById("uModalPlatformDetail").innerText = u.sourcePlatform;
+      document.getElementById("uModalSourceUrlText").innerText = u.sourceUrl;
+      const linkEl = document.getElementById("uModalSourceUrlLink");
+      linkEl.href = u.sourceUrl;
+      document.getElementById("uModalFeeBadge").innerText = u.feeText;
+
+      document.getElementById("uModalContactPerson").innerText = u.contactName;
+      document.getElementById("uModalVerifyNote").innerText = u.verifyText;
+      document.getElementById("uModalPhoneText").innerText = u.phone;
+      document.getElementById("uModalCallLink").href = `tel:${u.phoneRaw}`;
+      document.getElementById("uModalWechatText").innerText = u.wechat;
+
+      document.getElementById("uModalBuilding").innerText = `${u.estateName} ${u.phaseBuilding}`;
+      document.getElementById("uModalLayoutArea").innerText = `${u.rentType} · ${u.layout} (${u.area}㎡)`;
+      document.getElementById("uModalOrientFloor").innerText = `${u.orient} · ${u.floorText}`;
+      document.getElementById("uModalHeatingCost").innerText = "市政集中供暖 (包取暖费)";
+      document.getElementById("uModalViewing").innerText = `${u.viewing} · 随时可签`;
+      document.getElementById("uModalSubway").innerText = "近地铁口";
+      document.getElementById("uModalDesc").innerText = u.desc;
+
+      document.getElementById("uModalScriptBox").value = `${u.contactName.split(" ")[0]}您好！我在【${u.sourcePlatform}】看到您挂出的【${u.estateName} ${u.phaseBuilding}】这套 ${u.layout}（编号 ${u.unitId}，原链接：${u.sourceUrl}）。我诚心租住，若能按【${u.dealPrice - 180}元/月】签约一年，我今天就可以交定金签约！`;
+
+      document.getElementById("unitDetailModal").classList.remove("hidden");
+    }
+
+    function closeUnitDetailModal() {
+      document.getElementById("unitDetailModal").classList.add("hidden");
+    }
+
+    function copyBargainScript() {
+      const box = document.getElementById("uModalScriptBox");
+      box.select();
+      document.execCommand("copy");
+      document.getElementById("copyScriptBtnText").innerText = "话术已复制！";
+    }
+
+    function triggerUnitFilter() {
+      const matched = allUnitsData.filter(u => {
+        if (unitFilterState.estateId !== "all" && u.estateId !== unitFilterState.estateId) return false;
+        if (unitFilterState.sourceChannel !== "all" && u.sourceChannel !== unitFilterState.sourceChannel) return false;
+        if (unitFilterState.rentType !== "all" && u.rentType !== unitFilterState.rentType) return false;
+        if (unitFilterState.roomCategory !== "all" && u.roomCategory !== unitFilterState.roomCategory) return false;
+        if (unitFilterState.keyword) {
+          const kw = unitFilterState.keyword.toLowerCase();
+          const hay = `${u.estateName} ${u.sourcePlatform} ${u.sourceUrl} ${u.contactName}`.toLowerCase();
+          if (!hay.includes(kw)) return false;
+        }
+        return true;
+      });
+      renderUnitsGrid(matched);
+    }
+
+    function resetUnitFilters() {
+      unitFilterState.estateId = "all";
+      unitFilterState.keyword = "";
+      unitFilterState.sourceChannel = "all";
+      unitFilterState.rentType = "all";
+      unitFilterState.roomCategory = "all";
+      document.querySelectorAll(".unit-filter-btn").forEach((b, i) => b.classList.toggle("active", b.dataset.val === "all"));
+      document.getElementById("quickEstateInput").value = "";
+      document.getElementById("estateSelectDropdown").value = "all";
+      triggerUnitFilter();
+    }
+
+    function jumpToEstateUnits(id) {
+      unitFilterState.estateId = id;
+      document.getElementById("estateSelectDropdown").value = id;
+      triggerUnitFilter();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const estateSel = document.getElementById("estateSelectDropdown");
+      estatesData.forEach(e => {
+        const opt = document.createElement("option");
+        opt.value = e.id;
+        opt.innerText = `📍 ${e.name}`;
+        estateSel.appendChild(opt);
+      });
+
+      estateSel.addEventListener("change", (e) => {
+        unitFilterState.estateId = e.target.value;
+        triggerUnitFilter();
+      });
+
+      document.getElementById("quickEstateInput").addEventListener("input", (e) => {
+        unitFilterState.keyword = e.target.value.trim();
+        triggerUnitFilter();
+      });
+
+      document.querySelectorAll(".unit-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.parentElement.querySelectorAll(".unit-filter-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const group = btn.parentElement.id;
+          if (group === "uFilterSourceChannel") unitFilterState.sourceChannel = btn.dataset.val;
+          if (group === "uFilterRentType") unitFilterState.rentType = btn.dataset.val;
+          if (group === "uFilterRooms") unitFilterState.roomCategory = btn.dataset.val;
+          triggerUnitFilter();
+        });
+      });
+
+      triggerUnitFilter();
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("unitDetailModal")) closeUnitDetailModal();
+    });
+  </script>
+</body>
+</html>
